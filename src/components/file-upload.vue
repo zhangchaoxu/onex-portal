@@ -31,6 +31,7 @@
  * @author Charles zhangchaoxu@gmail.com
  */
 import Cookies from 'js-cookie'
+import { isURL } from '@/utils/validate'
 import FileViewer from '@/components/file-viewer'
 
 export default {
@@ -173,7 +174,7 @@ export default {
       let files = []
       fileList.forEach(item => {
         if (item.status === 'success') {
-          if (item.url) {
+          if (isURL(item.url)) {
             // 原先已上传文件
             files.push(item.url)
           } else if (item.response && item.response.code === 0 && item.response.data) {
@@ -200,9 +201,6 @@ export default {
     },
     // 文件上传失败
     uploadErrorHandle (err, file, fileList) {
-      console.log(err)
-      console.log(file)
-      console.log(fileList)
       this._content = this.getUploadFileString(fileList)
       this.uploadFileLength = fileList.length
       this.$emit('input', this._content)
