@@ -79,8 +79,7 @@ export default {
         } else {
           this.onGetListSuccess(res)
         }
-        this.dataListLoading = false
-      }).catch(() => {
+      }).finally(() => {
         this.dataListLoading = false
       })
     },
