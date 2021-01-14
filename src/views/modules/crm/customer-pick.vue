@@ -5,7 +5,7 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
             <div class="mod-crm__customer">
-                <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()" size="small">
+                <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                     <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
                         <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
                             <tenant-pick class="small-button" slot="append" :id="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>

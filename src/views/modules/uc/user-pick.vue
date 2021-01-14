@@ -5,7 +5,7 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
                 <div class="mod-uc__user">
-                    <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+                    <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                         <el-form-item class="small-item">
                             <el-input v-model="searchDataForm.username" :placeholder="$t('user.username')" clearable/>
                         </el-form-item>

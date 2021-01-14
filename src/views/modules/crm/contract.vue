@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" :class="[{'aui-card--embed': mode === 'embed'}, 'aui-card--fill']">
     <div class="mod-crm__contract">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()" :size="mode === 'embed' ? 'small' : ''">
+      <el-form :inline="true" :model="searchDataForm" @submit.native.prevent :size="mode === 'embed' ? 'small' : ''">
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin') && mode !== 'embed'">
           <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
             <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>

@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sys__oss">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item>
           <el-button type="primary" @click="uploadHandle()">{{ $t('upload.button') }}</el-button>
         </el-form-item>

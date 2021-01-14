@@ -5,7 +5,7 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
             <div class="mod-shop__goods">
-                <el-form :inline="true" :model="searchDataForm" size="small">
+                <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                     <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
                         <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
                             <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>

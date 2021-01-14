@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-crm__product-category">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
           <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
             <tenant-pick class="small-button" slot="append" :id="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>

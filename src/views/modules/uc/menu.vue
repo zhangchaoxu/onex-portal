@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-uc__menu">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item>
           <el-button v-if="$hasPermission('uc:menu:save')" type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>

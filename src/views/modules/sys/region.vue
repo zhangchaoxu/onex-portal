@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sys__region">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item>
           <el-input v-model="searchDataForm.name" placeholder="输入名称" clearable/>
         </el-form-item>

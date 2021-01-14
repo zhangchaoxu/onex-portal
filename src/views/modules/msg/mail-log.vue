@@ -3,7 +3,7 @@
     <el-row :gutter="10">
       <el-col :span="6">
         <div class="mod-msg__mail-tpl">
-          <el-form :inline="true" :model="searchDataForm" size="small">
+          <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
             <el-form-item v-if="$hasPermission('msg:mailTpl:save')">
               <el-button type="primary" @click="tplAddOrUpdateHandle()">{{ $t('add') }}模板</el-button>
             </el-form-item>
@@ -32,7 +32,7 @@
       </el-col>
       <el-col :span="18">
         <div class="mod-msg__mail-log">
-          <el-form :inline="true" :model="searchDataForm" size="small">
+          <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
             <el-form-item class="small-item">
               <el-input v-model="searchDataForm.tplId" placeholder="模板编码" clearable/>
             </el-form-item>

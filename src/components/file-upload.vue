@@ -201,6 +201,8 @@ export default {
     },
     // 文件上传失败
     uploadErrorHandle (err, file, fileList) {
+      console.log(err)
+      console.log(file)
       this._content = this.getUploadFileString(fileList)
       this.uploadFileLength = fileList.length
       this.$emit('input', this._content)

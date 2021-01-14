@@ -1,6 +1,6 @@
 <template>
   <el-dialog :visible.sync="visible" :title="$t('schedule.log')" :close-on-click-modal="false" :close-on-press-escape="false" width="75%">
-    <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+    <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
       <el-form-item>
         <el-input v-model="searchDataForm.taskId" :placeholder="$t('schedule.jobId')" clearable/>
       </el-form-item>
