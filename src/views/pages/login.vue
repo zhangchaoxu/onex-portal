@@ -170,7 +170,7 @@ export default {
     // 切换登录类型
     typeChangeHandle () {
       // 赋值当前渠道配置
-      if (this.dataForm.type === 'ADMIN_USERNAME_PWSSWORD') {
+      if (this.dataForm.type === 'ADMIN_USERNAME_PASSWORD') {
         this.loginTypeConfig = this.loginConfigAdmin.usernamePasswordLoginConfig
       } else if (this.dataForm.type === 'ADMIN_MOBILE_SMSCODE') {
         this.loginTypeConfig = this.loginConfigAdmin.mobileSmscodeLoginConfig
@@ -194,6 +194,12 @@ export default {
           document.title = this.sysCfg.title
           // 赋值全局登录配置
           this.loginConfigAdmin = res.data.LOGIN_CONFIG_ADMIN
+          // 找到第一个enable的登录渠道
+          if (this.loginConfigAdmin.usernamePasswordLogin) {
+            this.dataForm.type = 'ADMIN_USERNAME_PASSWORD'
+          } else if (this.loginConfigAdmin.mobileAndSmscodeLogin) {
+            this.dataForm.type = 'ADMIN_MOBILE_SMSCODE'
+          }
           this.typeChangeHandle()
         }
       }).finally(() => {
@@ -264,8 +270,7 @@ export default {
       this.$http.get(`/sys/param/getContentByCode?code=` + type).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
-        }
-        if (type === 'DINGTALK_SCAN') {
+        } else if (type === 'ADMIN_DINGTALK_SCAN') {
           let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + res.data.appid +
                   '&response_type=code' +
                   '&scope=snsapi_login' +
@@ -289,7 +294,7 @@ export default {
       const left = (window.screen.availWidth - 10 - width) / 2 // 弹出窗水平位置
       this.thirdLoginWindow = window.open(url, `login ${type}`, `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no`)
       let that = this
-      window.addEventListener('message', function (event) {
+      window.addEventListener('message', (event) => {
         if (event.origin !== location.origin || !event.data) {
           return
         }
