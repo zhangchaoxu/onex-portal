@@ -24,7 +24,6 @@
 <script>
 import mixinFormModule from '@/mixins/form-module'
 import DataRotate from '@/components/data-rotate'
-import { Pie, Donut, Column } from '@antv/g2plot'
 
 export default {
   mixins: [mixinFormModule],
@@ -132,87 +131,6 @@ export default {
         this.crmCountData.data[2].click = () => {
           this.$router.push({ name: 'crm-contract' })
         }
-        // 饼图
-        new Pie('chart1', {
-          title: {
-            visible: true,
-            alignTo: 'middle',
-            text: '客户来源统计'
-          },
-          forceFit: true,
-          data: res.data.customerSourceCount,
-          angleField: 'source_count',
-          colorField: 'source',
-          legend: {
-            visible: false
-          },
-          label: {
-            visible: true,
-            type: 'spider'
-          }
-        }).render()
-        // 环形图
-        new Donut('chart2', {
-          title: {
-            visible: true,
-            alignTo: 'middle',
-            text: '商机状态统计'
-          },
-          forceFit: true,
-          data: res.data.businessStatusCount,
-          angleField: 'status_count',
-          colorField: 'status',
-          legend: {
-            visible: false
-          },
-          statistic: {
-            visible: false
-          },
-          padding: 'auto',
-          label: {
-            visible: true,
-            formatter: (text, item) => {
-              if (item._origin.status === 1) {
-                return '阶段1:' + item._origin.status_count
-              } else if (item._origin.status === 2) {
-                return '阶段2:' + item._origin.status_count
-              } else if (item._origin.status === 3) {
-                return '阶段3:' + item._origin.status_count
-              } else if (item._origin.status === 10) {
-                return '赢单:' + item._origin.status_count
-              } else if (item._origin.status === -10) {
-                return '输单:' + item._origin.status_count
-              } else if (item._origin.status === 0) {
-                return '无效:' + item._origin.status_count
-              }
-            },
-            type: 'spider'
-          }
-        }).render()
-        // 柱图
-        new Column('chart3', {
-          title: {
-            visible: true,
-            alignTo: 'middle',
-            text: '合同金额分布'
-          },
-          forceFit: true,
-          padding: 'auto',
-          data: res.data.contractContractMonthCount,
-          xField: 'contract_month',
-          yField: 'amount_sum',
-          legend: {
-            visible: false
-          },
-          meta: {
-            contract_month: {
-              alias: '月份'
-            },
-            amount_sum: {
-              alias: '合同额'
-            }
-          }
-        }).render()
       }).catch(() => {}).finally(() => {
         this.crmFormLoading = false
       })

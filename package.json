@@ -40,7 +40,6 @@
     "vue-json-viewer": "^2.2.17",
     "vue-router": "^3.4.9",
     "vuex": "^3.5.1",
-    "@antv/g2plot": "^2.3.7",
     "@chenfengyuan/vue-qrcode": "^1.0.2"
   },
   "devDependencies": {
