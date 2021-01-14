@@ -47,7 +47,7 @@ http.interceptors.request.use(config => {
   return config
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('接口请求异常')
+  Vue.prototype.$message.error('接口请求失败')
   return Promise.reject(error)
 })
 
@@ -65,7 +65,7 @@ http.interceptors.response.use(response => {
   return response
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('接口响应异常')
+  Vue.prototype.$message.error('接口响应失败')
   return Promise.reject(error)
 })
 
