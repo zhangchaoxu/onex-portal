@@ -1,7 +1,7 @@
 <template>
     <el-card shadow="never" class="aui-card--fill">
         <div class="mod-sys__param">
-            <el-form :inline="true" :model="searchDataForm" size="small">
+            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                 <el-form-item>
                     <el-input v-model="searchDataForm.code" :placeholder="$t('base.code')" clearable/>
                 </el-form-item>

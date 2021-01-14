@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-crm__contract-product">
-      <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+      <el-form :inline="true" :model="searchDataForm" size="small" >
         <el-form-item class="small-item">
           <el-input v-model="searchDataForm.id" placeholder="id" clearable/>
         </el-form-item>

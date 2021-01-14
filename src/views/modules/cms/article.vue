@@ -1,7 +1,7 @@
 <template>
     <el-card shadow="never" class="aui-card--fill">
         <div class="mod-cms__article">
-            <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                 <el-form-item class="small-item">
                     <el-select v-model="searchDataForm.articleCategoryId" placeholder="分类" style="width: 100%" clearable>
                         <el-option v-for="item in articleCategoryList" :key="item.id" :label="item.name" :value="item.id"/>

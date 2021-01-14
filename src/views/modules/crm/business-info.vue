@@ -77,7 +77,7 @@
         </el-table>
         <el-divider>商机记录</el-divider>
         <div class="mod-crm__business-log">
-            <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()" size="small">
+            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
                 <el-form-item class="small-item">
                     <el-select v-model="searchDataForm.type" placeholder="记录类型" clearable>
                         <el-option label="跟进" value="followup"/>
