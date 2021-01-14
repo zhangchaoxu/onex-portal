@@ -67,6 +67,7 @@ t.base.error = '失败'
 t.base.mobile = '手机号'
 t.base.send = '发送'
 t.base.param = '参数'
+t.base.channel = '渠道'
 
 t.prompt = {}
 t.prompt.apierror = '接口调用失败'
