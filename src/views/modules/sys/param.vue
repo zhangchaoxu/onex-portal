@@ -1,7 +1,7 @@
 <template>
     <el-card shadow="never" class="aui-card--fill">
         <div class="mod-sys__param">
-            <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
+            <el-form :inline="true" :model="searchDataForm" size="small">
                 <el-form-item>
                     <el-input v-model="searchDataForm.code" :placeholder="$t('base.code')" clearable/>
                 </el-form-item>
@@ -11,16 +11,19 @@
                 <el-form-item v-if="$hasPermission('sys:param:save')">
                     <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
                 </el-form-item>
-                <el-form-item v-if="$hasPermission('sys:param:delete')">
-                    <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-                </el-form-item>
             </el-form>
             <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle"
                       @cell-click="cellClickHandle" style="width: 100%;">
-                <el-table-column type="selection" header-align="center" align="center" width="50"/>
-                <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center" width="300"/>
-                <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" width="200"/>
-                <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap json link"/>
+                <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center" min-width="200"/>
+                <el-table-column prop="type" :label="$t('base.type')" header-align="center" align="center" width="100">
+                  <template slot-scope="scope">
+                    <el-tag v-if="scope.row.type === 0" type="warning">内部</el-tag>
+                    <el-tag v-else-if="scope.row.type === 1">开放</el-tag>
+                    <el-tag v-else type="info">{{ scope.row.type }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" width="150" show-tooltip-when-overflow/>
+                <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap json link" min-width="100"/>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
                         <el-button v-if="$hasPermission('sys:param:update')" type="text" size="small" @click="editHandle(scope.row.id, scope.row.code)">编辑内容</el-button>
@@ -49,7 +52,6 @@
             <login-channel-cfg v-if="loginChannelCfgVisible" ref="loginChannelCfg" @refreshDataList="getDataList"/>
             <!-- 弹窗, 微信配置 -->
             <wx-cfg v-if="wxCfgVisible" ref="wxCfg" @refreshDataList="getDataList"/>
-
             <!-- 弹窗, App关于我们配置 -->
             <app-about-config v-if="appAboutConfigVisible" ref="appAboutConfig" @refreshDataList="getDataList"/>
             <!-- 弹窗, App客服配置-->
@@ -95,7 +97,6 @@ export default {
       ossCfgVisible: false,
       // 微信配置
       wxCfgVisible: false,
-
       // App关于我们配置
       appAboutConfigVisible: false,
       // App启动页配置

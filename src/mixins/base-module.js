@@ -69,7 +69,7 @@ export default {
         showCancelButton: true,
         showConfirmButton: false,
         customClass: customClass || 'el-message-w-60'
-      }).then().catch(() => {})
+      })
     },
     // html查看器
     htmlViewHandle (content, title, customClass) {
@@ -81,7 +81,7 @@ export default {
         showCancelButton: true,
         showConfirmButton: false,
         customClass: customClass || 'el-message-w-60'
-      }).then().catch(() => {})
+      })
     },
     // json查看器
     // [vue-json-viewer](https://github.com/chenfengjw163/vue-json-viewer)
@@ -104,7 +104,7 @@ export default {
           showCancelButton: true,
           showConfirmButton: false,
           customClass: customClass || 'el-message-w-60'
-        }).then().catch(() => {})
+        })
       }
     },
     // 新窗口打开链接
