@@ -5,6 +5,9 @@
                 <el-form-item class="small-item">
                     <el-input v-model="searchDataForm.createName" placeholder="用户" clearable/>
                 </el-form-item>
+              <el-form-item class="small-item">
+                <el-input v-model="searchDataForm.ip" placeholder="IP" clearable/>
+              </el-form-item>
                 <el-form-item class="small-item">
                     <el-select v-model="searchDataForm.result" placeholder="结果" clearable>
                         <el-option label="成功" :value="1"/>
@@ -32,21 +35,8 @@
             </el-form>
             <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle" style="width: 100%;">
                 <el-table-column prop="createName" label="用户" header-align="center" align="center" width="150"/>
-                <el-table-column prop="type" label="类型" header-align="center" align="center" width="140">
-                    <template slot-scope="scope">
-                        <span v-if="scope.row.type === -1" style="color: red">退出</span>
-                        <span v-else-if="scope.row.type === 10">后台帐号密码登录</span>
-                        <span v-else-if="scope.row.type === 20">后台手机密码登录</span>
-                        <span v-else-if="scope.row.type === 30">后台手机短信登录</span>
-                        <span v-else-if="scope.row.type === 40">后台微信登录</span>
-                        <span v-else-if="scope.row.type === 50">APP帐号密码登录</span>
-                        <span v-else-if="scope.row.type === 60">APP手机密码登录</span>
-                        <span v-else-if="scope.row.type === 70">APP手机短信登录</span>
-                        <span v-else-if="scope.row.type === 80">APP微信登录</span>
-                        <span v-else>{{scope.row.type}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="result" label="结果" sortable="custom" header-align="center" align="center" width="150">
+                <el-table-column prop="type" label="类型" header-align="center" align="center" width="140"/>
+                <el-table-column prop="result" label="结果" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
                         <el-tag v-if="scope.row.result === 1" size="small" type="success">成功</el-tag>
                         <el-tag v-else-if="scope.row.result === 0" size="small" type="danger">失败</el-tag>
@@ -55,7 +45,7 @@
                 <el-table-column prop="msg" label="结果消息" header-align="center" align="center"/>
                 <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>
                 <el-table-column prop="userAgent" label="UA" header-align="center" align="center" show-overflow-tooltip/>
-                <el-table-column prop="createTime" label="创建时间" sortable="custom" header-align="center" align="center" width="180"/>
+                <el-table-column prop="createTime" label="登录时间" sortable="custom" header-align="center" align="center" width="180"/>
             </el-table>
             <el-pagination
                     :current-page="page"
@@ -85,6 +75,7 @@ export default {
       searchDataForm: {
         createName: '',
         status: '',
+        ip: '',
         startCreateTime: '',
         endCreateTime: ''
       }
