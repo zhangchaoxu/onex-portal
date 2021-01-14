@@ -22,9 +22,7 @@
         <el-table-column prop="polyline" label="边界" header-align="center" align="center" show-tooltip-when-overflow/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('sys:region:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <!-- 只有末级可以删除 -->
-            <el-button v-if="$hasPermission('sys:region:delete')  && scope.row.hasChildren === false" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-button v-if="$hasPermission('sys:region:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -50,8 +48,7 @@ export default {
       searchDataForm: {
         id: '',
         pid: 0,
-        name: '',
-        withChildNum: true // 带上子节点数量
+        name: ''
       }
     }
   },
@@ -65,24 +62,12 @@ export default {
       }
       return true
     },
-    // list信息获取成功
-    onGetListSuccess (res) {
-      this.dataList = this.mixinListModuleOptions.getDataListIsPage ? res.data.list : res.data
-      this.total = this.mixinListModuleOptions.getDataListIsPage ? res.data.total : 0
-      for (let itm of this.dataList) {
-        itm.hasChildren = itm.childNum > 0
-      }
-    },
     // 树节点展开懒加载，通过id获取该id下一级的所有节点
     load (tree, treeNode, resolve) {
-      this.$http.get('/sys/region/list?withChildNum=true&pid=' + tree.id)
+      this.$http.get('/sys/region/list?pid=' + tree.id)
         .then(({ data: res }) => {
           if (res.code !== 0) {
             return this.$message.error(res.toast)
-          }
-          // 解析children
-          for (let itm of res.data) {
-            itm.hasChildren = itm.childNum > 0
           }
           resolve(res.data)
         })

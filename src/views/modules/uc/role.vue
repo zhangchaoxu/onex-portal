@@ -3,7 +3,7 @@
     <div class="mod-uc__role">
       <el-form :inline="true" :model="searchDataForm" @keyup.enter.native="getDataList()">
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.code" :placeholder="$t('base.code')" clearable/>
+          <el-input v-model="searchDataForm.id" :placeholder="$t('base.code')" clearable/>
         </el-form-item>
         <el-form-item class="small-item">
           <el-input v-model="searchDataForm.name" :placeholder="$t('base.name')" clearable/>
@@ -22,7 +22,7 @@
         @selection-change="dataListSelectionChangeHandle"
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
-        <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center"/>
+        <el-table-column prop="id" :label="$t('base.code')" header-align="center" align="center"/>
         <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center"/>
         <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"/>
         <el-table-column prop="createTime" :label="$t('base.createTime')" sortable="custom" header-align="center" align="center" width="180"/>
@@ -50,6 +50,7 @@
 <script>
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './role-add-or-update'
+
 export default {
   mixins: [mixinListModule],
   components: { AddOrUpdate },
@@ -63,7 +64,7 @@ export default {
         deleteIsBatch: true
       },
       searchDataForm: {
-        code: '',
+        id: '',
         name: ''
       }
     }
