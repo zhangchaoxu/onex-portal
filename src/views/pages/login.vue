@@ -9,19 +9,19 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button :label="10" v-if="loginCfg.loginByUsernameAndPassword">帐号登录</el-radio-button>
-                <el-radio-button :label="30" v-if="loginCfg.loginByMobileAndSmsCode">手机号登录</el-radio-button>
+                <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginConfigAdmin.usernamePasswordLogin">帐号登录</el-radio-button>
+                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginConfigAdmin.mobileSmsCodeLogin">验证码登录</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
-            <template v-if="dataForm.type === 10">
+            <template v-if="dataForm.type === 'ADMIN_USERNAME_PASSWORD'">
               <el-form-item prop="username">
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('username')"/>
               </el-form-item>
               <el-form-item prop="password">
                 <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('password')" show-password/>
               </el-form-item>
-              <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
+              <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
@@ -35,7 +35,7 @@
               </el-form-item>
             </template>
             <!-- 手机号登录 -->
-            <template v-else-if="dataForm.type === 30">
+            <template v-else-if="dataForm.type === 'ADMIN_MOBILE_SMSCODE'">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                   <template slot="prepend">+86</template>
@@ -48,7 +48,7 @@
                   </el-button>
                 </el-input>
               </el-form-item>
-              <el-form-item prop="captcha" v-if="loginChannelCfg.captcha">
+              <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
@@ -62,21 +62,21 @@
               </el-form-item>
             </template>
           </el-form>
-          <el-divider v-if="loginCfg.loginByWechatScan || loginCfg.loginByDingtalkScan">第三方登录</el-divider>
+          <el-divider v-if="loginConfigAdmin.wechatScanLogin || loginConfigAdmin.dingtalkScanLogin">第三方登录</el-divider>
           <div>
-            <el-link :underline="false" @click="onOauthLogin('WECHAT_SCAN')" title="微信" v-if="loginCfg.loginByWechatScan" class="no-underline">
+            <el-link :underline="false" @click="onOauthLogin('WECHAT_SCAN')" title="微信" v-if="loginConfigAdmin.wechatScanLogin" class="no-underline">
               <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
             </el-link>
-            <el-link :underline="false" @click="onOauthLogin('DINGTALK_SCAN')" title="钉钉" v-if="loginCfg.loginByDingtalkScan" class="no-underline">
+            <el-link :underline="false" @click="onOauthLogin('DINGTALK_SCAN')" title="钉钉" v-if="loginConfigAdmin.dingtalkScanLogin" class="no-underline">
               <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
             </el-link>
           </div>
-          <el-divider v-if="loginCfg.register || loginCfg.forgetPassword"></el-divider>
+          <el-divider v-if="loginConfigAdmin.register || loginConfigAdmin.forgetPassword"></el-divider>
           <div>
-            <router-link :to="{ name: 'register' }" v-if="loginCfg.register">
+            <router-link :to="{ name: 'register' }" v-if="loginConfigAdmin.register">
               <el-link :underline="false" type="info" class="no-underline fl">{{ $t('register') }}</el-link>
             </router-link>
-            <router-link :to="{ name: 'forgetPassword' }" v-if="loginCfg.forgetPassword">
+            <router-link :to="{ name: 'forgetPassword' }" v-if="loginConfigAdmin.forgetPassword">
               <el-link :underline="false" type="info" class="no-underline fr">{{ $t('forgetPassword') }}</el-link>
             </router-link>
           </div>
@@ -105,7 +105,7 @@ export default {
       // 系统配置
       sysCfg: {},
       // 全局登录配置
-      loginCfg: {
+      loginConfigAdmin: {
         forgetPassword: false,
         register: false,
         loginByUsernameAndPassword: false,
@@ -114,7 +114,7 @@ export default {
         loginByDingtalkScan: false
       },
       // 当前登录渠道配置
-      loginChannelCfg: {
+      loginTypeConfig: {
         captcha: false
       },
       // 短信发送倒计时
@@ -129,8 +129,7 @@ export default {
         smsCode: '',
         uuid: '',
         captcha: '',
-        // 登录类型
-        type: 0
+        type: ''
       },
       // 第三方登录窗口
       thirdLoginWindow: null
@@ -146,7 +145,7 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         captcha: [
-          { required: this.loginChannelCfg.captcha, message: this.$t('validate.required'), trigger: 'blur' }
+          { required: this.loginTypeConfig.captcha, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         mobile: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
@@ -171,13 +170,13 @@ export default {
     // 切换登录类型
     typeChangeHandle () {
       // 赋值当前渠道配置
-      if (this.dataForm.type === 10) {
-        this.loginChannelCfg = this.loginCfg.loginByUsernameAndPasswordCfg
-      } else if (this.dataForm.type === 30) {
-        this.loginChannelCfg = this.loginCfg.loginByMobileAndSmsCodeCfg
+      if (this.dataForm.type === 'ADMIN_USERNAME_PWSSWORD') {
+        this.loginTypeConfig = this.loginConfigAdmin.usernamePasswordLoginConfig
+      } else if (this.dataForm.type === 'ADMIN_MOBILE_SMSCODE') {
+        this.loginTypeConfig = this.loginConfigAdmin.mobileSmscodeLoginConfig
       }
       // 获取验证码
-      if (this.loginChannelCfg.captcha) {
+      if (this.loginTypeConfig.captcha) {
         this.getCaptcha()
       }
       // 清空校验
@@ -185,8 +184,7 @@ export default {
     },
     // 获取系统配置
     getParamCfg () {
-      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_CFG,LOGIN_ADMIN_CFG`).then(({ data: res }) => {
-        this.formLoading = false
+      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_CFG,LOGIN_CONFIG_ADMIN`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
@@ -195,20 +193,10 @@ export default {
           Cookies.set('title', this.sysCfg.title)
           document.title = this.sysCfg.title
           // 赋值全局登录配置
-          this.loginCfg = res.data.LOGIN_ADMIN_CFG
-          // 找到第一个enable的登录渠道
-          if (this.loginCfg.loginByUsernameAndPassword) {
-            this.dataForm.type = 10
-          } else if (this.loginCfg.loginByMobileAndSmsCode) {
-            this.dataForm.type = 30
-          } else if (this.loginCfg.loginByWechatScan) {
-            this.dataForm.type = 40
-          } else if (this.loginCfg.loginByDingtalkScan) {
-            this.dataForm.type = 50
-          }
+          this.loginConfigAdmin = res.data.LOGIN_CONFIG_ADMIN
           this.typeChangeHandle()
         }
-      }).catch(resp => {
+      }).finally(() => {
         this.formLoading = false
       })
     },
@@ -248,8 +236,7 @@ export default {
               }
             }, 1000)
           }
-          this.formLoading = false
-        }).catch(resp => {
+        }).finally(() => {
           this.formLoading = false
         })
       })
@@ -257,7 +244,7 @@ export default {
     // 表单提交失败
     onFormSubmitError (res) {
       // 刷新验证码
-      if (this.loginChannelCfg.captcha) {
+      if (this.loginTypeConfig.captcha) {
         this.getCaptcha()
       }
       this.$message.error(res.toast)
@@ -275,7 +262,6 @@ export default {
     onOauthLogin (type) {
       // 获取配置
       this.$http.get(`/sys/param/getContentByCode?code=` + type).then(({ data: res }) => {
-        this.formLoading = false
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
@@ -289,7 +275,7 @@ export default {
         } else {
           return this.$message.error('未定义的type=' + type)
         }
-      }).catch(() => {
+      }).finally(() => {
         this.formLoading = false
       })
     },
@@ -322,8 +308,7 @@ export default {
         }
         this.$alert(res.data)
         console.log(res.data)
-        this.formLoading = false
-      }).catch(() => {
+      }).finally(() => {
         this.formLoading = false
       })
     }

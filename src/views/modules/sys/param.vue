@@ -133,7 +133,7 @@ export default {
           this.$refs.loginAdminCfg.dataFormMode = 'update'
           this.$refs.loginAdminCfg.init()
         })
-      } else if (code.startsWith('LOGIN_CHANNEL_CFG')) {
+      } else if (code.startsWith('LOGIN_TYPE')) {
         this.loginChannelCfgVisible = true
         this.$nextTick(() => {
           this.$refs.loginChannelCfg.dataForm.id = id
