@@ -51,7 +51,7 @@ export default {
       this.getUserInfo(),
       this.getParamCfg()
       // this.getPermissions()
-    ]).then(() => {
+    ]).finally(() => {
       this.loading = false
     })
   },
@@ -59,9 +59,7 @@ export default {
     // 窗口改变大小
     windowResizeHandle () {
       this.$store.state.sidebarFold = document.documentElement['clientWidth'] <= 992 || false
-      window.addEventListener('resize', debounce(() => {
-        this.$store.state.sidebarFold = document.documentElement['clientWidth'] <= 992 || false
-      }, 150))
+      window.addEventListener('resize', debounce(() => { this.$store.state.sidebarFold = document.documentElement['clientWidth'] <= 992 || false }, 150))
     },
     // 路由, 监听
     routeHandle (route) {
@@ -97,14 +95,10 @@ export default {
           return this.$message.error(res.toast)
         }
         this.$store.state.user = res.data
-      }).catch(() => {
       })
     },
     // 初始化websocket
     initWebsocket () {
-      if (!this.$hasRole('emes-admin')) {
-        return
-      }
       if ('WebSocket' in window) {
         this.websocket = new WebSocket(window.SITE_CONFIG['wsURL'] + '/1')
         // 连接错误
@@ -119,12 +113,6 @@ export default {
         this.websocket.onmessage = function (event) {
           // 根据服务器推送的消息做自己的业务处理
           console.log('服务端返回：' + event.data)
-          let message = JSON.parse(event.data)
-          this.$notify({
-            title: message.title,
-            message: message.message,
-            type: message.type === 'leakAlarm' ? 'warning' : 'info'
-          })
         }
         // 连接关闭的回调
         this.websocket.onclose = function () {
