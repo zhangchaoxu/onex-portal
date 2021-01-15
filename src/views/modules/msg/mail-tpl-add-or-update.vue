@@ -1,19 +1,29 @@
 <template>
     <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-            <el-form-item prop="type" :label="$t('base.type')">
-                <el-radio-group v-model="dataForm.type" :disabled="!!dataForm.id" size="small">
-                    <el-radio-button label="sms">短信</el-radio-button>
-                    <el-radio-button label="email">电子邮件</el-radio-button>
-                    <el-radio-button label="wx_mp_template">微信公众号模板消息</el-radio-button>
-                    <el-radio-button label="wx_ma_subscribe">微信小程序订阅消息</el-radio-button>
-                    <el-radio-button label="app_push">APP推送</el-radio-button>
-                </el-radio-group>
-            </el-form-item>
             <el-row>
+              <el-col :span="12">
+                <el-form-item prop="channel" :label="$t('base.channel')">
+                  <el-select v-model="dataForm.channel" placeholder="请选择渠道">
+                    <el-option label="短信" value="sms"/>
+                    <el-option label="电子邮件" value="email"/>
+                    <el-option label="微信公众号模板消息" value="wx_mp_template"/>
+                    <el-option label="微信小程序订阅消息" value="wx_ma_subscribe"/>
+                    <el-option label="APP推送" value="app_push"/>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="type" :label="$t('base.type')">
+                  <el-select v-model="dataForm.type" placeholder="类型">
+                    <el-option label="验证码" value="1"/>
+                    <el-option label="通用消息" value="100"/>
+                  </el-select>
+                </el-form-item>
+              </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="$t('base.code')" prop="code">
-                        <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
+                    <el-form-item :label="$t('base.code')" prop="id">
+                        <el-input v-model="dataForm.id" :placeholder="$t('base.code')"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -25,12 +35,12 @@
             <el-form-item label="平台配置" prop="param">
                 <el-input v-model="dataForm.param" placeholder="平台配置" type="textarea"/>
             </el-form-item>
-            <div v-if="dataForm.type === 'sms'">
+            <div v-if="dataForm.channel === 'sms'">
                 <el-form-item label="内容" prop="content">
                     <el-input v-model="dataForm.content" placeholder="内容仅作记录,实际内容请在短信平台修改" type="textarea"/>
                 </el-form-item>
             </div>
-            <div v-else-if="dataForm.type === 'email'">
+            <div v-else-if="dataForm.channel === 'email'">
                 <el-form-item prop="title" label="邮件标题">
                     <el-input v-model="dataForm.title" placeholder="请输入邮件标题"/>
                 </el-form-item>
@@ -38,7 +48,7 @@
                     <quill-editor ref="editorContent"/>
                 </el-form-item>
             </div>
-            <div v-if="dataForm.type === 'wx_template'">
+            <div v-else-if="dataForm.channel === 'wx_mp_template'">
                 <el-form-item prop="title" label="标题">
                     <el-input v-model="dataForm.title" placeholder="请输入标题"/>
                 </el-form-item>
@@ -73,6 +83,7 @@ export default {
         id: '',
         name: '',
         type: '',
+        channel: 'sms',
         code: '',
         title: '',
         content: '',
@@ -88,6 +99,9 @@ export default {
   computed: {
     dataRule () {
       return {
+        channel: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
         type: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],

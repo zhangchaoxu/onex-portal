@@ -3,15 +3,18 @@
     <el-row :gutter="10">
       <el-col :span="6">
         <div class="mod-msg__mail-tpl">
-          <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
-            <el-form-item v-if="$hasPermission('msg:mailTpl:save')">
-              <el-button type="primary" @click="tplAddOrUpdateHandle()">{{ $t('add') }}模板</el-button>
-            </el-form-item>
-          </el-form>
           <el-table v-loading="tplDataListLoading" :data="tplDataList" highlight-current-row @current-change="handleCurrentTplChange" style="width: 100%;">
-            <el-table-column prop="id" :label="$t('base.code')" header-align="center" align="center" min-width="120"/>
-            <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center" width="150" show-tooltip-when-overflow/>
+            <el-table-column prop="id" label="模板编码" header-align="center" align="center" min-width="120">
+              <template slot-scope="scope">
+                <el-tooltip :content="scope.row.name" placement="left">
+                  <span>{{ scope.row.id }}</span>
+                </el-tooltip>
+              </template>
+            </el-table-column>
             <el-table-column :label="$t('handle')" fixed="right"  header-align="center" align="center" width="80">
+              <template slot="header" slot-scope="scope">
+                <el-button type="primary" @click="tplAddOrUpdateHandle()" size="small">{{ $t('add') }}</el-button>
+              </template>
               <template slot-scope="scope">
                 <el-dropdown trigger="hover" @command="handleTplCommand">
                   <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"/></span>
