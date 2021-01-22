@@ -14,7 +14,7 @@
     "et:list": "gulp themes"
   },
   "dependencies": {
-    "ali-oss": "^6.13.1",
+    "ali-oss": "^6.13.2",
     "axios": "^0.21.1",
     "babel-plugin-component": "^1.1.1",
     "crypto-js": "^4.0.0",
