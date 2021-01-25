@@ -33,7 +33,6 @@ export default {
         dataFormSaveURL: `/msg/mailLog/send`
       },
       dataForm: {
-        tplType: '',
         tplCode: '',
         mailTo: '',
         contentParam: '',

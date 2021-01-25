@@ -99,8 +99,11 @@ export default {
     },
     // 初始化websocket
     initWebsocket () {
+      if (!process.env.VUE_APP_WS_URL) {
+        return
+      }
       if ('WebSocket' in window) {
-        this.websocket = new WebSocket(window.SITE_CONFIG['wsURL'] + '/1')
+        this.websocket = new WebSocket(process.env.VUE_APP_WS_URL + '/1')
         // 连接错误
         this.websocket.onerror = function () {
           console.log('WebSocket连接发生错误   状态码：' + this.websocket.readyState)

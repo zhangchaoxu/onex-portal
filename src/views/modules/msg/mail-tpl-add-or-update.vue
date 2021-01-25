@@ -4,7 +4,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item prop="channel" :label="$t('base.channel')">
-                  <el-select v-model="dataForm.channel" placeholder="请选择渠道">
+                  <el-select v-model="dataForm.channel" placeholder="请选择渠道" class="w-percent-100">
                     <el-option label="短信" value="sms"/>
                     <el-option label="电子邮件" value="email"/>
                     <el-option label="微信公众号模板消息" value="wx_mp_template"/>
@@ -15,15 +15,15 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item prop="type" :label="$t('base.type')">
-                  <el-select v-model="dataForm.type" placeholder="类型">
-                    <el-option label="验证码" value="1"/>
-                    <el-option label="通用消息" value="100"/>
+                  <el-select v-model="dataForm.type" placeholder="请选择类型" class="w-percent-100">
+                    <el-option label="验证码" :value="1"/>
+                    <el-option label="状态通知" :value="2"/>
                   </el-select>
                 </el-form-item>
               </el-col>
                 <el-col :span="12">
-                    <el-form-item :label="$t('base.code')" prop="id">
-                        <el-input v-model="dataForm.id" :placeholder="$t('base.code')"/>
+                    <el-form-item :label="$t('base.code')" prop="code">
+                        <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -32,7 +32,19 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item label="平台配置" prop="param">
+            <el-form-item label="配置" prop="param">
+                <template slot="label">
+                  配置
+                  <el-popover
+                      placement="top-end"
+                      trigger="click">
+                    <div>
+                      短信配置参考:<br/>{"appKey":"LTA123456","appSecret":"abcd","appId":"","sign":"大鱼测试","tplId":"SMS_123456", "regionId":"cn-hangzhou"}<br/>
+                      电邮配置参考:<br/>{"appKey":"LTA123456","appSecret":"abcd","appId":"","sign":"大鱼测试","tplId":"SMS_123456", "regionId":"cn-hangzhou"}
+                    </div>
+                    <i class="el-icon-info" slot="reference"/>
+                  </el-popover>
+                </template>
                 <el-input v-model="dataForm.param" placeholder="平台配置" type="textarea"/>
             </el-form-item>
             <div v-if="dataForm.channel === 'sms'">
@@ -45,7 +57,7 @@
                     <el-input v-model="dataForm.title" placeholder="请输入邮件标题"/>
                 </el-form-item>
                 <el-form-item prop="content" label="邮件内容">
-                    <quill-editor ref="editorContent"/>
+                    <quill-editor v-model="dataForm.content" ref="editorContent"/>
                 </el-form-item>
             </div>
             <div v-else-if="dataForm.channel === 'wx_mp_template'">

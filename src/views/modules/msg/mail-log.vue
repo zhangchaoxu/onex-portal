@@ -4,10 +4,10 @@
       <el-col :span="6">
         <div class="mod-msg__mail-tpl">
           <el-table v-loading="tplDataListLoading" :data="tplDataList" highlight-current-row @current-change="handleCurrentTplChange" style="width: 100%;">
-            <el-table-column prop="id" label="模板编码" header-align="center" align="center" min-width="120">
+            <el-table-column prop="id" label="模板" header-align="center" align="center" min-width="120">
               <template slot-scope="scope">
-                <el-tooltip :content="scope.row.name" placement="left">
-                  <span>{{ scope.row.id }}</span>
+                <el-tooltip :content="scope.row.code" placement="left">
+                  <span>{{ scope.row.name }}</span>
                 </el-tooltip>
               </template>
             </el-table-column>
@@ -19,7 +19,8 @@
                 <el-dropdown trigger="hover" @command="handleTplCommand">
                   <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"/></span>
                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item icon="el-icon-view" :command="{ command: 'info', id: scope.row.id }" v-if="$hasPermission('msg:mailTpl:info')">详情</el-dropdown-item>
+                     <el-dropdown-item icon="el-icon-s-promotion" :command="{ command: 'send', id: scope.row.id, code: scope.row.code }"  v-if="$hasPermission('msg:mailLog:save')">发送</el-dropdown-item>
+                     <el-dropdown-item icon="el-icon-view" :command="{ command: 'info', id: scope.row.id }" v-if="$hasPermission('msg:mailTpl:info')">详情</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-edit" :command="{ command: 'update', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:update')">修改</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-delete" :command="{ command: 'delete', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:delete')">删除</el-dropdown-item>
                     </el-dropdown-menu>
@@ -37,10 +38,10 @@
         <div class="mod-msg__mail-log">
           <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
             <el-form-item class="small-item">
-              <el-input v-model="searchDataForm.tplId" placeholder="模板编码" clearable/>
+              <el-input v-model="searchDataForm.tplCode" placeholder="模板编码"/>
             </el-form-item>
             <el-form-item class="small-item">
-              <el-input v-model="searchDataForm.mailTo" placeholder="收件人" clearable/>
+              <el-input v-model="searchDataForm.mailTo" placeholder="收件人"/>
             </el-form-item>
             <el-form-item class="small-item">
               <el-select v-model="searchDataForm.status" :placeholder="$t('base.status')" clearable>
@@ -123,10 +124,10 @@ export default {
         getDataListIsPage: true,
         deleteURL: '/msg/mailLog/delete',
         deleteBatchURL: '/msg/mailLog/deleteBatch',
-        deleteIsBatch: true
+        deleteIsBatch: false
       },
       searchDataForm: {
-        tplId: '',
+        tplCode: null,
         mailTo: '',
         status: null
       }
@@ -161,7 +162,7 @@ export default {
     handleCurrentTplChange (val) {
       this.currentTpl = val
       // 搜索右边数据
-      this.searchDataForm.tplId = val.id
+      this.searchDataForm.tplCode = val.code
       this.queryDataList()
     },
     /**
@@ -187,13 +188,23 @@ export default {
     },
     // 处理模板操作
     handleTplCommand (command) {
-      // {command: "info", id: "1273468852126146561"}
       if (command.command === 'update') {
         this.tplAddOrUpdateHandle(command.id)
       } else if (command.command === 'delete') {
         this.tplDeleteHandle(command.id)
+      } else if (command.command === 'send') {
+        this.tplSendHandle(command.code)
       }
     },
+    // 发送邮件
+    tplSendHandle (code) {
+      this.sendVisible = true
+      this.$nextTick(() => {
+        this.$refs.send.dataForm.tplCode = code
+        this.$refs.send.init()
+      })
+    },
+    // 模板删除
     tplDeleteHandle (id) {
       // 对话框提示是否删除
       this.$confirm(`确定删除该模板`, this.$t('prompt.title'), {
