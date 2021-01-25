@@ -40,7 +40,7 @@
                       trigger="click">
                     <div>
                       短信配置参考:<br/>{"appKey":"LTA123456","appSecret":"abcd","appId":"","sign":"大鱼测试","tplId":"SMS_123456", "regionId":"cn-hangzhou"}<br/>
-                      电邮配置参考:<br/>{"appKey":"LTA123456","appSecret":"abcd","appId":"","sign":"大鱼测试","tplId":"SMS_123456", "regionId":"cn-hangzhou"}
+                      电邮配置参考:<br/>{"host":"smtpdm.aliyun.com","port":80,"username":"test@foo.com","password":"123456"}
                     </div>
                     <i class="el-icon-info" slot="reference"/>
                   </el-popover>

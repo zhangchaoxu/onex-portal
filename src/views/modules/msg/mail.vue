@@ -1,6 +1,7 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <el-row :gutter="10">
+      <!-- 左侧为消息模板区 -->
       <el-col :span="6">
         <div class="mod-msg__mail-tpl">
           <el-table v-loading="tplDataListLoading" :data="tplDataList" highlight-current-row @current-change="handleCurrentTplChange" style="width: 100%;">
@@ -19,7 +20,9 @@
                 <el-dropdown trigger="hover" @command="handleTplCommand">
                   <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"/></span>
                    <el-dropdown-menu slot="dropdown">
-                     <el-dropdown-item icon="el-icon-s-promotion" :command="{ command: 'send', id: scope.row.id, code: scope.row.code }"  v-if="$hasPermission('msg:mailLog:save')">发送</el-dropdown-item>
+                     <el-dropdown-item icon="el-icon-s-promotion" :command="{ command: 'send', id: scope.row.id, code: scope.row.code, channel: scope.row.channel }"
+                                       v-if="$hasPermission('msg:mailLog:save')">发送
+                     </el-dropdown-item>
                      <el-dropdown-item icon="el-icon-view" :command="{ command: 'info', id: scope.row.id }" v-if="$hasPermission('msg:mailTpl:info')">详情</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-edit" :command="{ command: 'update', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:update')">修改</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-delete" :command="{ command: 'delete', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:delete')">删除</el-dropdown-item>
@@ -31,9 +34,10 @@
           <!-- 弹窗, 新增 / 修改 -->
           <tpl-add-or-update v-if="tplAddOrUpdateVisible" ref="tplAddOrUpdate" @refreshDataList="getTplDataList"/>
           <!-- 弹窗, 发送邮件 -->
-          <send v-if="sendVisible" ref="send"/>
+          <send v-if="sendVisible" ref="send" @refreshDataList="getDataList"/>
         </div>
       </el-col>
+      <!-- 右侧为消息记录区 -->
       <el-col :span="18">
         <div class="mod-msg__mail-log">
           <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
@@ -193,14 +197,15 @@ export default {
       } else if (command.command === 'delete') {
         this.tplDeleteHandle(command.id)
       } else if (command.command === 'send') {
-        this.tplSendHandle(command.code)
+        this.tplSendHandle(command.code, command.channel)
       }
     },
     // 发送邮件
-    tplSendHandle (code) {
+    tplSendHandle (code, channel) {
       this.sendVisible = true
       this.$nextTick(() => {
         this.$refs.send.dataForm.tplCode = code
+        this.$refs.send.dataForm.tplChannel = channel
         this.$refs.send.init()
       })
     },

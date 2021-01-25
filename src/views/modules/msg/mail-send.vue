@@ -5,9 +5,12 @@
         <el-input v-model="dataForm.tplCode" disabled/>
       </el-form-item>
       <el-form-item prop="mailTo" label="收件人">
-        <el-input v-model="dataForm.mailTo" placeholder="收件人"/>
+        <el-input v-model="dataForm.mailTo" placeholder="请输入收件人,多个请用英文逗号,隔开"/>
       </el-form-item>
-      <el-form-item prop="titleParam" label="标题参数" v-if="dataForm.type === 'email'">
+      <el-form-item prop="mailCc" label="抄送" v-if="dataForm.tplChannel === 'email'">
+        <el-input v-model="dataForm.mailCc" placeholder="请输入抄送收件人,多个请用英文逗号,隔开"/>
+      </el-form-item>
+      <el-form-item prop="titleParam" label="标题参数" v-if="dataForm.tplChannel === 'email'">
         <el-input v-model="dataForm.titleParam" placeholder="标题参数"/>
       </el-form-item>
       <el-form-item prop="contentParam" label="内容参数">
@@ -33,10 +36,12 @@ export default {
         dataFormSaveURL: `/msg/mailLog/send`
       },
       dataForm: {
-        tplCode: '',
-        mailTo: '',
-        contentParam: '',
-        titleParam: ''
+        tplCode: null,
+        tplChannel: null,
+        mailTo: null,
+        mailCc: null,
+        titleParam: '',
+        contentParam: ''
       }
     }
   },
