@@ -40,7 +40,7 @@
                   <img slot="error" src="~@/assets/img/avatar.png">
                 </div>
               </el-image>
-              <span>{{ $store.state.user.username }}</span>
+              <span style="color:white;">{{ $store.state.user.username }}</span>
               <i class="el-icon-arrow-down"/>
             </span>
             <el-dropdown-menu slot="dropdown">
