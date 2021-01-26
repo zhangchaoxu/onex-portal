@@ -168,9 +168,11 @@ export default {
      */
     handleCurrentTplChange (val) {
       this.currentTpl = val
-      // 搜索右边数据
-      this.searchDataForm.tplCode = val.code
-      this.queryDataList()
+      if (val) {
+        // 搜索右边数据
+        this.searchDataForm.tplCode = val.code
+        this.queryDataList()
+      }
     },
     /**
      * 新增修改模板
