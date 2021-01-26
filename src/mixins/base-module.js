@@ -63,13 +63,13 @@ export default {
     // 文本查看器
     textViewHandle (content, title, customClass) {
       this.$msgbox({
-        title: title || '查看',
+        title: title || '查看2',
         message: content,
         cancelButtonText: '关闭',
         showCancelButton: true,
         showConfirmButton: false,
         customClass: customClass || 'el-message-w-60'
-      })
+      }).catch(() => {})
     },
     // html查看器
     htmlViewHandle (content, title, customClass) {
@@ -81,7 +81,7 @@ export default {
         showCancelButton: true,
         showConfirmButton: false,
         customClass: customClass || 'el-message-w-60'
-      })
+      }).catch(() => {})
     },
     // json查看器
     // [vue-json-viewer](https://github.com/chenfengjw163/vue-json-viewer)
@@ -104,7 +104,7 @@ export default {
           showCancelButton: true,
           showConfirmButton: false,
           customClass: customClass || 'el-message-w-60'
-        })
+        }).catch(() => {})
       }
     },
     // 新窗口打开链接
