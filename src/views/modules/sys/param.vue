@@ -15,15 +15,9 @@
             <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle"
                       @cell-click="cellClickHandle" style="width: 100%;">
                 <el-table-column prop="code" :label="$t('base.code')" header-align="center" align="center" min-width="200"/>
-                <el-table-column prop="type" :label="$t('base.type')" header-align="center" align="center" width="100">
-                  <template slot-scope="scope">
-                    <el-tag v-if="scope.row.type === 0" type="warning">内部</el-tag>
-                    <el-tag v-else-if="scope.row.type === 1">开放</el-tag>
-                    <el-tag v-else type="info">{{ scope.row.type }}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" width="150" show-tooltip-when-overflow/>
-                <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap json link" min-width="100"/>
+                <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" width="200" show-tooltip-when-overflow/>
+                <el-table-column prop="content" label="开放内容" header-align="center" align="center" class-name="nowrap json link" min-width="100"/>
+                <el-table-column prop="contentPri" label="私有内容" header-align="center" align="center" class-name="nowrap json link" min-width="100"/>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
                         <el-button v-if="$hasPermission('sys:param:update')" type="text" size="small" @click="editHandle(scope.row.id, scope.row.code)">编辑内容</el-button>

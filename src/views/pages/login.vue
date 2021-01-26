@@ -9,8 +9,8 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginConfigAdmin.usernamePasswordLogin">帐号登录</el-radio-button>
-                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginConfigAdmin.mobileSmscodeLogin">验证码登录</el-radio-button>
+                <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginAdminConfig.usernamePasswordLogin">帐号登录</el-radio-button>
+                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginAdminConfig.mobileSmscodeLogin">验证码登录</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
@@ -62,10 +62,10 @@
               </el-form-item>
             </template>
           </el-form>
-          <el-divider v-if="loginConfigAdmin.wechatScanLogin || loginConfigAdmin.dingtalkScanLogin">第三方登录</el-divider>
+          <el-divider v-if="loginAdminConfig.wechatScanLogin || loginAdminConfig.dingtalkScanLogin">第三方登录</el-divider>
           <div>
             <el-popover
-                v-if="loginConfigAdmin.wechatScanLogin"
+                v-if="loginAdminConfig.wechatScanLogin"
                 placement="top"
                 title="微信扫码登录"
                 @show="onScanShow('LOGIN_ADMIN_WECHAT_SCAN')"
@@ -79,7 +79,7 @@
               </el-link>
             </el-popover>
             <el-popover
-                v-if="loginConfigAdmin.dingtalkScanLogin"
+                v-if="loginAdminConfig.dingtalkScanLogin"
                 placement="top"
                 title="钉钉扫码登录"
                 @show="onScanShow('LOGIN_ADMIN_DINGTALK_SCAN')"
@@ -93,12 +93,12 @@
               </el-link>
             </el-popover>
           </div>
-          <el-divider v-if="loginConfigAdmin.register || loginConfigAdmin.forgetPassword"></el-divider>
-          <div>
-            <router-link :to="{ name: 'register' }" v-if="loginConfigAdmin.register">
+          <el-divider v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword"></el-divider>
+          <div v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword">
+            <router-link :to="{ name: 'register' }" v-if="loginAdminConfig.register">
               <el-link :underline="false" type="info" class="no-underline fl">{{ $t('register') }}</el-link>
             </router-link>
-            <router-link :to="{ name: 'forgetPassword' }" v-if="loginConfigAdmin.forgetPassword">
+            <router-link :to="{ name: 'forgetPassword' }" v-if="loginAdminConfig.forgetPassword">
               <el-link :underline="false" type="info" class="no-underline fr">{{ $t('forgetPassword') }}</el-link>
             </router-link>
           </div>
@@ -128,13 +128,13 @@ export default {
       // 系统配置
       sysConfig: {},
       // 全局登录配置
-      loginConfigAdmin: {
+      loginAdminConfig: {
         forgetPassword: false,
         register: false,
-        loginByUsernameAndPassword: false,
-        loginByMobileAndSmsCode: false,
-        loginByWechatScan: false,
-        loginByDingtalkScan: false
+        usernamePasswordLogin: false,
+        mobileSmscodeLogin: false,
+        wechatScanLogin: false,
+        dingtalkScanLogin: false
       },
       // 当前登录渠道配置
       loginTypeConfig: {
@@ -192,9 +192,9 @@ export default {
     typeChangeHandle () {
       // 赋值当前渠道配置
       if (this.dataForm.type === 'ADMIN_USERNAME_PASSWORD') {
-        this.loginTypeConfig = this.loginConfigAdmin.usernamePasswordLoginConfig
+        this.loginTypeConfig = this.loginAdminConfig.usernamePasswordLoginConfig
       } else if (this.dataForm.type === 'ADMIN_MOBILE_SMSCODE') {
-        this.loginTypeConfig = this.loginConfigAdmin.mobileSmscodeLoginConfig
+        this.loginTypeConfig = this.loginAdminConfig.mobileSmscodeLoginConfig
       }
       // 获取验证码
       if (this.loginTypeConfig.captcha) {
@@ -225,16 +225,16 @@ export default {
           return this.$message.error(res.toast)
         } else {
           // 赋值全局登录配置
-          this.loginConfigAdmin = res.data
+          this.loginAdminConfig = res.data
           // 找到第一个enable的登录渠道
-          if (this.loginConfigAdmin.usernamePasswordLogin) {
+          if (this.loginAdminConfig.usernamePasswordLogin) {
             this.dataForm.type = 'ADMIN_USERNAME_PASSWORD'
-          } else if (this.loginConfigAdmin.mobileAndSmscodeLogin) {
+          } else if (this.loginAdminConfig.mobileAndSmscodeLogin) {
             this.dataForm.type = 'ADMIN_MOBILE_SMSCODE'
           }
           this.typeChangeHandle()
           // 若有第三方登录,添加回调监听
-          if (this.loginConfigAdmin.loginByDingtalkScan || this.loginConfigAdmin.loginByWechatScan) {
+          if (this.loginAdminConfig.dingtalkScanLogin || this.loginAdminConfig.wechatScanLogin) {
             this.listenOauthLoginCallback()
           }
         }
@@ -299,40 +299,41 @@ export default {
       // 跳转到home
       this.$router.replace({ name: 'home' })
     },
-    onScanHide (type) {
-      console.log(type)
+    onScanHide () {
       // 清空frame内容,避免不断刷新二维码
       this.dingtalkFrameSrc = ''
+      this.wechatFrameSrc = ''
     },
     onScanShow (type) {
-      this.$http.get(`/sys/param/getContentByCode?code=` + type).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        } else if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
-          let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + res.data.appid +
-              '&response_type=code' +
-              '&scope=snsapi_login' +
-              '&state=STATE' +
-              '&redirect_uri=' + encodeURIComponent(res.data.callback)
-          this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + url + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
-        } else {
-          return this.$message.error('未定义的type=' + type)
-        }
-      }).finally(() => {
-        this.formLoading = false
-      })
+      if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
+        let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
+            '&response_type=code' +
+            '&scope=snsapi_login' +
+            '&state=STATE' +
+            '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback)
+        this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + url + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
+      } else {
+        return this.$message.error('未定义的type=' + type)
+      }
     },
     /**
-     * 监听第三方登录
+     * 监听第三方登录跳转返回
      */
     listenOauthLoginCallback () {
       let _this = this
       window.addEventListener('message', (event) => {
-        if (event.origin !== location.origin || !event.data) {
-          return
+        if (event.origin === location.origin && event.data && event.data instanceof String) {
+          try {
+            let data = JSON.parse(event.data)
+            if (data.type && data.code) {
+              _this.oauthLoginHandle(data.type, data.code)
+            } else {
+              console.log('get unknown postMessage data', data)
+            }
+          } catch (err) {
+            console.log('get unknown postMessage', event)
+          }
         }
-        let data = JSON.parse(event.data)
-        _this.oauthLoginHandle(data.type, data.code)
       }, false)
     },
     /**
