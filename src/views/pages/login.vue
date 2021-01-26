@@ -64,12 +64,34 @@
           </el-form>
           <el-divider v-if="loginConfigAdmin.wechatScanLogin || loginConfigAdmin.dingtalkScanLogin">第三方登录</el-divider>
           <div>
-            <el-link :underline="false" @click="onOauthLogin('LOGIN_ADMIN_WECHAT_SCAN')" title="微信" v-if="loginConfigAdmin.wechatScanLogin" class="no-underline">
-              <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
-            </el-link>
-            <el-link :underline="false" @click="onOauthLogin('LOGIN_ADMIN_DINGTALK_SCAN')" title="钉钉" v-if="loginConfigAdmin.dingtalkScanLogin" class="no-underline">
-              <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
-            </el-link>
+            <el-popover
+                v-if="loginConfigAdmin.wechatScanLogin"
+                placement="top"
+                title="微信扫码登录"
+                @show="onScanShow('LOGIN_ADMIN_WECHAT_SCAN')"
+                @hide="onScanHide('LOGIN_ADMIN_WECHAT_SCAN')"
+                trigger="click">
+              <div id="wechat-scan-container">
+                <iframe :src="wechatFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true" />
+              </div>
+              <el-link :underline="false" title="微信" class="no-underline" slot="reference">
+                <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
+              </el-link>
+            </el-popover>
+            <el-popover
+                v-if="loginConfigAdmin.dingtalkScanLogin"
+                placement="top"
+                title="钉钉扫码登录"
+                @show="onScanShow('LOGIN_ADMIN_DINGTALK_SCAN')"
+                @hide="onScanHide('LOGIN_ADMIN_DINGTALK_SCAN')"
+                trigger="click">
+              <div id="dingtalk-scan-container">
+                <iframe :src="dingtalkFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true" />
+              </div>
+              <el-link :underline="false" title="钉钉" class="no-underline" slot="reference">
+                <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
+              </el-link>
+            </el-popover>
           </div>
           <el-divider v-if="loginConfigAdmin.register || loginConfigAdmin.forgetPassword"></el-divider>
           <div>
@@ -132,8 +154,10 @@ export default {
         captcha: '',
         type: ''
       },
-      // 第三方登录窗口
-      thirdLoginWindow: null
+      // 钉钉frame地址
+      dingtalkFrameSrc: '',
+      // 微信frame地址
+      wechatFrameSrc: ''
     }
   },
   computed: {
@@ -162,12 +186,6 @@ export default {
     this.getSysConfig()
     // 获得登录配置
     this.getLoginConfig()
-  },
-  beforeDestroy () {
-    // 把子窗口销毁
-    if (this.thirdLoginWindow) {
-      this.thirdLoginWindow.close()
-    }
   },
   methods: {
     // 切换登录类型
@@ -215,6 +233,10 @@ export default {
             this.dataForm.type = 'ADMIN_MOBILE_SMSCODE'
           }
           this.typeChangeHandle()
+          // 若有第三方登录,添加回调监听
+          if (this.loginConfigAdmin.loginByDingtalkScan || this.loginConfigAdmin.loginByWechatScan) {
+            this.listenOauthLoginCallback()
+          }
         }
       }).finally(() => {
         this.formLoading = false
@@ -277,19 +299,22 @@ export default {
       // 跳转到home
       this.$router.replace({ name: 'home' })
     },
-    // 第三方登录
-    onOauthLogin (type) {
-      // 获取配置
+    onScanHide (type) {
+      console.log(type)
+      // 清空frame内容,避免不断刷新二维码
+      this.dingtalkFrameSrc = ''
+    },
+    onScanShow (type) {
       this.$http.get(`/sys/param/getContentByCode?code=` + type).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
           let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + res.data.appid +
-                  '&response_type=code' +
-                  '&scope=snsapi_login' +
-                  '&state=STATE' +
-                  '&redirect_uri=' + encodeURIComponent(res.data.callback)
-          this.openOauthWindow(url, type)
+              '&response_type=code' +
+              '&scope=snsapi_login' +
+              '&state=STATE' +
+              '&redirect_uri=' + encodeURIComponent(res.data.callback)
+          this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + url + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
         } else {
           return this.$message.error('未定义的type=' + type)
         }
@@ -298,21 +323,16 @@ export default {
       })
     },
     /**
-     * 打开第三方登录win
+     * 监听第三方登录
      */
-    openOauthWindow (url, type) {
-      const width = 500 // 弹出窗宽度
-      const height = 500 // 弹出窗高度
-      const top = (window.screen.availHeight - 30 - height) / 2 // 弹出窗垂直位置
-      const left = (window.screen.availWidth - 10 - width) / 2 // 弹出窗水平位置
-      this.thirdLoginWindow = window.open(url, `login ${type}`, `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no`)
+    listenOauthLoginCallback () {
       let _this = this
       window.addEventListener('message', (event) => {
         if (event.origin !== location.origin || !event.data) {
           return
         }
         let data = JSON.parse(event.data)
-        _this.oauthLoginHandle(type, data.code)
+        _this.oauthLoginHandle(data.type, data.code)
       }, false)
     },
     /**
