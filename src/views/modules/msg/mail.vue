@@ -76,8 +76,16 @@
             <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap html link" :formatter="htmlFmt"/>
             <el-table-column prop="status" label="状态" header-align="center" align="center" width="80">
               <template slot-scope="scope">
-                <el-tag v-if="scope.row.status === 1" size="small">{{ $t('success') }}</el-tag>
-                <el-tag v-else size="small" type="danger">{{ $t('error') }}</el-tag>
+                <el-popover
+                    placement="top"
+                    width="260"
+                    :disabled="!scope.row.result"
+                    :content="scope.row.result">
+                  <div slot="reference">
+                    <el-tag v-if="scope.row.status === 1" size="small">{{ $t('success') }}</el-tag>
+                    <el-tag v-else size="small" type="danger">{{ $t('error') }}</el-tag>
+                  </div>
+                </el-popover>
               </template>
             </el-table-column>
             <el-table-column prop="createTime" :label="$t('base.createTime')" header-align="center" align="center" width="160"/>

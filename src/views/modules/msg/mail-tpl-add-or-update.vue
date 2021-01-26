@@ -21,6 +21,30 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item prop="platform" label="发送平台">
+                  <el-input v-model="dataForm.platform" placeholder="请输入发送平台,如aliyun"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="timeLimit" label="有效时长">
+                  <template slot="label">
+                    有效时长(秒)
+                    <el-popover
+                        placement="top-end"
+                        trigger="click">
+                      <div>
+                        无时间限制: -1<br/>
+                        10分钟: 600<br/>
+                        1小时: 3600<br/>
+                        1天: 86400<br/>
+                      </div>
+                      <i class="el-icon-info" slot="reference"/>
+                    </el-popover>
+                  </template>
+                  <el-input-number v-model="dataForm.timeLimit" placeholder="请选择有效时长" :min="-1" :precision="0" controls-position="right" class="w-percent-100"/>
+                </el-form-item>
+              </el-col>
                 <el-col :span="12">
                     <el-form-item :label="$t('base.code')" prop="code">
                         <el-input v-model="dataForm.code" :placeholder="$t('base.code')"/>
@@ -99,7 +123,9 @@ export default {
         code: '',
         title: '',
         content: '',
-        param: ''
+        param: '',
+        platform: '',
+        timeLimit: -1
       }
     }
   },
