@@ -66,7 +66,6 @@ import AddOrUpdate from './param-add-or-update'
 import OssCfg from './param-oss-cfg'
 import LoginAdminCfg from './param-login-admin-cfg'
 import LoginChannelCfg from './param-login-channel-cfg'
-import SysCfg from './param-sys-cfg'
 import WxCfg from './param-wx-cfg'
 
 import AppAboutConfig from './params-app-about-config'
@@ -74,7 +73,7 @@ import AppServiceConfig from './params-app-service-config'
 
 export default {
   mixins: [mixinBaseModule, mixinListModule],
-  components: { AddOrUpdate, SysCfg, WxCfg, LoginAdminCfg, LoginChannelCfg, OssCfg, AppAboutConfig, AppServiceConfig },
+  components: { AddOrUpdate, WxCfg, LoginAdminCfg, LoginChannelCfg, OssCfg, AppAboutConfig, AppServiceConfig },
   data () {
     return {
       mixinListModuleOptions: {

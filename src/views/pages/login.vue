@@ -187,15 +187,15 @@ export default {
     // 获取系统配置
     getSysConfig () {
       // 先从本地读取
-      const localConfig = localStorage.getItem('config')
+      const localConfig = localStorage.getItem('sysConfig')
       if (localConfig) {
         this.sysConfig = JSON.parse(localConfig)
         document.title = this.sysConfig.title
       }
       // 再从线上读取
-      axios.get('../../../config.json').then(({ data: res }) => {
+      axios.get(`/json/sysConfig.json`).then(({ data: res }) => {
         this.sysConfig = res
-        localStorage.setItem('config', JSON.stringify(res))
+        localStorage.setItem('sysConfig', JSON.stringify(res))
         document.title = this.sysConfig.title
       })
     },

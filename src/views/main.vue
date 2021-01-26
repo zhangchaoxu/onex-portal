@@ -15,8 +15,7 @@ import MainNavbar from './main-navbar'
 import MainSidebar from './main-sidebar'
 import MainContent from './main-content'
 import debounce from 'lodash/debounce'
-import Cookies from 'js-cookie'
-import axios from "_axios@0.21.1@axios";
+import axios from 'axios'
 
 export default {
   components: { MainNavbar, MainSidebar, MainContent },
@@ -50,7 +49,7 @@ export default {
     this.routeHandle(this.$route)
     this.getSysConfig()
     Promise.all([
-      this.getUserInfo(),
+      this.getUserInfo()
       // this.getPermissions()
     ]).finally(() => {
       this.loading = false
@@ -136,14 +135,14 @@ export default {
     // 获取系统配置
     getSysConfig () {
       // 先从本地读取
-      const localConfig = localStorage.getItem('config')
+      const localConfig = localStorage.getItem('sysConfig')
       if (localConfig) {
         document.title = JSON.parse(localConfig).title
       }
       // 再从线上读取
-      axios.get('../../../config.json').then(({ data: res }) => {
-        localStorage.setItem('config', JSON.stringify(res))
-        document.title = this.sysCfg.title
+      axios.get(`/json/sysConfig.json`).then(({ data: res }) => {
+        localStorage.setItem('sysConfig', JSON.stringify(res))
+        document.title = res.title
       })
     }
     // 获取按钮权限

@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import { messages } from '@/i18n'
 import screenfull from 'screenfull'
 import UpdatePassword from './main-navbar-update-password'
@@ -75,7 +74,7 @@ export default {
     }
   },
   created () {
-    this.sysCfg = JSON.parse(localStorage.getItem('config'))
+    this.sysConfig = JSON.parse(localStorage.getItem('sysConfig'))
   },
   methods: {
     // 全屏
