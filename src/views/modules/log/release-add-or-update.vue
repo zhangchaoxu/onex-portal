@@ -31,7 +31,7 @@
                         <el-upload
                                 :action="uploadUrl"
                                 :show-file-list="false"
-                                :data="{paramCode : 'OSS_CFG_PUB'}"
+                                :data="{ paramCode : 'OSS_PUBLIC' }"
                                 :on-success="uploadSuccessHandle"
                                 style="display: none;">
                             <el-button ref="uploadBtn"/>

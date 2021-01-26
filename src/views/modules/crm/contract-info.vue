@@ -82,7 +82,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="附件" prop="attachment">
-            <file-viewer v-if="dataForm.attachment" type="private" privateParamCode="OSS_CFG_PRI" :file="{ name: '附件查看', url: dataForm.attachment }"/>
+            <file-viewer v-if="dataForm.attachment" type="private" privateParamCode="OSS_PRIVATE" :file="{ name: '附件查看', url: dataForm.attachment }"/>
           </el-form-item>
         </el-col>
       </el-row>

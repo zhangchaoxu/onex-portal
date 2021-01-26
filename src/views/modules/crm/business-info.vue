@@ -118,7 +118,7 @@
                 <el-table-column prop="content" label="内容" header-align="center" align="center" show-tooltip-when-overflow/>
                 <el-table-column prop="attachment" label="附件" header-align="center" align="center">
                     <template slot-scope="scope" v-if="scope.row.attachment">
-                        <file-viewer v-for="(item, index) in scope.row.attachment.split(',')" :key="index" type="private" privateParamCode="OSS_CFG_PRI" :file="{ name: '附件' + (index + 1), url:
+                        <file-viewer v-for="(item, index) in scope.row.attachment.split(',')" :key="index" type="private" privateParamCode="OSS_PRIVATE" :file="{ name: '附件' + (index + 1), url:
                         item }"/>
                     </template>
                 </el-table-column>

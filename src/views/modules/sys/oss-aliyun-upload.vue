@@ -32,7 +32,7 @@ export default {
       visible: false,
       sts: null,
       uploadDisabled: false,
-      paramCode: 'OSS_CFG_PUB'
+      paramCode: 'OSS_PUBLIC'
     }
   },
   methods: {

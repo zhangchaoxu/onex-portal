@@ -10,8 +10,8 @@
                 :file-list="fileList"
                 drag
                 multiple
-                :data="{paramCode : paramCode}"
-                :headers="{token: token}"
+                :data="{ paramCode: paramCode }"
+                :headers="{ token: token }"
                 :before-upload="beforeUploadHandle"
                 :on-success="successHandle">
           <i class="el-icon-upload"/>
@@ -30,7 +30,7 @@ export default {
     return {
       visible: false,
       url: '',
-      paramCode: 'OSS_CFG_PUB',
+      paramCode: 'OSS_PUBLIC',
       num: 0,
       token: '',
       fileList: []

@@ -306,13 +306,13 @@ export default {
       const top = (window.screen.availHeight - 30 - height) / 2 // 弹出窗垂直位置
       const left = (window.screen.availWidth - 10 - width) / 2 // 弹出窗水平位置
       this.thirdLoginWindow = window.open(url, `login ${type}`, `width=${width},height=${height},top=${top},left=${left},toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no`)
-      let that = this
+      let _this = this
       window.addEventListener('message', (event) => {
         if (event.origin !== location.origin || !event.data) {
           return
         }
         let data = JSON.parse(event.data)
-        that.oauthLoginHandle(type, data.code)
+        _this.oauthLoginHandle(type, data.code)
       }, false)
     },
     /**

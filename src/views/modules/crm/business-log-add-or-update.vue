@@ -44,7 +44,7 @@
             <el-input v-model="dataForm.content" placeholder="请输入跟进内容" type="textarea"/>
         </el-form-item>
         <el-form-item label="附件" prop="attachment">
-            <file-upload ref="fileUpload" v-model="dataForm.attachment" :limit="4" ossParamCode="OSS_CFG_PRI" :tips="`支持图片、文档和压缩包,大小不超过10M`"/>
+            <file-upload ref="fileUpload" v-model="dataForm.attachment" :limit="4" ossParamCode="OSS_PRIVATE" :tips="`支持图片、文档和压缩包,大小不超过10M`"/>
         </el-form-item>
       </el-form>
     <template slot="footer">
