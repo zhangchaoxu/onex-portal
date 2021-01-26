@@ -208,6 +208,26 @@ export default {
       }).catch(() => {
       })
     },
+    /**
+     * 单个直接删除
+     * @param id
+     */
+    deleteOneHandle (id) {
+      this.$http.delete(`${this.mixinListModuleOptions.deleteURL}?${this.mixinListModuleOptions.deleteIsBatchKey}=${id}`)
+        .then(({ data: res }) => {
+          if (res.code !== 0) {
+            return this.$message.error(res.toast)
+          }
+          this.$message({
+            message: this.$t('prompt.success'),
+            type: 'success',
+            duration: 500,
+            onClose: () => {
+              this.getDataList()
+            }
+          })
+        })
+    },
     // 导入
     importHandle () {
       this.importVisible = true

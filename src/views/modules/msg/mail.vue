@@ -47,7 +47,7 @@
             <el-form-item class="small-item">
               <el-input v-model="searchDataForm.mailTo" placeholder="收件人"/>
             </el-form-item>
-            <el-form-item class="small-item">
+            <el-form-item class="tiny-item">
               <el-select v-model="searchDataForm.status" :placeholder="$t('base.status')" clearable>
                 <el-option :label="$t('success')" :value="1"/>
                 <el-option :label="$t('error')" :value="0"/>
@@ -64,6 +64,7 @@
               v-loading="dataListLoading"
               :data="dataList"
               border
+              @cell-click="cellClickHandle"
               @selection-change="dataListSelectionChangeHandle"
               @sort-change="dataListSortChangeHandle"
               style="width: 100%;">
@@ -72,21 +73,22 @@
             <el-table-column prop="mailTo" label="收件人" header-align="center" align="center"/>
             <el-table-column prop="mailCc" label="抄送" header-align="center" align="center"/>
             <el-table-column prop="subject" label="标题" header-align="center" align="center"/>
-            <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap">
-              <template slot-scope="scope">
-                <el-link type="primary" @click="htmlViewHandle(scope.row.content)" :underline="false">{{ scope.row.content }}</el-link>
-              </template>
-            </el-table-column>
-            <el-table-column prop="status" label="状态" header-align="center" align="center">
+            <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap html link" :formatter="htmlFmt"/>
+            <el-table-column prop="status" label="状态" header-align="center" align="center" width="80">
               <template slot-scope="scope">
                 <el-tag v-if="scope.row.status === 1" size="small">{{ $t('success') }}</el-tag>
                 <el-tag v-else size="small" type="danger">{{ $t('error') }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column prop="createTime" :label="$t('base.createTime')" header-align="center" align="center" width="180"/>
-            <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
+            <el-table-column prop="createTime" :label="$t('base.createTime')" header-align="center" align="center" width="160"/>
+            <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="100" v-if="$hasPermission('msg:mailLog:delete')">
               <template slot-scope="scope">
-                <el-button v-if="$hasPermission('msg:mailLog:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+                <el-popconfirm
+                    v-if="$hasPermission('msg:mailLog:delete')"
+                    @confirm="deleteOneHandle(scope.row.id)"
+                    :title="$t('deleteConfirm')">
+                  <el-button  type="text" size="small" slot="reference">{{ $t('delete') }}</el-button>
+                </el-popconfirm>
               </template>
             </el-table-column>
           </el-table>
@@ -104,7 +106,8 @@
   </el-card>
 </template>
 
-<script>import mixinBaseModule from '@/mixins/base-module'
+<script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import TplAddOrUpdate from './mail-tpl-add-or-update'
 import Send from './mail-send'
@@ -179,15 +182,6 @@ export default {
         this.$refs.tplAddOrUpdate.dataForm.id = id
         this.$refs.tplAddOrUpdate.dataFormMode = !id ? 'save' : 'update'
         this.$refs.tplAddOrUpdate.init()
-      })
-    },
-    // 发送邮件
-    sendHandle (tplType, tplCode) {
-      this.sendVisible = true
-      this.$nextTick(() => {
-        this.$refs.send.dataForm.tplType = tplType
-        this.$refs.send.dataForm.tplCode = tplCode
-        this.$refs.send.init()
       })
     },
     // 处理模板操作
