@@ -42,8 +42,6 @@
                     @current-change="pageCurrentChangeHandle"/>
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
-            <!-- 弹窗, 系统配置 -->
-            <sys-cfg v-if="sysCfgVisible" ref="sysCfg" @refreshDataList="getDataList"/>
             <!-- 弹窗, oss配置 -->
             <oss-cfg v-if="ossCfgVisible" ref="ossCfg" @refreshDataList="getDataList"/>
             <!-- 弹窗, 后台登录配置 -->
@@ -87,8 +85,6 @@ export default {
         deleteBatchURL: '/sys/param/deleteBatch',
         deleteIsBatch: true
       },
-      // 系统配置
-      sysCfgVisible: false,
       // 后台登录配置
       loginAdminCfgVisible: false,
       // 登录渠道配置
@@ -120,14 +116,7 @@ export default {
   methods: {
     // 修改
     editHandle (id, code) {
-      if (code === 'SYS_CFG') {
-        this.sysCfgVisible = true
-        this.$nextTick(() => {
-          this.$refs.sysCfg.dataForm.id = id
-          this.$refs.sysCfg.dataFormMode = 'update'
-          this.$refs.sysCfg.init()
-        })
-      } else if (code === 'LOGIN_CFG_ADMIN') {
+      if (code === 'LOGIN_CFG_ADMIN') {
         this.loginAdminCfgVisible = true
         this.$nextTick(() => {
           this.$refs.loginAdminCfg.dataForm.id = id

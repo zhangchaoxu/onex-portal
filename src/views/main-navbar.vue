@@ -2,8 +2,8 @@
   <nav class="aui-navbar" :class="`aui-navbar--${$store.state.navbarLayoutType}`">
     <div class="aui-navbar__header">
       <h1 class="aui-navbar__brand" @click="$router.push({ name: 'home' })">
-        <a class="aui-navbar__brand-lg" href="javascript:;" v-html="titleBrand"/>
-        <a class="aui-navbar__brand-mini" href="javascript:;" v-html="titleBrandMini"/>
+        <a class="aui-navbar__brand-lg" href="javascript:;" v-html="sysConfig.titleBrand"/>
+        <a class="aui-navbar__brand-mini" href="javascript:;" v-html="sysConfig.titleBrandMini"/>
       </h1>
     </div>
     <div class="aui-navbar__body">
@@ -68,15 +68,14 @@ export default {
   inject: ['refresh'],
   data () {
     return {
+      // 系统配置
+      sysConfig: {},
       i18nMessages: messages,
-      updatePasswordVisible: false,
-      titleBrand: '',
-      titleBrandMini: ''
+      updatePasswordVisible: false
     }
   },
   created () {
-    this.titleBrand = Cookies.get('titleBrand')
-    this.titleBrandMini = Cookies.get('titleBrandMini')
+    this.sysCfg = JSON.parse(localStorage.getItem('config'))
   },
   methods: {
     // 全屏

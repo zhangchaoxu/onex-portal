@@ -16,6 +16,7 @@ import MainSidebar from './main-sidebar'
 import MainContent from './main-content'
 import debounce from 'lodash/debounce'
 import Cookies from 'js-cookie'
+import axios from "_axios@0.21.1@axios";
 
 export default {
   components: { MainNavbar, MainSidebar, MainContent },
@@ -47,9 +48,9 @@ export default {
   created () {
     this.windowResizeHandle()
     this.routeHandle(this.$route)
+    this.getSysConfig()
     Promise.all([
       this.getUserInfo(),
-      this.getParamCfg()
       // this.getPermissions()
     ]).finally(() => {
       this.loading = false
@@ -133,16 +134,17 @@ export default {
       }
     },
     // 获取系统配置
-    getParamCfg () {
-      return this.$http.get(`/sys/param/getContentByCode?code=SYS_CFG`).then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        Cookies.set('title', res.data.title)
-        Cookies.set('titleBrand', res.data.titleBrand)
-        Cookies.set('titleBrandMini', res.data.titleBrandMini)
-        document.title = res.data.title
-      }).catch(() => {})
+    getSysConfig () {
+      // 先从本地读取
+      const localConfig = localStorage.getItem('config')
+      if (localConfig) {
+        document.title = JSON.parse(localConfig).title
+      }
+      // 再从线上读取
+      axios.get('../../../config.json').then(({ data: res }) => {
+        localStorage.setItem('config', JSON.stringify(res))
+        document.title = this.sysCfg.title
+      })
     }
     // 获取按钮权限
     /* getPermissions () {

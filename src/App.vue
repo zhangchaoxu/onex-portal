@@ -20,7 +20,6 @@ export default {
       document.querySelector('html').setAttribute('lang', val)
       // 显示标题
       // document.title = messages[val].brand.lg
-      document.title = Cookies.get('title') || 'loading'
       // 非登录页面，切换语言刷新页面
       if (this.$route.name !== 'login' && oldVal) {
         window.location.reload()

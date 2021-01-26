@@ -3,7 +3,7 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-header">
-          <h2 class="login-brand" v-html="sysCfg.loginTitle"/>
+          <h2 class="login-brand" v-html="sysConfig.loginTitle"/>
         </div>
         <el-card class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
@@ -81,13 +81,14 @@
             </router-link>
           </div>
         </el-card>
-        <div class="login-footer" v-html="sysCfg.copyright"/>
+        <div class="login-footer" v-html="sysConfig.copyright"/>
       </main>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
 import Cookies from 'js-cookie'
 import mixinFormModule from '@/mixins/form-module'
 
@@ -103,7 +104,7 @@ export default {
       },
       dataFormMode: 'save',
       // 系统配置
-      sysCfg: {},
+      sysConfig: {},
       // 全局登录配置
       loginConfigAdmin: {
         forgetPassword: false,
@@ -159,6 +160,7 @@ export default {
   created () {
     // 获取配置项
     this.getParamCfg()
+    this.getSysConfig()
   },
   beforeDestroy () {
     // 把子窗口销毁
@@ -183,15 +185,26 @@ export default {
       this.$refs['dataForm'].clearValidate()
     },
     // 获取系统配置
+    getSysConfig () {
+      // 先从本地读取
+      const localConfig = localStorage.getItem('config')
+      if (localConfig) {
+        this.sysConfig = JSON.parse(localConfig)
+        document.title = this.sysConfig.title
+      }
+      // 再从线上读取
+      axios.get('../../../config.json').then(({ data: res }) => {
+        this.sysConfig = res
+        localStorage.setItem('config', JSON.stringify(res))
+        document.title = this.sysConfig.title
+      })
+    },
+    // 获取系统配置
     getParamCfg () {
-      this.$http.get(`/sys/param/getContentByCodes?codes=SYS_CFG,LOGIN_CONFIG_ADMIN`).then(({ data: res }) => {
+      this.$http.get(`/sys/param/getContentByCodes?codes=LOGIN_CONFIG_ADMIN`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
-          // 复制显示配置
-          this.sysCfg = res.data.SYS_CFG
-          Cookies.set('title', this.sysCfg.title)
-          document.title = this.sysCfg.title
           // 赋值全局登录配置
           this.loginConfigAdmin = res.data.LOGIN_CONFIG_ADMIN
           // 找到第一个enable的登录渠道
