@@ -10,7 +10,7 @@
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
                 <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginConfigAdmin.usernamePasswordLogin">帐号登录</el-radio-button>
-                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginConfigAdmin.mobileSmsCodeLogin">验证码登录</el-radio-button>
+                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginConfigAdmin.mobileSmscodeLogin">验证码登录</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
@@ -64,10 +64,10 @@
           </el-form>
           <el-divider v-if="loginConfigAdmin.wechatScanLogin || loginConfigAdmin.dingtalkScanLogin">第三方登录</el-divider>
           <div>
-            <el-link :underline="false" @click="onOauthLogin('WECHAT_SCAN')" title="微信" v-if="loginConfigAdmin.wechatScanLogin" class="no-underline">
+            <el-link :underline="false" @click="onOauthLogin('LOGIN_ADMIN_WECHAT_SCAN')" title="微信" v-if="loginConfigAdmin.wechatScanLogin" class="no-underline">
               <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
             </el-link>
-            <el-link :underline="false" @click="onOauthLogin('DINGTALK_SCAN')" title="钉钉" v-if="loginConfigAdmin.dingtalkScanLogin" class="no-underline">
+            <el-link :underline="false" @click="onOauthLogin('LOGIN_ADMIN_DINGTALK_SCAN')" title="钉钉" v-if="loginConfigAdmin.dingtalkScanLogin" class="no-underline">
               <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
             </el-link>
           </div>
@@ -158,9 +158,10 @@ export default {
     }
   },
   created () {
-    // 获取配置项
-    this.getParamCfg()
+    // 获取系统配置
     this.getSysConfig()
+    // 获得登录配置
+    this.getLoginConfig()
   },
   beforeDestroy () {
     // 把子窗口销毁
@@ -199,14 +200,14 @@ export default {
         document.title = this.sysConfig.title
       })
     },
-    // 获取系统配置
-    getParamCfg () {
-      this.$http.get(`/sys/param/getContentByCodes?codes=LOGIN_CONFIG_ADMIN`).then(({ data: res }) => {
+    // 获取登录配置
+    getLoginConfig () {
+      this.$http.get(`/sys/param/getLoginAdmin`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
           // 赋值全局登录配置
-          this.loginConfigAdmin = res.data.LOGIN_CONFIG_ADMIN
+          this.loginConfigAdmin = res.data
           // 找到第一个enable的登录渠道
           if (this.loginConfigAdmin.usernamePasswordLogin) {
             this.dataForm.type = 'ADMIN_USERNAME_PASSWORD'
@@ -235,12 +236,11 @@ export default {
       if (this.smsSendTimeout < 60) {
         return
       }
-      this.formLoading = true
       this.$refs['dataForm'].validateField('mobile', (errorMessage) => {
         if (errorMessage) {
-          this.formLoading = false
           return false
         }
+        this.formLoading = true
         this.$http.post(`/msg/smsLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
             this.$message.error(res.toast)
@@ -283,7 +283,7 @@ export default {
       this.$http.get(`/sys/param/getContentByCode?code=` + type).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
-        } else if (type === 'ADMIN_DINGTALK_SCAN') {
+        } else if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
           let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + res.data.appid +
                   '&response_type=code' +
                   '&scope=snsapi_login' +
@@ -324,7 +324,7 @@ export default {
         if (res.code !== 0) {
           this.$message.error(res.toast)
         }
-        this.$alert(res.data)
+        this.onFormSubmitSuccess(res)
         console.log(res.data)
       }).finally(() => {
         this.formLoading = false
