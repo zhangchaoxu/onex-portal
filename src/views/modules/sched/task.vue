@@ -47,10 +47,10 @@
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('sched:taskLog:page')" type="text" size="small" @click="logHandle(scope.row.id)">{{ $t('schedule.log') }}</el-button>
             <el-dropdown trigger="click" @command="editActionHandle" class="action-dropdown">
               <span class="el-dropdown-link">{{ $t('handle') }}<i class="el-icon-arrow-down el-icon--right"/></span>
               <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-if="$hasPermission('sched:taskLog:page')" :command="composeEditCommandValue('log', scope.row)" icon="el-icon-tickets">{{ $t('schedule.log') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('sched:task:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('sched:task:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('sched:task:run')" :command="composeEditCommandValue('run', scope.row)" icon="el-icon-video-play">{{ $t('run') }}</el-dropdown-item>
@@ -112,6 +112,9 @@ export default {
       } else if (command.command === 'resume') {
         // 恢复
         this.resumeHandle(command.row[this.mixinListModuleOptions.idKey])
+      } else if (command.command === 'log') {
+        // 日志
+        this.logHandle(command.row[this.mixinListModuleOptions.idKey])
       }
     },
     // 暂停

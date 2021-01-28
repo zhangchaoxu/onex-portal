@@ -15,9 +15,9 @@
       @sort-change="dataListSortChangeHandle"
       height="460"
       style="width: 100%;">
-      <el-table-column prop="taskId" :label="$t('schedule.jobId')" header-align="center" align="center" width="80"></el-table-column>
-      <el-table-column prop="taskName" :label="$t('schedule.beanName')" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="params" :label="$t('schedule.params')" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="taskId" :label="$t('schedule.jobId')" header-align="center" align="center" width="160"/>
+      <el-table-column prop="taskName" :label="$t('schedule.beanName')" header-align="center" align="center"/>
+      <el-table-column prop="params" :label="$t('schedule.params')" header-align="center" align="center"/>
       <el-table-column prop="status" :label="$t('schedule.status')" header-align="center" align="center">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === 1" size="small">{{ $t('schedule.statusLog1') }}</el-tag>
@@ -25,7 +25,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="times" :label="$t('schedule.times')" header-align="center" align="center"></el-table-column>
-      <el-table-column prop="createTime" :label="$t('schedule.createDate')" header-align="center" align="center" width="180"></el-table-column>
+      <el-table-column prop="createTime" :label="$t('schedule.createDate')" header-align="center" align="center" width="160"/>
     </el-table>
     <el-pagination
       :current-page="page"
