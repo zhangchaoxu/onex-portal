@@ -36,10 +36,10 @@
     "screenfull": "^5.1.0",
     "svg-sprite-loader": "^5.0.0",
     "vue": "^2.6.12",
-    "vue-i18n": "^8.22.3",
-    "vue-json-viewer": "^2.2.17",
-    "vue-router": "^3.4.9",
-    "vuex": "^3.5.1",
+    "vue-i18n": "^8.22.4",
+    "vue-json-viewer": "^2.2.18",
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2",
     "@chenfengyuan/vue-qrcode": "^1.0.2"
   },
   "devDependencies": {
