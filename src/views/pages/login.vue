@@ -44,7 +44,7 @@
               <el-form-item prop="smsCode">
                 <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
                   <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">
-                    {{ smsSendTimeout !== 60 ? $t('resendSmsCode', { 'sec': smsSendTimeout }) : $t('sendSmsCode') }}
+                    {{ smsSendTimeout !== 60 ? $t('resendSmsCode', {'sec': smsSendTimeout}) : $t('sendSmsCode') }}
                   </el-button>
                 </el-input>
               </el-form-item>
@@ -72,7 +72,7 @@
                 @hide="onScanHide('LOGIN_ADMIN_WECHAT_SCAN')"
                 trigger="click">
               <div id="wechat-scan-container">
-                <iframe :src="wechatFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true" />
+                <iframe :src="wechatFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true"/>
               </div>
               <el-link :underline="false" title="微信" class="no-underline" slot="reference">
                 <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
@@ -86,7 +86,7 @@
                 @hide="onScanHide('LOGIN_ADMIN_DINGTALK_SCAN')"
                 trigger="click">
               <div id="dingtalk-scan-container">
-                <iframe :src="dingtalkFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true" />
+                <iframe :src="dingtalkFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true"/>
               </div>
               <el-link :underline="false" title="钉钉" class="no-underline" slot="reference">
                 <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
@@ -234,7 +234,7 @@ export default {
           }
           this.typeChangeHandle()
           // 若有第三方登录,添加回调监听
-          if (this.loginAdminConfig.dingtalkScanLogin || this.loginAdminConfig.wechatScanLogin) {
+          if (this.loginAdminConfig.dingtalkScanLogin) {
             this.listenOauthLoginCallback()
           }
         }
@@ -306,12 +306,14 @@ export default {
     },
     onScanShow (type) {
       if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
-        let url = 'https://oapi.dingtalk.com/connect/qrconnect?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
+        // 钉钉扫码登录https://ding-doc.dingtalk.com/document/app/scan-qr-code-to-log-on-to-third-party-websites
+        let url = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize' +
+            '?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
+            '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback) +
             '&response_type=code' +
             '&scope=snsapi_login' +
-            '&state=STATE' +
-            '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback)
-        this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + url + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
+            '&state=STATE'
+        this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + encodeURIComponent(url) + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
       } else {
         return this.$message.error('未定义的type=' + type)
       }
@@ -320,36 +322,18 @@ export default {
      * 监听第三方登录跳转返回
      */
     listenOauthLoginCallback () {
-      let _this = this
       window.addEventListener('message', (event) => {
-        if (event.origin === location.origin && event.data && event.data instanceof String) {
-          try {
-            let data = JSON.parse(event.data)
-            if (data.type && data.code) {
-              _this.oauthLoginHandle(data.type, data.code)
-            } else {
-              console.log('get unknown postMessage data', data)
-            }
-          } catch (err) {
-            console.log('get unknown postMessage', event)
-          }
+        if (event.origin === 'https://login.dingtalk.com' && event.data) {
+          // 监听钉钉返回的data(loginTmpCode)
+          window.location.href = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize' +
+              '?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
+              '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback) +
+              '&loginTmpCode=' + event.data +
+              '&response_type=code' +
+              '&scope=snsapi_login' +
+              '&state=STATE'
         }
       }, false)
-    },
-    /**
-     * 第三方code登录
-     */
-    oauthLoginHandle (type, code) {
-      this.formLoading = true
-      this.$http.post(`/uc/userOauth/oauthLoginByCode`, { code: code, paramCode: type, type: type }).then(({ data: res }) => {
-        if (res.code !== 0) {
-          this.$message.error(res.toast)
-        }
-        this.onFormSubmitSuccess(res)
-        console.log(res.data)
-      }).finally(() => {
-        this.formLoading = false
-      })
     }
   }
 }
