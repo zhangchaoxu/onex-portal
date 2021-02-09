@@ -78,20 +78,8 @@
                 <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
               </el-link>
             </el-popover>
-            <el-popover
-                v-if="loginAdminConfig.dingtalkScanLogin"
-                placement="top"
-                title="钉钉扫码登录"
-                @show="onScanShow('LOGIN_ADMIN_DINGTALK_SCAN')"
-                @hide="onScanHide('LOGIN_ADMIN_DINGTALK_SCAN')"
-                trigger="click">
-              <div id="dingtalk-scan-container">
-                <iframe :src="dingtalkFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true"/>
-              </div>
-              <el-link :underline="false" title="钉钉" class="no-underline" slot="reference">
-                <i class="ad-icon-dingtalk" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
-              </el-link>
-            </el-popover>
+            <dingtalk-scan-login v-if="loginAdminConfig.dingtalkScanLogin" :appid="this.loginAdminConfig.dingtalkScanLoginConfig.appid"
+                                 :callback="this.loginAdminConfig.dingtalkScanLoginConfig.callback"/>
           </div>
           <el-divider v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword"></el-divider>
           <div v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword">
@@ -112,11 +100,13 @@
 <script>
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import DingtalkScanLogin from '@/components/dingtalk-scan-login'
 import mixinFormModule from '@/mixins/form-module'
 import { redirectLogin } from '@/utils'
 
 export default {
   mixins: [mixinFormModule],
+  components: { DingtalkScanLogin },
   data () {
     return {
       // 表单模块参数
@@ -240,10 +230,6 @@ export default {
             this.dataForm.type = 'ADMIN_MOBILE_SMSCODE'
           }
           this.typeChangeHandle()
-          // 若有第三方登录,添加回调监听
-          if (this.loginAdminConfig.dingtalkScanLogin) {
-            this.listenOauthLoginCallback()
-          }
         }
       }).finally(() => {
         this.formLoading = false
@@ -305,42 +291,6 @@ export default {
       Cookies.set('token', res.data.token)
       // 跳转到home
       this.$router.replace({ name: 'home' })
-    },
-    onScanHide () {
-      // 清空frame内容,避免不断刷新二维码
-      this.dingtalkFrameSrc = ''
-      this.wechatFrameSrc = ''
-    },
-    onScanShow (type) {
-      if (type === 'LOGIN_ADMIN_DINGTALK_SCAN') {
-        // 钉钉扫码登录https://ding-doc.dingtalk.com/document/app/scan-qr-code-to-log-on-to-third-party-websites
-        let url = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize' +
-            '?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
-            '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback) +
-            '&response_type=code' +
-            '&scope=snsapi_login' +
-            '&state=STATE'
-        this.dingtalkFrameSrc = 'https://login.dingtalk.com/login/qrcode.htm?goto=' + encodeURIComponent(url) + '&style=' + encodeURIComponent('border:none;background-color:#FFFFFF;')
-      } else {
-        return this.$message.error('未定义的type=' + type)
-      }
-    },
-    /**
-     * 监听第三方登录跳转返回
-     */
-    listenOauthLoginCallback () {
-      window.addEventListener('message', (event) => {
-        if (event.origin === 'https://login.dingtalk.com' && event.data) {
-          // 监听钉钉返回的data(loginTmpCode)
-          window.location.href = 'https://oapi.dingtalk.com/connect/oauth2/sns_authorize' +
-              '?appid=' + this.loginAdminConfig.dingtalkScanLoginConfig.appid +
-              '&redirect_uri=' + encodeURIComponent(this.loginAdminConfig.dingtalkScanLoginConfig.callback) +
-              '&loginTmpCode=' + event.data +
-              '&response_type=code' +
-              '&scope=snsapi_login' +
-              '&state=STATE'
-        }
-      }, false)
     },
     /**
      * 第三方code登录
