@@ -24,9 +24,7 @@
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
-                    <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
-                      <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
-                    </el-image>
+                    <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
                   </el-tooltip>
                 </el-input>
               </el-form-item>
@@ -48,12 +46,11 @@
                   </el-button>
                 </el-input>
               </el-form-item>
+              <!-- 图形验证码 -->
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
                 <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
-                    <el-image :src="captchaImage" @click="getCaptcha()" style="width: 90px;">
-                      <div slot="placeholder" class="image-slot"><i class="el-icon-loading"/></div>
-                    </el-image>
+                    <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
                   </el-tooltip>
                 </el-input>
               </el-form-item>
@@ -64,22 +61,8 @@
           </el-form>
           <el-divider v-if="loginAdminConfig.wechatScanLogin || loginAdminConfig.dingtalkScanLogin">第三方登录</el-divider>
           <div>
-            <el-popover
-                v-if="loginAdminConfig.wechatScanLogin"
-                placement="top"
-                title="微信扫码登录"
-                @show="onScanShow('LOGIN_ADMIN_WECHAT_SCAN')"
-                @hide="onScanHide('LOGIN_ADMIN_WECHAT_SCAN')"
-                trigger="click">
-              <div id="wechat-scan-container">
-                <iframe :src="wechatFrameSrc" width="350px" height="350px" frameBorder="0" scrolling="no" allowTransparency="true"/>
-              </div>
-              <el-link :underline="false" title="微信" class="no-underline" slot="reference">
-                <i class="ad-icon-wechat-fill" style="font-size: 24px; margin-left: 12px; margin-right: 12px;"/>
-              </el-link>
-            </el-popover>
-            <dingtalk-scan-login v-if="loginAdminConfig.dingtalkScanLogin" :appid="this.loginAdminConfig.dingtalkScanLoginConfig.appid"
-                                 :callback="this.loginAdminConfig.dingtalkScanLoginConfig.callback"/>
+            <wechat-scan-login v-if="loginAdminConfig.wechatScanLogin" :appid="this.loginAdminConfig.wechatScanLoginConfig.appid" :callback="this.loginAdminConfig.wechatScanLoginConfig.callback"/>
+            <dingtalk-scan-login v-if="loginAdminConfig.dingtalkScanLogin" :appid="this.loginAdminConfig.dingtalkScanLoginConfig.appid" :callback="this.loginAdminConfig.dingtalkScanLoginConfig.callback"/>
           </div>
           <el-divider v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword"></el-divider>
           <div v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword">
@@ -101,12 +84,13 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import DingtalkScanLogin from '@/components/dingtalk-scan-login'
+import WechatScanLogin from '@/components/wechat-scan-login'
 import mixinFormModule from '@/mixins/form-module'
 import { redirectLogin } from '@/utils'
 
 export default {
   mixins: [mixinFormModule],
-  components: { DingtalkScanLogin },
+  components: { WechatScanLogin, DingtalkScanLogin },
   data () {
     return {
       // 表单模块参数
@@ -144,11 +128,7 @@ export default {
         uuid: '',
         captcha: '',
         type: ''
-      },
-      // 钉钉frame地址
-      dingtalkFrameSrc: '',
-      // 微信frame地址
-      wechatFrameSrc: ''
+      }
     }
   },
   computed: {
@@ -297,7 +277,7 @@ export default {
      */
     oauthLoginHandle (type, code) {
       this.formLoading = true
-      this.$http.post(`/uc/userOauth/oauthLoginByCode`, { code: code, paramCode: type, type: type }).then(({ data: res }) => {
+      this.$http.post(`/uc/userOauth/dingtalkLoginByCode`, { code: code }).then(({ data: res }) => {
         if (res.code !== 0) {
           this.$alert(res.toast, this.$t('prompt.title'), {
             confirmButtonText: `重新登录`,
