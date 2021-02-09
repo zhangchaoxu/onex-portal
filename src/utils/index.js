@@ -3,7 +3,7 @@ import store from '@/store'
 import router from '@/router'
 
 /**
- * 权限
+ * 是否有权限
  * @param {*} key
  */
 export function hasPermission (key) {
@@ -11,7 +11,7 @@ export function hasPermission (key) {
 }
 
 /**
- * 角色
+ * 是否有角色
  * @param {*} key
  */
 export function hasRole (key) {

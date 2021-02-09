@@ -6,7 +6,7 @@ import { redirectLogin } from '@/utils'
 import isPlainObject from 'lodash/isPlainObject'
 
 /**
- * axios
+ * axios init
  */
 const http = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
@@ -15,7 +15,7 @@ const http = axios.create({
 })
 
 /**
- * 请求拦截
+ * request interceptor
  */
 http.interceptors.request.use(config => {
   config.headers['Accept-Language'] = Cookies.get('language') || 'zh-CN'
@@ -47,12 +47,12 @@ http.interceptors.request.use(config => {
   return config
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('接口请求失败')
+  Vue.prototype.$message.error('http request fail')
   return Promise.reject(error)
 })
 
 /**
- * 响应拦截
+ * response interceptor
  */
 http.interceptors.response.use(response => {
   if (response.data.code === 401) {
@@ -65,7 +65,7 @@ http.interceptors.response.use(response => {
   return response
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('接口响应失败')
+  Vue.prototype.$message.error('http response fail')
   return Promise.reject(error)
 })
 

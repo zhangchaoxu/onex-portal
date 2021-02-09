@@ -32,7 +32,7 @@
                 <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login') }}</el-button>
               </el-form-item>
             </template>
-            <!-- 手机号登录 -->
+            <!-- 手机号验证码登录 -->
             <template v-else-if="dataForm.type === 'ADMIN_MOBILE_SMSCODE'">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
@@ -41,7 +41,7 @@
               </el-form-item>
               <el-form-item prop="smsCode">
                 <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
-                  <el-button slot="append" @click="smsCodeSendHandle()" :disabled="smsSendTimeout < 60">
+                  <el-button slot="append" @click="smsCodeSendHandle()" type="primary" :disabled="smsSendTimeout < 60">
                     {{ smsSendTimeout !== 60 ? $t('resendSmsCode', {'sec': smsSendTimeout}) : $t('sendSmsCode') }}
                   </el-button>
                 </el-input>
@@ -236,20 +236,19 @@ export default {
           return false
         }
         this.formLoading = true
-        this.$http.post(`/msg/mailLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
+        this.$http.post(`/msg/mailLog/sendCode`, { 'mailTo': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
-            this.$message.error(res.toast)
-          } else {
-            this.$message.success('短信发送成功')
-            // 开始倒计时
-            this.smsSendTimeout = 60
-            const timer = window.setInterval(() => {
-              if (this.smsSendTimeout-- <= 0) {
-                this.smsSendTimeout = 60
-                window.clearInterval(timer)
-              }
-            }, 1000)
+            return this.$message.error(res.toast)
           }
+          this.$message.success('短信发送成功')
+          // 开始倒计时
+          this.smsSendTimeout = 60
+          const timer = window.setInterval(() => {
+            if (this.smsSendTimeout-- <= 0) {
+              this.smsSendTimeout = 60
+              window.clearInterval(timer)
+            }
+          }, 1000)
         }).finally(() => {
           this.formLoading = false
         })
