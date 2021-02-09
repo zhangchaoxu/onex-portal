@@ -113,6 +113,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import mixinFormModule from '@/mixins/form-module'
+import { redirectLogin } from '@/utils'
 
 export default {
   mixins: [mixinFormModule],
@@ -182,10 +183,16 @@ export default {
     }
   },
   created () {
-    // 获取系统配置
-    this.getSysConfig()
-    // 获得登录配置
-    this.getLoginConfig()
+    // 来源是登录回调还是正常登录
+    let type = this.$route.query.type
+    if (type === 'callback') {
+      this.oauthLoginHandle(type, this.$route.query.code)
+    } else {
+      // 获取系统配置
+      this.getSysConfig()
+      // 获得登录配置
+      this.getLoginConfig()
+    }
   },
   methods: {
     // 切换登录类型
@@ -334,6 +341,27 @@ export default {
               '&state=STATE'
         }
       }, false)
+    },
+    /**
+     * 第三方code登录
+     */
+    oauthLoginHandle (type, code) {
+      this.formLoading = true
+      this.$http.post(`/uc/userOauth/oauthLoginByCode`, { code: code, paramCode: type, type: type }).then(({ data: res }) => {
+        if (res.code !== 0) {
+          this.$alert(res.toast, this.$t('prompt.title'), {
+            confirmButtonText: `重新登录`,
+            type: 'warning'
+          }).then(() => {
+            // 重新登录
+            redirectLogin()
+          })
+        } else {
+          this.onFormSubmitSuccess(res)
+        }
+      }).finally(() => {
+        this.formLoading = false
+      })
     }
   }
 }

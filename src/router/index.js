@@ -33,7 +33,6 @@ export const pageRoutes = [
   },
   // 添加独立页面
   { path: '/login', component: () => import('@/views/pages/login'), name: 'login', meta: { title: '登录' } },
-  { path: '/loginCallback', component: () => import('@/views/pages/oauthLoginCallback'), name: 'loginCallback', meta: { title: '登录回调' } },
   { path: '/register', component: () => import('@/views/pages/register'), name: 'register', meta: { title: '注册' } },
   { path: '/forgetPassword', component: () => import('@/views/pages/forgetPassword'), name: 'forgetPassword', meta: { title: '忘记密码' } }
 ]
