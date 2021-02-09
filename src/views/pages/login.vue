@@ -236,7 +236,7 @@ export default {
           return false
         }
         this.formLoading = true
-        this.$http.post(`/msg/smsLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
+        this.$http.post(`/msg/mailLog/sendCode`, { 'mobile': this.dataForm.mobile, 'tplCode': 'CODE_LOGIN' }).then(({ data: res }) => {
           if (res.code !== 0) {
             this.$message.error(res.toast)
           } else {
