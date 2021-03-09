@@ -61,7 +61,7 @@ export default {
         getDataListIsPage: true,
         deleteURL: '/uc/role/delete',
         deleteBatchURL: '/uc/role/deleteBatch',
-        deleteIsBatch: true
+        deleteIsBatch: false
       },
       searchDataForm: {
         id: '',
