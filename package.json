@@ -8,6 +8,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:prod": "vue-cli-service build --mode production",
     "lint": "vue-cli-service lint",
     "et": "node_modules/.bin/et",
     "et:init": "node_modules/.bin/et -i",
