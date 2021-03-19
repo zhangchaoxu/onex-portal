@@ -22,7 +22,7 @@
         <el-table-column prop="tenantName" label="租户" header-align="center" align="center" min-width="100" v-if="$hasRole('sysadmin')"/>
         <el-table-column prop="userId" label="会员id" header-align="center" align="center"></el-table-column>
         <el-table-column prop="qty" label="数量" header-align="center" align="center" width="120"/>
-        <el-table-column prop="status" label="状态0 未下单 1 已下单" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="state" label="状态0 未下单 1 已下单" header-align="center" align="center"></el-table-column>
         <el-table-column prop="createTime" label="加入时间" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
