@@ -13,8 +13,8 @@
                     </el-form-item>
                 </el-col>
             </el-row>
-            <el-form-item :label="$t('base.status')" prop="status">
-                <el-radio-group v-model="dataForm.status" size="mini">
+            <el-form-item :label="$t('base.state')" prop="state">
+                <el-radio-group v-model="dataForm.state" size="mini">
                     <el-radio-button :label="1">已审核</el-radio-button>
                     <el-radio-button :label="0">未审核</el-radio-button>
                 </el-radio-group>
@@ -53,7 +53,7 @@ export default {
         name: '',
         remark: '',
         imgs: '',
-        status: 0,
+        state: 0,
         content: '',
         sort: ''
       }
@@ -68,7 +68,7 @@ export default {
         sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

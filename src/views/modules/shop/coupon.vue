@@ -16,7 +16,7 @@
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.status" clearable placeholder="状态">
+          <el-select v-model="searchDataForm.state" clearable placeholder="状态">
             <el-option label="未激活" value="0"></el-option>
             <el-option label="已激活" value="1"></el-option>
           </el-select>
@@ -56,10 +56,10 @@
             {{ scope.row.validStartTime }}<i class="el-icon-arrow-right"/>{{ scope.row.validEndTime }}
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="80">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="80">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="info">未激活</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" size="small" type="success">已激活</el-tag>
+            <el-tag v-if="scope.row.state === 0" size="small" type="info">未激活</el-tag>
+            <el-tag v-else-if="scope.row.state === 1" size="small" type="success">已激活</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="stock" label="数量" header-align="center" align="center" width="210">
@@ -109,7 +109,7 @@ export default {
       searchDataForm: {
         name: '',
         type: '',
-        status: '',
+        state: '',
         storeName: '',
         tenantId: '',
         tenantName: ''

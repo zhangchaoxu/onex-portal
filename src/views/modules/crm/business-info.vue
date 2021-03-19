@@ -21,14 +21,14 @@
             </el-row>
             <el-row>
                 <el-col :span="8">
-                    <el-form-item label="商机状态" prop="status">
+                    <el-form-item label="商机状态" prop="state">
                         <template slot-scope="scope">
-                            <el-tag v-if="dataForm.status === 1" type="warning">阶段1</el-tag>
-                            <el-tag v-else-if="dataForm.status === 2" type="warning">阶段2</el-tag>
-                            <el-tag v-else-if="dataForm.status === 3" type="warning">阶段3</el-tag>
-                            <el-tag v-else-if="dataForm.status === 10" type="success">赢单</el-tag>
-                            <el-tag v-else-if="dataForm.status === -10" type="danger">输单</el-tag>
-                            <el-tag v-else-if="dataForm.status === 0" type="info">无效</el-tag>
+                            <el-tag v-if="dataForm.state === 1" type="warning">阶段1</el-tag>
+                            <el-tag v-else-if="dataForm.state === 2" type="warning">阶段2</el-tag>
+                            <el-tag v-else-if="dataForm.state === 3" type="warning">阶段3</el-tag>
+                            <el-tag v-else-if="dataForm.state === 10" type="success">赢单</el-tag>
+                            <el-tag v-else-if="dataForm.state === -10" type="danger">输单</el-tag>
+                            <el-tag v-else-if="dataForm.state === 0" type="info">无效</el-tag>
                         </template>
                     </el-form-item>
                 </el-col>
@@ -103,14 +103,14 @@
                         <el-tag v-else-if="scope.row.type === 'edit'" type="warning">修改</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+                <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.status === 1" type="warning">阶段1</el-tag>
-                        <el-tag v-else-if="scope.row.status === 2" type="warning">阶段2</el-tag>
-                        <el-tag v-else-if="scope.row.status === 3" type="warning">阶段3</el-tag>
-                        <el-tag v-else-if="scope.row.status === 10" type="success">赢单</el-tag>
-                        <el-tag v-else-if="scope.row.status === -10" type="danger">输单</el-tag>
-                        <el-tag v-else-if="scope.row.status === 0" type="info">无效</el-tag>
+                        <el-tag v-if="scope.row.state === 1" type="warning">阶段1</el-tag>
+                        <el-tag v-else-if="scope.row.state === 2" type="warning">阶段2</el-tag>
+                        <el-tag v-else-if="scope.row.state === 3" type="warning">阶段3</el-tag>
+                        <el-tag v-else-if="scope.row.state === 10" type="success">赢单</el-tag>
+                        <el-tag v-else-if="scope.row.state === -10" type="danger">输单</el-tag>
+                        <el-tag v-else-if="scope.row.state === 0" type="info">无效</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column prop="logDate" label="记录时间" header-align="center" align="center" width="120" :formatter="dateDayFmt"/>
@@ -177,7 +177,7 @@ export default {
         customerName: '',
         source: '',
         remark: '',
-        status: '',
+        state: '',
         amount: '',
         dealDate: '',
         productDiscount: '',

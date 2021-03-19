@@ -115,7 +115,7 @@ export default {
         telephone: '',
         mobile: '',
         content: '',
-        status: 1,
+        state: 1,
         regionName: '',
         regionCode: '',
         address: '',

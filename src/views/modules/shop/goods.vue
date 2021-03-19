@@ -129,7 +129,7 @@ export default {
       searchDataForm: {
         name: '',
         top: '',
-        status: '',
+        state: '',
         delivery: '',
         marketable: '',
         title: '',

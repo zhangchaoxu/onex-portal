@@ -9,7 +9,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="客户级别" prop="status">
+          <el-form-item label="客户级别" prop="level">
             <template slot-scope="scope">
               <el-tag v-if="dataForm.level === 1" type="success">重点</el-tag>
               <el-tag v-else-if="dataForm.level === 2" type="warning">普通</el-tag>
@@ -25,20 +25,20 @@
       </el-row>
       <el-row>
         <el-col :span="8">
-          <el-form-item label="联系人" prop="status">
+          <el-form-item label="联系人" prop="contacts">
             <span>{{ dataForm.contacts }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="联系电话" prop="source">
+          <el-form-item label="联系电话" prop="mobile">
             <span>{{ dataForm.mobile }}</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="成交状态" prop="amount">
+          <el-form-item label="成交状态" prop="dealStatus">
             <template slot-scope="scope">
-              <el-tag v-if="dataForm.level === 1" type="success">已成交</el-tag>
-              <el-tag v-else-if="dataForm.level === 2" type="fail">未成交</el-tag>
+              <el-tag v-if="dataForm.dealStatus === 1" type="success">已成交</el-tag>
+              <el-tag v-else-if="dataForm.dealStatus === 2" type="fail">未成交</el-tag>
             </template>
           </el-form-item>
         </el-col>
@@ -102,7 +102,7 @@ export default {
         telephone: '',
         mobile: '',
         content: '',
-        status: 1,
+        state: 1,
         regionName: '',
         regionCode: '',
         address: '',

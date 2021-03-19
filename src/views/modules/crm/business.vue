@@ -16,8 +16,8 @@
           <el-input v-model="searchDataForm.name" placeholder="名称" clearable/>
         </el-form-item>
         <el-form-item class="tiny-item">
-          <el-select v-model="searchDataForm.status" placeholder="状态" clearable>
-            <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
+            <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
               <span style="float: left">{{ item.label }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.tip }}</span>
             </el-option>
@@ -48,14 +48,14 @@
             <el-link type="primary" @click="previewHandle(scope.row.id)" :underline="false">{{ scope.row.name }}</el-link>
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 1" type="warning">阶段1</el-tag>
-            <el-tag v-else-if="scope.row.status === 2" type="warning">阶段2</el-tag>
-            <el-tag v-else-if="scope.row.status === 3" type="warning">阶段3</el-tag>
-            <el-tag v-else-if="scope.row.status === 10" type="success">赢单</el-tag>
-            <el-tag v-else-if="scope.row.status === -10" type="danger">输单</el-tag>
-            <el-tag v-else-if="scope.row.status === 0" type="info">无效</el-tag>
+            <el-tag v-if="scope.row.state === 1" type="warning">阶段1</el-tag>
+            <el-tag v-else-if="scope.row.state === 2" type="warning">阶段2</el-tag>
+            <el-tag v-else-if="scope.row.state === 3" type="warning">阶段3</el-tag>
+            <el-tag v-else-if="scope.row.state === 10" type="success">赢单</el-tag>
+            <el-tag v-else-if="scope.row.state === -10" type="danger">输单</el-tag>
+            <el-tag v-else-if="scope.row.state === 0" type="info">无效</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="salesUserName" label="销售" header-align="center" align="center" width="120"/>
@@ -118,7 +118,7 @@ export default {
         activatedIsNeed: true
       },
       // 状态选项
-      statusOptions: [{
+      stateOptions: [{
         value: 1,
         label: '阶段1',
         tip: '赢单率10%'
@@ -167,7 +167,7 @@ export default {
       logAddOrUpdateVisible: false, // 新增跟进
       searchDataForm: {
         name: '',
-        status: '',
+        state: '',
         tenantId: '',
         customerName: '',
         customerId: ''

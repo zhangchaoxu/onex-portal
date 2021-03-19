@@ -18,10 +18,10 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
         <el-table-column prop="code" label="编码" header-align="center" align="center" width="120"></el-table-column>
         <el-table-column prop="name" label="名称" header-align="center" align="center" width="200"></el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="info">下线</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" size="small" type="success">上线</el-tag>
+            <el-tag v-if="scope.row.state === 0" size="small" type="info">下线</el-tag>
+            <el-tag v-else-if="scope.row.state === 1" size="small" type="success">上线</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="title" label="标题" header-align="center" align="center"></el-table-column>

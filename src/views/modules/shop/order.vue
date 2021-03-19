@@ -19,7 +19,7 @@
           <el-input v-model="searchDataForm.receiverSearch" placeholder="收件人" clearable/>
         </el-form-item>
         <el-form-item class="tiny-item">
-          <el-select v-model="searchDataForm.status" placeholder="状态" clearable>
+          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
             <el-option label="待支付" :value="0"/>
             <el-option label="待处理" :value="1"/>
           </el-select>
@@ -50,11 +50,11 @@
         <el-table-column type="selection" header-align="center" align="center" width="50"/>
         <el-table-column prop="tenantName" label="租户" header-align="center" align="center" min-width="100" v-if="$hasRole('sysadmin')"/>
         <el-table-column prop="no" label="订单号" header-align="center" align="center" min-width="120"/>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === -10" type="danger">已取消</el-tag>
-            <el-tag v-if="scope.row.status === 0" type="warning">待支付</el-tag>
-            <el-tag v-else-if="scope.row.status === 5" type="success">已支付</el-tag>
+            <el-tag v-if="scope.row.state === -10" type="danger">已取消</el-tag>
+            <el-tag v-if="scope.row.state === 0" type="warning">待支付</el-tag>
+            <el-tag v-else-if="scope.row.state === 5" type="success">已支付</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="payPrice" label="支付价格" header-align="center" align="center" width="150"/>
@@ -94,10 +94,10 @@
                 </el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:update')" :command="composeEditCommandValue('checkWxPay', scope.row)" icon="el-icon-folder-checked">校验微信支付</el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.payStatus === 0 && scope.row.status === 0" :command="composeEditCommandValue('pay', scope.row)"
+                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.payState === 0 && scope.row.state === 0" :command="composeEditCommandValue('pay', scope.row)"
                                   icon="el-icon-wallet">支付
                 </el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.payStatus === 1" :command="composeEditCommandValue('refund', scope.row)" icon="el-icon-wallet">退款
+                <el-dropdown-item v-if="$hasPermission('shop:order:update') && scope.row.payState === 1" :command="composeEditCommandValue('refund', scope.row)" icon="el-icon-wallet">退款
                 </el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('shop:order:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>
               </el-dropdown-menu>
@@ -145,7 +145,7 @@ export default {
         no: '',
         userName: '',
         userId: '',
-        status: '',
+        state: '',
         receiverSearch: '',
         startCreateTime: '',
         endCreateTime: '',

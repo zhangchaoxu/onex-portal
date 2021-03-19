@@ -60,8 +60,8 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item prop="status" :label="$t('user.status')" size="mini">
-                        <el-radio-group v-model="dataForm.status" :disabled="dataFormMode === 'view'">
+                    <el-form-item prop="state" :label="$t('user.status')" size="mini">
+                        <el-radio-group v-model="dataForm.state" :disabled="dataFormMode === 'view'">
                             <el-radio :label="0">{{ $t('user.status0') }}</el-radio>
                             <el-radio :label="1">{{ $t('user.status1') }}</el-radio>
                         </el-radio-group>
@@ -161,7 +161,7 @@ export default {
         email: '',
         mobile: '',
         roleIdList: [],
-        status: 1,
+        state: 1,
         type: '',
         avatar: '',
         nickname: '',
@@ -220,7 +220,7 @@ export default {
         confirmPassword: [
           { validator: validateConfirmPassword, trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         mobile: [

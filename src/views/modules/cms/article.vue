@@ -8,9 +8,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item class="small-item">
-                    <el-select v-model="searchDataForm.status" placeholder="状态" class="w-percent-100">
+                    <el-select v-model="searchDataForm.state" placeholder="状态" class="w-percent-100">
                         <el-option
-                                v-for="item in statusOptions"
+                                v-for="item in stateOptions"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
@@ -54,10 +54,10 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="content" label="文章内容" header-align="center" align="center" min-width="200" class-name="nowrap html link" :formatter="htmlFmt"/>
-                <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+                <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.status === 0" size="small" type="info">未发布</el-tag>
-                        <el-tag v-else-if="scope.row.status === 1" size="small" type="success">已发布</el-tag>
+                        <el-tag v-if="scope.row.state === 0" size="small" type="info">未发布</el-tag>
+                        <el-tag v-else-if="scope.row.state === 1" size="small" type="success">已发布</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column prop="top" label="推荐" header-align="center" align="center" width="100">
@@ -110,7 +110,7 @@ export default {
         deleteBatchURL: '/cms/article/deleteBatch',
         deleteIsBatch: true
       },
-      statusOptions: [{
+      stateOptions: [{
         value: 0,
         label: '未发布'
       }, {
@@ -128,7 +128,7 @@ export default {
       articleCategoryList: [],
       searchDataForm: {
         name: '',
-        status: '',
+        state: '',
         top: '',
         content: '',
         author: '',

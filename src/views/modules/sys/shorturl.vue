@@ -31,10 +31,10 @@
         </el-table-column>
         <el-table-column prop="code" label="短地址路径" header-align="center" align="center" width="150"/>
         <el-table-column prop="remark" label="备注" header-align="center" align="center"/>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" type="danger">不开放</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" type="success">开放</el-tag>
+            <el-tag v-if="scope.row.state === 0" type="danger">不开放</el-tag>
+            <el-tag v-else-if="scope.row.state === 1" type="success">开放</el-tag>
           </template>
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">

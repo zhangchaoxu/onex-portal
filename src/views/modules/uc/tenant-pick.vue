@@ -22,10 +22,10 @@
                                 {{ scope.row.validStartTime }}<i class="el-icon-arrow-right"/>{{ scope.row.validEndTime }}
                             </template>
                         </el-table-column>
-                        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+                        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
                             <template slot-scope="scope">
-                                <el-tag v-if="scope.row.status === 0" type="danger">无效</el-tag>
-                                <el-tag v-else-if="scope.row.status === 1" type="success">有效</el-tag>
+                                <el-tag v-if="scope.row.state === 0" type="danger">无效</el-tag>
+                                <el-tag v-else-if="scope.row.state === 1" type="success">有效</el-tag>
                             </template>
                         </el-table-column>
                     </el-table>

@@ -63,8 +63,8 @@
                 </el-form-item>
             </el-col>
             <el-col :span="8">
-                <el-form-item label="状态" prop="status">
-                    <el-radio-group v-model="dataForm.status" size="small">
+                <el-form-item label="状态" prop="state">
+                    <el-radio-group v-model="dataForm.state" size="small">
                         <el-radio-button :label="1">已激活</el-radio-button>
                         <el-radio-button :label="0">未激活</el-radio-button>
                     </el-radio-group>
@@ -118,7 +118,7 @@ export default {
         limitPrice: '',
         reducedPrice: '',
         validEndTime: '',
-        status: 0,
+        state: 0,
         pointExchange: '',
         totalQty: 0,
         userQtyLimit: 0

@@ -45,9 +45,9 @@
                 </el-table-column>
                 <el-table-column prop="mobile" :label="$t('user.mobile')" header-align="center" align="center" min-width="120"/>
                 <el-table-column prop="realName" :label="$t('user.realName')" header-align="center" align="center"/>
-                <el-table-column prop="status" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
+                <el-table-column prop="state" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.row.status === 0" size="mini" type="danger" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{
+                        <el-button v-if="scope.row.state === 0" size="mini" type="danger" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{
                             $t('user.status0') }}
                         </el-button>
                         <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{ $t('user.status1') }}</el-button>
@@ -73,7 +73,7 @@
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
             <!-- 弹窗，修改状态 -->
-            <change-status v-if="changeStatusVisible" ref="changeStatus" @refreshDataList="getDataList"/>
+            <change-state v-if="changeStateVisible" ref="changeState" @refreshDataList="getDataList"/>
             <!-- 弹窗，导入用户 -->
             <import v-if="importVisible" ref="import" @refreshDataList="getDataList"/>
         </div>
@@ -83,13 +83,13 @@
 <script>
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './user-add-or-update'
-import ChangeStatus from './user-change-status'
+import ChangeState from './user-change-state'
 import Import from './user-import'
 import TenantPick from '../uc/tenant-pick'
 
 export default {
   mixins: [mixinListModule],
-  components: { ChangeStatus, AddOrUpdate, Import, TenantPick },
+  components: { ChangeState, AddOrUpdate, Import, TenantPick },
   data () {
     return {
       mixinListModuleOptions: {

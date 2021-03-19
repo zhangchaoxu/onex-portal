@@ -8,8 +8,8 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="状态" prop="status">
-                        <el-radio-group v-model="dataForm.status" size="mini">
+                    <el-form-item label="状态" prop="state">
+                        <el-radio-group v-model="dataForm.state" size="mini">
                             <el-radio-button label="0">不开放</el-radio-button>
                             <el-radio-button label="1">开放</el-radio-button>
                         </el-radio-group>
@@ -53,7 +53,7 @@ export default {
         code: '',
         short: '',
         remark: '',
-        status: ''
+        state: ''
       }
     }
   },
@@ -66,7 +66,7 @@ export default {
         url: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

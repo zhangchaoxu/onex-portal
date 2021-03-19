@@ -6,7 +6,7 @@
           <el-input v-model="searchDataForm.uri" placeholder="请求Uri" clearable/>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.status" placeholder="状态" clearable>
+          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
             <el-option :label="$t('error')" :value="0"/>
             <el-option :label="$t('success')" :value="1"/>
           </el-select>
@@ -45,9 +45,9 @@
             {{ `${scope.row.requestTime}ms` }}
           </template>
         </el-table-column>
-        <el-table-column prop="status" label="状态" sortable="custom" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" sortable="custom" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="danger">{{ $t('error') }}</el-tag>
+            <el-tag v-if="scope.row.state === 0" size="small" type="danger">{{ $t('error') }}</el-tag>
             <el-tag v-else size="small" type="success">{{ $t('success') }}</el-tag>
           </template>
         </el-table-column>
@@ -82,7 +82,7 @@ export default {
       },
       searchDataForm: {
         createName: '',
-        status: '',
+        state: '',
         uri: '',
         startCreateTime: '',
         endCreateTime: ''

@@ -74,7 +74,7 @@ export default {
       },
       searchDataForm: {
         createName: '',
-        status: '',
+        state: '',
         ip: '',
         startCreateTime: '',
         endCreateTime: ''

@@ -9,8 +9,8 @@
             </el-col>
             <el-col :span="8">
                 <el-form-item label="当前状态" prop="businessStatus">
-                    <el-select v-model="dataForm.businessStatus" class="w-percent-100" disabled>
-                        <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                    <el-select v-model="dataForm.businessState" class="w-percent-100" disabled>
+                        <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
                             <span style="float: left">{{ item.label }}</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.tip }}</span>
                         </el-option>
@@ -18,9 +18,9 @@
                 </el-form-item>
             </el-col>
             <el-col :span="8">
-                <el-form-item label="最新状态" prop="status">
-                    <el-select v-model="dataForm.status" placeholder="请选择商机新状态" class="w-percent-100">
-                        <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                <el-form-item label="最新状态" prop="state">
+                    <el-select v-model="dataForm.state" placeholder="请选择商机新状态" class="w-percent-100">
+                        <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
                             <span style="float: left">{{ item.label }}</span>
                             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.tip }}</span>
                         </el-option>
@@ -71,7 +71,7 @@ export default {
         dataFormInfoURL: `/crm/businessLog/info?id=`
       },
       // 状态选项
-      statusOptions: [{
+      stateOptions: [{
         value: 1,
         label: '阶段1',
         tip: '赢单率10%'
@@ -100,8 +100,8 @@ export default {
         businessId: '',
         businessName: '',
         type: 'followup',
-        status: '',
-        businessStatus: '',
+        state: '',
+        businessState: '',
         logDate: '',
         nextFollowDate: '',
         content: '',
@@ -112,7 +112,7 @@ export default {
   computed: {
     dataRule () {
       return {
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         logDate: [
@@ -147,8 +147,8 @@ export default {
         if (res.code !== 0) {
           this.$message.error(res.toast)
         } else {
-          this.dataForm.status = res.data.status
-          this.dataForm.businessStatus = res.data.status
+          this.dataForm.state = res.data.state
+          this.dataForm.businessStatus = res.data.state
           this.dataForm.businessName = res.data.name
         }
       }).catch(resp => {

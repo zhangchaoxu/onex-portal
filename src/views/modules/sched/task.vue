@@ -39,9 +39,9 @@
         <el-table-column prop="param" :label="$t('base.param')" header-align="center" align="center"></el-table-column>
         <el-table-column prop="cron" label="cron" header-align="center" align="center"></el-table-column>
         <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="status" :label="$t('base.status')" sortable="custom" header-align="center" align="center">
+        <el-table-column prop="state" :label="$t('base.state')" sortable="custom" header-align="center" align="center">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 1" size="small">{{$t('enable')}}</el-tag>
+            <el-tag v-if="scope.row.state === 1" size="small">{{$t('enable')}}</el-tag>
             <el-tag v-else size="small" type="danger">{{$t('disable')}}</el-tag>
           </template>
         </el-table-column>
@@ -54,8 +54,8 @@
                 <el-dropdown-item v-if="$hasPermission('sched:task:update')" :command="composeEditCommandValue('addOrUpdate', scope.row)" icon="el-icon-edit">{{ $t('update') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('sched:task:delete')" :command="composeEditCommandValue('delete', scope.row)" icon="el-icon-delete">{{ $t('delete') }}</el-dropdown-item>
                 <el-dropdown-item v-if="$hasPermission('sched:task:run')" :command="composeEditCommandValue('run', scope.row)" icon="el-icon-video-play">{{ $t('run') }}</el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('sched:task:pause') && scope.row.status === 1" :command="composeEditCommandValue('pause', scope.row)" icon="el-icon-video-pause">{{ $t('pause') }}</el-dropdown-item>
-                <el-dropdown-item v-if="$hasPermission('sched:task:resume') && scope.row.status === 0" :command="composeEditCommandValue('resume', scope.row)" icon="el-icon-refresh-right">{{ $t('resume') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:pause') && scope.row.state === 1" :command="composeEditCommandValue('pause', scope.row)" icon="el-icon-video-pause">{{ $t('pause') }}</el-dropdown-item>
+                <el-dropdown-item v-if="$hasPermission('sched:task:resume') && scope.row.state === 0" :command="composeEditCommandValue('resume', scope.row)" icon="el-icon-refresh-right">{{ $t('resume') }}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>

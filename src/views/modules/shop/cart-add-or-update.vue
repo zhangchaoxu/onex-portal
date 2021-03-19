@@ -10,8 +10,8 @@
           <el-form-item label="数量" prop="qty">
           <el-input v-model="dataForm.qty" placeholder="数量"></el-input>
       </el-form-item>
-          <el-form-item label="状态0 未下单 1 已下单" prop="status">
-          <el-input v-model="dataForm.status" placeholder="状态0 未下单 1 已下单"></el-input>
+          <el-form-item label="状态0 未下单 1 已下单" prop="state">
+          <el-input v-model="dataForm.state" placeholder="状态0 未下单 1 已下单"></el-input>
       </el-form-item>
                 </el-form>
     <template slot="footer">
@@ -38,7 +38,7 @@ export default {
         userId: '',
         goodsId: '',
         qty: '',
-        status: '',
+        state: '',
         createId: '',
         createTime: '',
         updateId: '',
@@ -59,7 +59,7 @@ export default {
         qty: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         createId: [

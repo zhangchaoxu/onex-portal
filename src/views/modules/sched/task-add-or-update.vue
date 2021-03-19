@@ -15,8 +15,8 @@
       <el-form-item prop="remark" :label="$t('base.remark')">
         <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"></el-input>
       </el-form-item>
-      <el-form-item prop="status" :label="$t('base.status')">
-        <el-radio-group v-model="dataForm.status" size="mini">
+      <el-form-item prop="state" :label="$t('base.state')">
+        <el-radio-group v-model="dataForm.state" size="mini">
           <el-radio-button :label="0">暂停</el-radio-button>
           <el-radio-button :label="1">启用</el-radio-button>
         </el-radio-group>
@@ -48,7 +48,7 @@ export default {
         param: '',
         cron: '',
         remark: '',
-        status: 0
+        state: 0
       }
     }
   },

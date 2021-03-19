@@ -61,10 +61,10 @@
                         <el-tag :key="tag" v-for="tag in scope.row.roleNames.split(',')" style="margin-right: 3px;">{{tag}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column prop="status" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
+                <el-table-column prop="state" :label="$t('user.state')" sortable="custom" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.status === 0" type="danger">{{ $t('user.status0') }}</el-tag>
-                        <el-tag v-else-if="scope.row.status === 1" type="success">{{ $t('user.status1') }}</el-tag>
+                        <el-tag v-if="scope.row.state === 0" type="danger">{{ $t('user.status0') }}</el-tag>
+                        <el-tag v-else-if="scope.row.state === 1" type="success">{{ $t('user.status1') }}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
@@ -87,7 +87,7 @@
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
             <!-- 弹窗，修改状态 -->
-            <change-status v-if="changeStatusVisible" ref="changeStatus" @refreshDataList="getDataList"/>
+            <change-state v-if="changeStatusVisible" ref="changeStatus" @refreshDataList="getDataList"/>
             <!-- 弹窗，导入用户 -->
             <import v-if="importVisible" ref="import" @refreshDataList="getDataList"/>
         </div>
@@ -97,11 +97,11 @@
 <script>
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './user-add-or-update'
-import ChangeStatus from './user-change-status'
+import ChangeState from './user-change-state'
 import Import from './user-import'
 export default {
   mixins: [mixinListModule],
-  components: { ChangeStatus, AddOrUpdate, Import },
+  components: { ChangeState, AddOrUpdate, Import },
   data () {
     return {
       mixinListModuleOptions: {

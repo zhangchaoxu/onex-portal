@@ -35,8 +35,8 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item label="状态" prop="status">
-                        <el-radio-group v-model="dataForm.status" size="small">
+                    <el-form-item label="状态" prop="state">
+                        <el-radio-group v-model="dataForm.state" size="small">
                             <el-radio-button :label="1">正常</el-radio-button>
                             <el-radio-button :label="0">停用</el-radio-button>
                         </el-radio-group>
@@ -71,7 +71,7 @@ export default {
         defaultItem: 0,
         special: '',
         scale: 1,
-        status: 1
+        state: 1
       }
     }
   },
@@ -96,7 +96,7 @@ export default {
         scale: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

@@ -32,9 +32,9 @@
         <el-table-column prop="param" label="参数" header-align="center" align="center" class-name="nowrap json link"/>
         <el-table-column prop="notifyUrl" label="回调地址" header-align="center" align="center" class-name="nowrap text link"/>
         <el-table-column prop="remark" label="备注" header-align="center" align="center" show-tooltip-when-overflow/>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="danger">停用</el-tag>
+            <el-tag v-if="scope.row.state === 0" size="small" type="danger">停用</el-tag>
             <el-tag v-else size="small" type="success">启用</el-tag>
           </template>
         </el-table-column>

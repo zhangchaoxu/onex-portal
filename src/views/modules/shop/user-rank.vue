@@ -29,10 +29,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="scale" label="优惠比例" header-align="center" align="center" width="80"/>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" type="info">停用</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" type="success">正常</el-tag>
+            <el-tag v-if="scope.row.state === 0" type="info">停用</el-tag>
+            <el-tag v-else-if="scope.row.state === 1" type="success">正常</el-tag>
           </template>
         </el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">

@@ -32,7 +32,7 @@ export default {
       dataListSelections: [], // 数据列表，多选项
       addOrUpdateVisible: false, // 新增/更新，弹窗visible状态
       uploadUrl: '', // 文件上传地址
-      changeStatusVisible: false, // 修改状态,弹窗visible状态
+      changeStateVisible: false, // 修改状态,弹窗visible状态
       cancelVisible: false, // 取消操作,弹窗visible状态
       importVisible: false, // 导入操作,弹窗visible状态
       dateRange: null // 时间范围
@@ -149,11 +149,11 @@ export default {
       })
     },
     // 修改状态
-    changeStatusHandle (id) {
-      this.changeStatusVisible = true
+    changeStateHandle (id) {
+      this.changeStateVisible = true
       this.$nextTick(() => {
-        this.$refs.changeStatus.dataForm.id = id
-        this.$refs.changeStatus.init()
+        this.$refs.changeState.dataForm.id = id
+        this.$refs.changeState.init()
       })
     },
     // 删除

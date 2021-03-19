@@ -26,8 +26,8 @@
             <el-form-item label="备注" prop="remark">
                 <el-input v-model="dataForm.remark" placeholder="备注" type="textarea"/>
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-                <el-radio-group v-model="dataForm.status" size="small">
+            <el-form-item label="状态" prop="state">
+                <el-radio-group v-model="dataForm.state" size="small">
                     <el-radio-button :label="0">停用</el-radio-button>
                     <el-radio-button :label="1">启用</el-radio-button>
                 </el-radio-group>
@@ -78,7 +78,7 @@ export default {
         param: '',
         remark: '',
         notifyUrl: '',
-        status: 1,
+        state: 1,
         tenantId: '',
         tenantName: ''
       }
@@ -96,7 +96,7 @@ export default {
         param: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         tenantId: [

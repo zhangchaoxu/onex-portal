@@ -310,7 +310,7 @@ export default {
         specs: '',
         specType: 0,
         cartable: 1,
-        status: '',
+        state: '',
         hits: '',
         imgs: '',
         content: '',
@@ -396,7 +396,7 @@ export default {
         specs: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         hits: [

@@ -30,9 +30,9 @@
             </el-row>
             <el-row>
                 <el-col :span="8">
-                    <el-form-item label="商机状态" prop="status">
-                        <el-select v-model="dataForm.status" filterable placeholder="请选择商机状态" class="w-percent-100">
-                            <el-option v-for="item in statusOptions" :key="item.value" :label="item.label" :value="item.value">
+                    <el-form-item label="商机状态" prop="state">
+                        <el-select v-model="dataForm.state" filterable placeholder="请选择商机状态" class="w-percent-100">
+                            <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
                                 <span style="float: left">{{ item.label }}</span>
                                 <span style="float: right; color: #8492a6; font-size: 13px">{{ item.tip }}</span>
                             </el-option>
@@ -138,7 +138,7 @@ export default {
       // 当前编辑行
       productEditIndex: -1,
       // 状态选项
-      statusOptions: [{
+      stateOptions: [{
         value: 1,
         label: '阶段1',
         tip: '赢单率10%'
@@ -190,7 +190,7 @@ export default {
         source: '',
         remark: '',
         followDate: '',
-        status: '',
+        state: '',
         amount: '',
         dealDate: '',
         productDiscount: '',
@@ -227,7 +227,7 @@ export default {
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

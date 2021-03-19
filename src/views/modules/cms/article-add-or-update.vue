@@ -55,10 +55,10 @@
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="12">
-                    <el-form-item label="是否发布" prop="status">
-                        <el-select v-model="dataForm.status" placeholder="选择是否发布" class="w-percent-100">
+                    <el-form-item label="是否发布" prop="state">
+                        <el-select v-model="dataForm.state" placeholder="选择是否发布" class="w-percent-100">
                             <el-option
-                                    v-for="item in statusOptions"
+                                    v-for="item in stateOptions"
                                     :key="item.value"
                                     :label="item.label"
                                     :value="item.value">
@@ -111,7 +111,7 @@ export default {
       },
       // 文章分类列表
       articleCategoryList: [],
-      statusOptions: [{
+      stateOptions: [{
         value: 0,
         label: '未发布'
       }, {
@@ -129,7 +129,7 @@ export default {
         articleCategoryId: '',
         id: '',
         sort: '',
-        status: '',
+        state: '',
         type: '',
         remark: '',
         name: '',
@@ -153,7 +153,7 @@ export default {
         sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         name: [

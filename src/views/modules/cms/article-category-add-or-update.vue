@@ -49,7 +49,7 @@ export default {
         sort: '',
         remark: '',
         imgs: '',
-        status: 1
+        state: 1
       }
     }
   },

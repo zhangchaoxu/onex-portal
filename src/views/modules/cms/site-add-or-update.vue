@@ -28,10 +28,10 @@
             <el-form-item label="图片" prop="imgs">
                 <el-input v-model="dataForm.imgs" placeholder="图片"></el-input>
             </el-form-item>
-            <el-form-item label="状态" prop="status">
-                <el-select v-model="dataForm.status" placeholder="选择状态" class="w-percent-100">
+            <el-form-item label="状态" prop="state">
+                <el-select v-model="dataForm.state" placeholder="选择状态" class="w-percent-100">
                     <el-option
-                            v-for="item in statusOptions"
+                            v-for="item in stateOptions"
                             :key="item.value"
                             :label="item.label"
                             :value="item.value">
@@ -61,7 +61,7 @@ export default {
         dataFormUpdateURL: `/cms/site/update`,
         dataFormInfoURL: `/cms/site/info?id=`
       },
-      statusOptions: [{
+      stateOptions: [{
         value: 0,
         label: '下线'
       }, {
@@ -78,7 +78,7 @@ export default {
         copyright: '',
         keywords: '',
         imgs: '',
-        status: 1
+        state: 1
       }
     }
   },
@@ -94,7 +94,7 @@ export default {
         title: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        status: [
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

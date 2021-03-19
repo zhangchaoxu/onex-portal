@@ -29,10 +29,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="sort" sortable="custom" label="排序" header-align="center" align="center" width="100"></el-table-column>
-        <el-table-column prop="status" label="状态" header-align="center" align="center" width="100">
+        <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.status === 0" size="small" type="info">未审核</el-tag>
-            <el-tag v-else-if="scope.row.status === 1" size="small" type="success">已审核</el-tag>
+            <el-tag v-if="scope.row.state === 0" size="small" type="info">未审核</el-tag>
+            <el-tag v-else-if="scope.row.state === 1" size="small" type="success">已审核</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="content" label="简介" header-align="center" align="center" show-overflow-tooltip></el-table-column>

@@ -48,7 +48,7 @@
               <el-input v-model="searchDataForm.mailTo" placeholder="收件人"/>
             </el-form-item>
             <el-form-item class="tiny-item">
-              <el-select v-model="searchDataForm.status" :placeholder="$t('base.status')" clearable>
+              <el-select v-model="searchDataForm.state" :placeholder="$t('base.state')" clearable>
                 <el-option :label="$t('success')" :value="1"/>
                 <el-option :label="$t('error')" :value="0"/>
               </el-select>
@@ -74,7 +74,7 @@
             <el-table-column prop="mailCc" label="抄送" header-align="center" align="center"/>
             <el-table-column prop="subject" label="标题" header-align="center" align="center"/>
             <el-table-column prop="content" :label="$t('base.content')" header-align="center" align="center" class-name="nowrap html link" :formatter="htmlFmt"/>
-            <el-table-column prop="status" label="状态" header-align="center" align="center" width="80">
+            <el-table-column prop="state" label="状态" header-align="center" align="center" width="80">
               <template slot-scope="scope">
                 <el-popover
                     placement="top"
@@ -82,7 +82,7 @@
                     :disabled="!scope.row.result"
                     :content="scope.row.result">
                   <div slot="reference">
-                    <el-tag v-if="scope.row.status === 1" size="small">{{ $t('success') }}</el-tag>
+                    <el-tag v-if="scope.row.state === 1" size="small">{{ $t('success') }}</el-tag>
                     <el-tag v-else size="small" type="danger">{{ $t('error') }}</el-tag>
                   </div>
                 </el-popover>
@@ -144,7 +144,7 @@ export default {
       searchDataForm: {
         tplCode: null,
         mailTo: '',
-        status: null
+        state: null
       }
     }
   },
