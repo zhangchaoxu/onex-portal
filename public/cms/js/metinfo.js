@@ -15763,7 +15763,7 @@ if(Tablesaw.mustard) {
 /*!
  * classie - class helper functions
  * from bonzo https://github.com/ded/bonzo
- * 
+ *
  * classie.has( elem, 'my-class' ) -> true/false
  * classie.add( elem, 'my-new-class' )
  * classie.remove( elem, 'my-unwanted-class' )
@@ -15847,7 +15847,7 @@ if(Tablesaw.mustard) {
  *
  * Licensed under the MIT license.
  * http://www.opensource.org/licenses/mit-license.php
- * 
+ *
  * Copyright 2013, Codrops
  * http://www.codrops.com
  */
@@ -15926,7 +15926,7 @@ if(Tablesaw.mustard) {
 			minDuration: 0,
 			maxDuration: 0,
 			// The viewportFactor defines how much of the appearing item has to be visible in order to trigger the animation
-			// if we'd use a value of 0, this would mean that it would add the animation class as soon as the item is in the viewport. 
+			// if we'd use a value of 0, this would mean that it would add the animation class as soon as the item is in the viewport.
 			// If we were to use the value of 1, the animation would only be triggered when we see all of the item in the viewport (100% of it)
 			viewportFactor: 0,
 			MasonryOk: true
@@ -16030,15 +16030,15 @@ if(Tablesaw.mustard) {
 /**
  * Swiper 3.3.1
  * Most modern mobile touch slider and framework with hardware accelerated transitions
- * 
+ *
  * http://www.idangero.us/swiper/
- * 
+ *
  * Copyright 2016, Vladimir Kharlampidi
  * The iDangero.us
  * http://www.idangero.us/
- * 
+ *
  * Licensed under MIT
- * 
+ *
  * Released on: February 7, 2016
  */
 ! function() {

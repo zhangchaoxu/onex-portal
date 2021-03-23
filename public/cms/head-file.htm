@@ -9,7 +9,27 @@
 <script src="//pages.nb6868.com/cdn/art-template/4.13.2/template-web.js"></script>
 <script src="./js/common.js"></script>
 <script type="text/javascript">
+
     getSiteInfo()
+
+    function getSiteInfo () {
+        $.ajax({
+            type: 'GET',
+            url: api + '/cms/public/getSiteInfoByCode?code=default',
+            success (json) {
+                console.log(json)
+                // 设置标题和keywords
+                $('title').html(json.data.title)
+                $("meta[name='keywords']").attr('content', json.data.keywords)
+                $("meta[name='description']").attr('content', json.data.descr)
+                // 设置copyright
+                $('#copyright').html(json.data.copyright)
+            },
+            error (err) {
+                console.log(err)
+            }
+        })
+    }
 </script>
 <style>
 	@font-face {
