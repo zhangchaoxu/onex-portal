@@ -1,0 +1,100 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<#include "head-file.htm">
+	</head>
+	<body>
+		<#include "head.htm">
+		<section class="derived-banner">
+			<div class="container">
+				<div class="met-banner banner-ny-h">
+					<div class="slick-slide">
+						<img class="cover-image" src="{ms:global.host/}/{ms:global.style/}images/1506744384.jpg" sizes="(max-width: 767px) 767px" alt="调查征集">
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="met-column-nav">
+			<div class="container">
+				<div class="card">
+					<div class="sidebar-tile">
+						<ul class="met-column-nav-ul invisible-xs">
+							<li>
+								<a href="{ms:global.url/}/52/index.html" title="奋发概况" class="link ">奋发概况</a>
+							</li>
+							<li>
+								<a href="{ms:global.url/}/87/index.html" title="政民互动" class="link">政民互动</a>
+							</li>
+							<li>
+								<a href="{ms:global.url/}/19/142/index.html" title="调查征集" class="link active">调查征集</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<section class="met-feedback animsition">
+			<div class="container">
+				<div class="row">
+					<div class="met-feedback-body">
+						<form class="met-form met-form-validation" >
+							<input type='hidden' name='lang' value='cn' />
+							<input type='hidden' name='fdtitle' value='在线反馈' />
+							<input type='hidden' name='ip' value='182.84.92.24' />
+							<input type='hidden' name='id' value='31' />
+							<input type='hidden' name='fid_url' value='0' />
+							<div class="form-group">
+								<div>
+									<select name='para4' class='form-control' data-fv-notempty="true" data-fv-message="不能为空">
+										<option value=''>反馈主题</option>
+										<option value='意见建议'>意见建议</option>
+										<option value='民政协调'>民政协调</option>
+										<option value='民生服务'>民生服务</option>
+										<option value='其他反馈'>其他反馈</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<input name='para5' class='form-control' type='text' placeholder='姓名 ' data-fv-notempty="true" data-fv-message="不能为空" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<input name='para7' class='form-control' type='text' placeholder='Email ' data-fv-notempty="true" data-fv-message="不能为空" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<input name='para8' class='form-control' type='text' placeholder='联系电话 ' />
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<input name='para11' class='form-control' type='text' placeholder='详细地址 ' />
+								</div>
+							</div>
+							<div class="form-group">
+								<div>
+									<textarea name='para12' class='form-control' data-fv-notempty="true" data-fv-message="不能为空" placeholder='信息描述 ' rows='5'></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group input-group-icon">
+									<input name='code' type="text" class="form-control" placeholder="验证码" data-fv-notempty="true" data-fv-message="不能为空">
+									<span class="input-group-addon">
+									<img class="met-form-codeimg" alt="看不清？点击更换验证码" title="看不清？点击更换验证码"/>
+									</span>
+								</div>
+							</div>
+							<div class="form-group margin-bottom-0">
+								<button type="submit" class="btn btn-primary btn-lg btn-block btn-squared">提交</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<#include "footer.htm">
+	</body>
+</html>

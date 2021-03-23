@@ -1,0 +1,84 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<#include "head-file.htm">
+	</head>
+	<body>
+		<#include "head.htm">
+		<section class="derived-banner">
+			<div class="container">
+				<div class="met-banner   banner-ny-h" data-height='' style=''>
+					<div class="slick-slide">
+						<img class="cover-image" src="{ms:global.host/}/{ms:global.style/}images/1506744384.jpg" sizes="(max-width: 767px) 767px" alt="党务公开">
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class="met-news animsition">
+			<div class="container">
+				<div class="col-md-9 met-news-body">
+					<div class="row">
+						<div class="met-news-list">
+							<ul class="met-page-ajax" data-scale=''>
+								{ms:arclist ispaging=true size=6}
+								<li>
+									<h4>
+										<a class="news-list-a" href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+											[field.title/]
+										</a>
+									</h4>
+									<p class="des">[field.descrip/]</p>
+									<p class="info">
+										<span>[field.date?string("yyyy-mm-dd")/]</span>
+										<span>[field.author/]</span>
+									</p>
+								</li>
+								{/ms:arclist}
+							</ul>
+							<div class="hidden-xs">
+								<div class='met_pager ms-dis-block'>
+									<a class='Ahover' href="{ms:global.url/}/{ms:page.index/}">首页</a>
+									<a class='Ahover' href="{ms:global.url/}/{ms:page.pre/}">上一页</a>
+									<a class='NextSpan'>当前：{ms:page.cur/}</a>
+									<a class='NextSpan'>总页：{ms:page.total/}</a>
+									<a class='Ahover' href="{ms:global.url/}/{ms:page.next/}">下一页</a>
+									<a class='Ahover' href="{ms:global.url/}/{ms:page.last/}">末页</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="row">
+						<div class="met-news-bar">
+							<form>
+								<input type='hidden' name='lang' value='cn' />
+								<input type='hidden' name='class1' value='2' />
+								<div class="form-group">
+									<div class="input-search">
+										<button type="submit" class="input-search-btn ms-but-list"><i class="fa fa-search"></i></button>
+										<input type="text" class="form-control" name="searchword" placeholder="Search">
+									</div>
+								</div>
+							</form>
+							<div class="recommend news-list-md">
+								<h3>为您推荐</h3>
+								<ul class="list-group list-group-bordered">
+									{ms:arclist size=4}
+									<li class="list-group-item">
+										<a class="news-list-a" href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>[field.title/]</a>
+									</li>
+									{/ms:arclist}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<#include "footer.htm">
+		<script type="text/javascript">
+			$(".news-list-a").attr("href", $(".news-list-a").attr("href") + location.search);
+		</script>
+	</body>
+</html>

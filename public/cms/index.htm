@@ -1,0 +1,229 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+	    <!--#include file="./head-file.htm"-->
+	</head>
+	<body>
+		<!--#include file="./head.htm"-->
+		<section class="derived-banner">
+			<div class="container">
+				<div class="met-banner" data-height='' style=''>
+					<div class="slick-slide">
+						<img class="cover-image" src="./images/1506752725.jpg" sizes="(max-width: 767px) 767px">
+					</div>
+					<div class="slick-slide">
+						<img class="cover-image" src="./images/1506752723.jpg" sizes="(max-width: 767px) 767px">
+						<div class="banner-text p-5">
+							<div class='container'>
+								<div class='banner-text-con'>
+									<div>
+										<h4 class="animation-slide-top" style='color:#ba1c1c'><b>建设美丽文明乡村</b></h4>
+										<p class="animation-slide-bottom animation-delay-300">共创美好生活</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="container">
+			<ul class="grid" id="grid">
+				<div class="item w12 col-xs-12">
+					<div class="met-index-notice">
+						<div class="notice clearfix">
+							<span class="notice-title col-md-2 col-xs-4">通知公告</span>
+							<span class="notice-swiper col-md-10 col-xs-8">
+								<ul class="notice-ul">
+									{ms:arclist typeid=59}
+									<li class="notice-li">
+										<a href="{ms:global.url/}[field.link/]" title="[field.title/]">[field.title/]<span>  [[field.date?string("yyyy-mm-dd")/]]</span></a>
+									</li>
+									{/ms:arclist}
+								</ul>
+							<a href="{ms:global.url/}/59/68/index.html" title="公司新闻" target='_self'><i class="fa fa-sign-out"></i></a>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="item w8 col-xs-12">
+				<div class="met-index-imgnews">
+					<div class="left-news">
+						<div class="left-img">
+							<div class="slick" id="imgnews-slick">
+								{ms:arclist typeid=61 size=3}
+								<div>
+									<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+										<h3 class="animation-slide-bottom">[field.title/]</h3>
+										<img class="cover-image" src="{ms:global.host/}/{ms:global.style/}/images/banner.jpg" sizes="(max-width: 991px) 991px" style="height:372px;" alt="">
+									</a>
+								</div>
+								{/ms:arclist}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item col-xs-12">
+				<div class="met-index-imgnews">
+					<ul class="right-news news-ul">
+						<div class="right-img">
+							<a href="javascript:;">
+								<img src="{ms:global.host/}/{ms:global.style/}images/1506755602.jpg">
+							</a>
+						</div>
+						{ms:arclist typeid=61 size=4}
+						<li>
+							<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+								[field.title/]
+							</a>
+						</li>
+						{/ms:arclist}
+					</ul>
+				</div>
+			</div>
+			<div class="item col-xs-12">
+				<div class="met-index-news">
+					<div class="title clearfix">
+						<h2 class="news-h">乡镇动态</h2>
+						<p class="news-desc">News</p>
+					</div>
+					<ul class="news-list">
+						{ms:arclist typeid=59 size=5}
+						<li>
+							<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+								<span>[field.date?string("yyyy-mm-dd")/]
+							</a>
+						</li>
+						{/ms:arclist}
+					</ul>
+					<div class="more">
+						<a href="{ms:global.url/}/59/index.html">
+							更多
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="item col-xs-12">
+				<div class="met-index-news">
+					<div class="title clearfix">
+						<h2 class="news-h">政务公开</h2>
+						<p class="news-desc">publicity</p>
+					</div>
+					<ul class="news-list">
+						{ms:arclist typeid=61 size=5}
+						<li>
+							<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+								<span>[field.date?string("yyyy-mm-dd")/]
+							</a>
+						</li>
+						{/ms:arclist}
+					</ul>
+					<div class="more">
+						<a href="{ms:global.url/}/61/index.html">
+							更多
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="item col-md-4 col-sm-12">
+				<div class="item-content">
+					<div class="met-index-img">
+						<a href="javascript:;" target='_self'><img src="{ms:global.host/}/{ms:global.style/}images/1506755112.jpg"></a>
+					</div>
+				</div>
+			</div>
+			<div class="item col-xs-12">
+				<div class="met-index-product">
+					<div class="container">
+						<div class="title clearfix">
+							<h2 class="news-h">美丽奋发</h2>
+							<p class="news-desc">Product</p>
+						</div>
+						<div class="nav-tabs-vertical">
+							<ul class="nav nav-tabs margin-right-25" data-plugin="nav-tabs" role="tablist">
+								{ms:arclist typeid=106 size=4}
+								<li class="" role="presentation">
+									<a data-toggle="tab" href="#[field.index/]" role="tab" aria-expanded="true">
+										[field.title/]
+									</a>
+								</li>
+								{/ms:arclist}
+							</ul>
+							<div class="tab-content padding-vertical-15">
+								{ms:arclist typeid=106 size=4}
+								<div class="tab-pane" id="[field.index/]" role="tabpanel">
+									<p></p>
+									<div class="row">
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<a href="{ms:global.url/}[field.link/]" title="[field.title/]">
+												<img class="cover-image" src="{ms:global.host/}[field.litpic/]" alt="[field.title/]" height="100px"></a>
+										</div>
+										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+											<div class="more">
+												<a href="{ms:global.url/}[field.link/]" title="[field.title/]">
+													查看详情
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{/ms:arclist}
+								<script>
+									$(".nav-tabs>li").eq(0).addClass("active")
+									$(".tab-pane").eq(0).addClass("active")
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="item col-xs-12">
+				<div class="met-index-news">
+					<div class="title clearfix">
+						<h2 class="news-h">政策法规</h2>
+						<p class="news-desc">Policy</p>
+					</div>
+					<ul class="news-list">
+						{ms:arclist typeid=62 size=5}
+						<li>
+							<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+								<span>[field.date?string("yyyy-mm-dd")/]
+							</a>
+						</li>
+						{/ms:arclist}
+					</ul>
+					<div class="more">
+						<a href="{ms:global.url/}/62/index.html">
+							更多
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="item  col-xs-12">
+				<div class="met-index-news">
+					<div class="title clearfix">
+						<h2 class="news-h">招商引资</h2>
+						<p class="news-desc">Investment</p>
+					</div>
+					<ul class="news-list">
+					{ms:arclist typeid=59 size=5 orderby=id order=asc}
+						<li>
+							<a href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>
+								<span>[field.date?string("yyyy-mm-dd")/]
+							</a>
+						</li>
+					{/ms:arclist}
+					</ul>
+					<div class="more">
+						<a href="{ms:global.url/}/59/index.html">
+							更多
+						</a>
+					</div>
+				</div>
+			</div>
+			</ul>
+		</div>
+        <!--#include file="./footer.htm"-->
+	</body>
+</html>

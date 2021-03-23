@@ -1,0 +1,79 @@
+﻿<!DOCTYPE HTML>
+<html>
+	<head>
+		<#include "head-file.htm">
+	</head>
+	<body>
+		<#include "head.htm">
+		<section class="met-shownews animsition">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-9 met-shownews-body">
+						<div class="row">
+							<div class="met-shownews-header">
+								<h1>{ms:field.title/}</h1>
+								<div class="info">
+									<span>{ms:field.date?string("yyyy-MM-dd")/}</span>
+									<span>{ms:field.author/}</span>
+									<span><i class="iconfont wb-eye margin-right-5" aria-hidden="true">&#xe80b;</i>{ms:field.hit/}</span>
+								</div>
+							</div>
+							<div class="met-editor  clearfix">
+								<div>
+									{ms:field.content/}
+									<div id="metinfo_additional"></div>
+								</div>
+							</div>
+							<div class="met-shownews-footer">
+								<ul class="pager pager-round">
+									<li class="previous ">
+										<a href="{ms:global.url/}{ms:next.link/}" title="{ms:next.title/}">
+											上一篇
+											<span aria-hidden="true" class='hidden-xs'>：{ms:next.title/}</span>
+										</a>
+									</li>
+									<li class="next ">
+										<a href="{ms:global.url/}{ms:pre.link/}" title="{ms:pre.title/}">
+											下一篇
+											<span aria-hidden="true" class='hidden-xs'>：{ms:pre.title/}</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="row">
+							<div class="met-news-bar">
+								<form>
+									<input type='hidden' name='lang' value='cn' />
+									<input type='hidden' name='class1' value='2' />
+									<div class="form-group">
+										<div class="input-search">
+											<button type="submit" class="input-search-btn ms-but-list"><i class="fa fa-search"></i></button>
+											<input type="text" class="form-control" name="searchword" placeholder="Search">
+										</div>
+									</div>
+								</form>
+								<div class="recommend news-list-md">
+									<h3>为您推荐</h3>
+									<ul class="list-group list-group-bordered">
+										{ms:arclist size=4}
+										<li class="list-group-item">
+											<a class="news-list-a" href="{ms:global.url/}[field.link/]" title="[field.title/]" target='_self'>[field.title/]</a>
+										</li>
+										{/ms:arclist}
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<#include "footer.htm">
+		<script type="text/javascript">
+			$(".news-list-a").attr("href", $(".news-list-a").attr("href") + location.search);
+		</script>
+	</body>
+</html>

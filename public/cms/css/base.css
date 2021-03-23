@@ -1,0 +1,333 @@
+.btn-outline.btn-primary.active,
+.btn-outline.btn-primary:active,
+.btn-outline.btn-primary:focus,
+.btn-outline.btn-primary:hover,
+.open>.dropdown-toggle.btn-outline.btn-primary {
+	background-color: #850404!important;
+	border-color: #850404!important;
+}
+
+.btn-outline.btn-primary {
+	color: #fff!important;
+}
+
+.nav-tabs-vertical .nav-tabs>li.active>a,
+.nav-tabs-vertical .nav-tabs>li.active>a:focus,
+.nav-tabs-vertical .nav-tabs>li.active>a:hover {
+	border-right-color: #ba1c1c!important;
+	background-color: #ba1c1c!important;
+}
+
+.form-control.focus,
+.form-control:focus {
+	border-color: #850404!important;
+}
+
+.checkbox-primary input[type="checkbox"]:checked+label::before,
+.checkbox-primary input[type="radio"]:checked+label::before {
+	background-color: #850404!important;
+	border-color: #850404!important;
+}
+
+.met_pager a.Ahover {
+	border-color: #850404!important;
+	background: #850404!important;
+}
+
+.met-news-bar .recommend .list-group a:hover {
+	color: #850404!important;
+}
+
+.column li a:hover {
+	color: #850404!important;
+}
+
+.met_pager a.Ahover:hover {
+	border-color: #850404!important;
+	background: #850404!important;
+}
+
+.pager li>a:focus,
+.pager li>a:hover {
+	border-color: #850404!important;
+	color: #850404!important;
+}
+
+.nav-tabs-line>li.active>a,
+.nav-tabs-line>li.active>a:focus,
+.nav-tabs-line>li.active>a:hover {
+	color: #850404!important;
+	border-bottom: 2px solid #850404!important;
+}
+
+.modal-primary .modal-header {
+	background-color: #850404!important;
+}
+
+.radio-primary input[type="radio"]:checked+label::before {
+	border-color: #850404!important;
+}
+
+.btn-primary {
+	background-color: #850404!important;
+	border-color: #850404!important;
+}
+
+
+/*首页*/
+
+.top-site .lang-list .met-search-body .search-btn {
+	background: #ba1c1c!important;
+}
+
+.top-site .lang-list li .langlist-item {
+	color: #ba1c1c!important;
+}
+
+
+/*导航*/
+
+.met-nav .navlist {
+	background: #ba1c1c!important;
+}
+
+.met-nav .nav>li>a:hover,
+.met-nav .dropdown.open>a {
+	background: #850404!important;
+}
+
+.met-nav .nav li .dropdown-toggle.active,
+.met-nav .dropdown.open .dropdown-toggle {
+	background: #850404!important;
+}
+
+.met-nav .navlist>li>.dropdown-menu {
+	background: #850404!important;
+}
+
+.met-nav .navlist>li>.dropdown-menu a:hover {
+	background: #850404!important;
+}
+
+.met-nav .navlist>li>.dropdown-menu .dropdown-menu {
+	background: #850404!important;
+}
+
+.met-footnav h4 a:hover {
+	color: #850404!important;
+}
+
+.met-footnav .info a:hover i,
+.met-footnav .info a:focus i {
+	color: #850404!important;
+}
+
+.met-links a:hover {
+	color: #850404!important;
+}
+
+.powered_by_metinfo a {
+	color: #850404!important;
+}
+
+.powered_by_metinfo a:hover {
+	color: #850404!important;
+}
+
+.derived-banner .met-banner .slick-arrow.slick-prev {
+	background: transparent !important;
+}
+
+.derived-banner .met-banner .slick-arrow.slick-next {
+	background: transparent !important;
+}
+
+.derived-banner .met-banner .slick-dots li {
+	background: #ba1c1c!important;
+}
+
+.derived-banner .met-banner .slick-dots .slick-active {
+	background: #fff!important;
+}
+
+.met-index-imgnews .news-ul {
+	background: #ba1c1c!important;
+	border-color: #ba1c1c!important;
+}
+
+.met-footnav {
+	background: #ba1c1c!important;
+}
+
+.notice .notice-swiper li a:hover {
+	color: #850404!important;
+}
+
+.notice .notice-title {
+	background: #ba1c1c!important;
+}
+
+.met-index-news .news-h {
+	color: #ba1c1c!important;
+}
+
+.met-index-news .news-h:before {
+	background: #ba1c1c!important;
+}
+
+.met-index-news .title {
+	border-bottom: 1px solid #ba1c1c!important;
+}
+
+.met-index-news .more a {
+	color: #ba1c1c!important;
+}
+
+.met-index-news .more a:hover {
+	background: #ba1c1c!important;
+	border-color: #ba1c1c!important;
+	color: #fff!important;
+}
+
+.met-index-contact .news-h {
+	color: #ba1c1c!important;
+}
+
+.met-index-contact .news-h:before {
+	background: #ba1c1c!important;
+}
+
+.met-index-contact .title {
+	border-bottom: 1px solid #ba1c1c!important;
+}
+
+.met-index-contact .more a {
+	color: #ba1c1c!important;
+}
+
+.met-index-contact .info .head h1 {
+	color: #ba1c1c!important;
+}
+
+.met-index-contact .more a:hover {
+	background: #ba1c1c!important;
+	border-color: #ba1c1c!important;
+	color: #fff!important;
+}
+
+.met-index-product .news-h {
+	color: #ba1c1c!important;
+}
+
+.met-index-product .news-h:before {
+	background: #ba1c1c!important;
+}
+
+.met-index-product .title {
+	border-bottom: 1px solid #ba1c1c!important;
+}
+
+.met-index-product .more a {
+	color: #ba1c1c!important;
+}
+
+.met-index-product .more a:hover {
+	background: #ba1c1c!important;
+	border-color: #ba1c1c!important;
+	color: #fff!important;
+}
+
+
+/*内页*/
+
+.met-column-nav .met-column-nav-ul>li a.link:hover,
+.met-column-nav .met-column-nav-ul>li a.link.active {
+	color: #850404!important;
+}
+
+.met-product.type-1 h4 a:hover {
+	color: #850404!important;
+}
+
+.dropdown-menu>li>a:hover {
+	color: #850404!important;
+}
+
+.met-news ul.met-page-ajax li h4 a:hover {
+	color: #850404!important;
+}
+
+.met-news-bar .recommend h3 {
+	background: #ba1c1c!important;
+}
+
+.met-news-bar ul.column li:nth-child(1) {
+	background: #ba1c1c!important;
+}
+
+.met-position.pattern-show a {
+	color: #850404!important;
+}
+
+.met-download .met-download-list a.btn {
+	color: #fff!important;
+}
+
+.met-download .paralist .met-download-btn {
+	color: #fff!important;
+}
+
+met-job-cvbtn {
+	color: #fff!important;
+}
+
+#met-imgs-carousel .slick-dots li.slick-active {
+	border-color: #850404!important;
+}
+
+.met-index-imgnews .news-ul li a:hover {
+	background-image: -webkit-gradient(linear, left top, right top, from(transparent), color-stop(#850404), to(transparent));
+	background-image: linear-gradient(to right, transparent, #850404, transparent);
+}
+
+.btn-primary.focus,
+.btn-primary:focus,
+.btn-primary:hover {
+	background-color: #850404!important;
+	border-color: #850404!important;
+}
+
+.btn-primary.active,
+.btn-primary:active,
+.open>.dropdown-toggle.btn-primary {
+	background-color: #850404!important;
+	border-color: #850404!important;
+}
+
+.notice .fa {
+	color: #ba1c1c!important;
+}
+
+.met-position a:hover,
+.met-position a:focus,
+.met-position a:active {
+	color: #850404!important;
+}
+
+.met-position .breadcrumb li:before {
+	color: #850404!important;
+}
+
+.met-index-news .news-list li a:hover {
+	color: #850404!important;
+}
+
+.ms-dis-block {
+	display: block !important;
+}
+
+.ms-but-list {
+	background: #ba1c1c!important;
+	color: white;
+	border-radius: 0 5px 5px 0;
+}
