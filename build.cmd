@@ -1,1 +1,1 @@
-cnpm run build:prod
+npm run build:prod
