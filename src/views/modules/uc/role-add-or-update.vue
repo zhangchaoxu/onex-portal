@@ -1,29 +1,31 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form  v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-      <el-form-item prop="name" :label="$t('base.name')">
-        <el-input v-model="dataForm.name" :placeholder="$t('base.name')"/>
-      </el-form-item>
-      <el-form-item prop="remark" :label="$t('base.remark')">
-        <el-input v-model="dataForm.remark" type="textarea" :placeholder="$t('base.remark')"/>
-      </el-form-item>
-      <el-form-item size="mini" :label="$t('role.menuList')">
-        <el-tree
-            :data="menuList"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            ref="menuListTree"
-            accordion
-            check-strictly
-            show-checkbox>
-        </el-tree>
-      </el-form-item>
-    </el-form>
-    <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-    </template>
-  </el-dialog>
+  <el-drawer :visible.sync="visible" title="角色详情" size="50%" :wrapperClosable="false" :close-on-press-escape="false" custom-class="drawer" ref="drawer">
+    <div class="drawer__content">
+      <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px" :disabled="!$hasPermission('uc:role:update')">
+        <el-form-item prop="name" :label="$t('base.name')">
+          <el-input v-model="dataForm.name" :placeholder="$t('base.name')"/>
+        </el-form-item>
+        <el-form-item prop="remark" :label="$t('base.remark')">
+          <el-input v-model="dataForm.remark" type="textarea" :placeholder="$t('base.remark')"/>
+        </el-form-item>
+        <el-form-item size="mini" :label="$t('role.menuList')">
+          <el-tree
+              :data="menuList"
+              :props="{ label: 'name', children: 'children' }"
+              node-key="id"
+              ref="menuListTree"
+              accordion
+              check-strictly
+              show-checkbox>
+          </el-tree>
+        </el-form-item>
+      </el-form>
+      <div class="drawer__footer">
+        <el-button @click="$refs.drawer.closeDrawer()">{{ $t('close') }}</el-button>
+        <el-button type="primary" @click="deleteHandle()" v-if="$hasPermission('uc:role:update')">{{ $t('confirm') }}</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script>

@@ -19,12 +19,13 @@
         @selection-change="dataListSelectionChangeHandle"
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
+        <el-table-column prop="id" label="ID" header-align="center" align="center" width="200"/>
         <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center"/>
-        <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"/>
+        <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" show-tooltip-when-overflow/>
         <el-table-column prop="createTime" :label="$t('base.createTime')" sortable="custom" header-align="center" align="center" width="180"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('uc:role:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('uc:role:info')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('view') }}</el-button>
             <el-button v-if="$hasPermission('uc:role:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>

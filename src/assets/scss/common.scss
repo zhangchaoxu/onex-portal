@@ -973,16 +973,26 @@ body .el-table th.gutter {
 /**
 *抽屉
  */
-.drawer .el-drawer__body {
-  padding-right: 20px;
-  padding-bottom: 20px;
-  height: 100%;
-  box-sizing: border-box;
-  overflow-y: auto;
+.drawer {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    form {
+      flex: 1;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    button {
+      flex: 1;
+    }
+  }
 }
 
-.drawer__footer {
-  text-align: right;
+.el-drawer__body {
+  padding: 20px;
 }
 
 /**
