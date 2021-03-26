@@ -33,8 +33,7 @@
         <el-table-column prop="imgs" label="图片" header-align="center" align="center"></el-table-column>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('cms:site:info')" type="text" size="small" @click="previewHandle(scope.row.id)">{{ $t('preview') }}</el-button>
-            <el-button v-if="$hasPermission('cms:site:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('cms:site:info')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('view') }}</el-button>
             <el-button v-if="$hasPermission('cms:site:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>

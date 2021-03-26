@@ -55,9 +55,11 @@
       }
     }
   }
-  .login-body,
-  .login-footer {
+  .login-body {
     width: 460px;
+    .login-footer {
+      // footer
+    }
   }
   .login-body {
     padding: 20px 30px;
