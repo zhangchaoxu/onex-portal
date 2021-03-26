@@ -63,7 +63,7 @@ export default {
     // 文本查看器
     textViewHandle (content, title, customClass) {
       this.$msgbox({
-        title: title || '查看2',
+        title: title || '查看',
         message: content,
         cancelButtonText: '关闭',
         showCancelButton: true,
