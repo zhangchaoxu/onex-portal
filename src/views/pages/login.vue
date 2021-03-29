@@ -97,7 +97,7 @@ export default {
       mixinFormModuleOptions: {
         // 登录接口
         dataFormParamEncrypt: false,
-        dataFormSaveURL: '/uc/user/login'
+        dataFormSaveURL: '/uc/auth/login'
       },
       dataFormMode: 'save',
       // 系统配置

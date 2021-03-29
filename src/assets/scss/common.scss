@@ -31,7 +31,6 @@ a {
   &:hover {
     text-decoration: none;
   }
-
 }
 
 img {
@@ -166,7 +165,7 @@ img {
 
 // 卡片集成在里面，不需要边距和边框
 .aui-card--embed {
-  border: 0
+  border: 0;
 }
 
 .aui-card--embed .el-card__body {
