@@ -9,8 +9,8 @@
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
               <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
-                <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginAdminConfig.usernamePasswordLogin">帐号登录</el-radio-button>
-                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginAdminConfig.mobileSmscodeLogin">验证码登录</el-radio-button>
+                <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginAdminProps.usernamePasswordLogin">帐号登录</el-radio-button>
+                <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginAdminProps.mobileSmscodeLogin">验证码登录</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
@@ -59,17 +59,17 @@
               </el-form-item>
             </template>
           </el-form>
-          <el-divider v-if="loginAdminConfig.wechatScanLogin || loginAdminConfig.dingtalkScanLogin">第三方登录</el-divider>
+          <el-divider v-if="loginAdminProps.wechatScanLogin || loginAdminProps.dingtalkScanLogin">第三方登录</el-divider>
           <div>
-            <wechat-scan-login v-if="loginAdminConfig.wechatScanLogin" :appid="this.loginAdminConfig.wechatScanLoginConfig.appid" :callback="this.loginAdminConfig.wechatScanLoginConfig.callback"/>
-            <dingtalk-scan-login v-if="loginAdminConfig.dingtalkScanLogin" :appid="this.loginAdminConfig.dingtalkScanLoginConfig.appid" :callback="this.loginAdminConfig.dingtalkScanLoginConfig.callback"/>
+            <wechat-scan-login v-if="loginAdminProps.wechatScanLogin" :appid="this.loginAdminProps.wechatScanProps.appid" :callback="this.loginAdminProps.wechatScanProps.callback"/>
+            <dingtalk-scan-login v-if="loginAdminProps.dingtalkScanLogin" :appid="this.loginAdminProps.dingtalkScanProps.appid" :callback="this.loginAdminProps.dingtalkScanProps.callback"/>
           </div>
-          <el-divider v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword"></el-divider>
-          <div v-if="loginAdminConfig.register || loginAdminConfig.forgetPassword">
-            <router-link :to="{ name: 'register' }" v-if="loginAdminConfig.register">
+          <el-divider v-if="loginAdminProps.register || loginAdminProps.forgetPassword"></el-divider>
+          <div v-if="loginAdminProps.register || loginAdminProps.forgetPassword">
+            <router-link :to="{ name: 'register' }" v-if="loginAdminProps.register">
               <el-link :underline="false" type="info" class="no-underline fl">{{ $t('register') }}</el-link>
             </router-link>
-            <router-link :to="{ name: 'forgetPassword' }" v-if="loginAdminConfig.forgetPassword">
+            <router-link :to="{ name: 'forgetPassword' }" v-if="loginAdminProps.forgetPassword">
               <el-link :underline="false" type="info" class="no-underline fr">{{ $t('forgetPassword') }}</el-link>
             </router-link>
           </div>
@@ -103,7 +103,7 @@ export default {
       // 系统配置
       sysConfig: {},
       // 全局登录配置
-      loginAdminConfig: {
+      loginAdminProps: {
         forgetPassword: false,
         register: false,
         usernamePasswordLogin: false,
@@ -161,7 +161,7 @@ export default {
       // 获取系统配置
       this.getSysConfig()
       // 获得登录配置
-      this.getLoginConfig()
+      this.getLoginProps()
     }
   },
   methods: {
@@ -169,9 +169,9 @@ export default {
     typeChangeHandle () {
       // 赋值当前渠道配置
       if (this.dataForm.type === 'ADMIN_USERNAME_PASSWORD') {
-        this.loginTypeConfig = this.loginAdminConfig.usernamePasswordLoginConfig
+        this.loginTypeConfig = this.loginAdminProps.usernamePasswordLoginProps
       } else if (this.dataForm.type === 'ADMIN_MOBILE_SMSCODE') {
-        this.loginTypeConfig = this.loginAdminConfig.mobileSmscodeLoginConfig
+        this.loginTypeConfig = this.loginAdminProps.mobileSmscodeLoginProps
       }
       // 获取验证码
       if (this.loginTypeConfig.captcha) {
@@ -195,18 +195,18 @@ export default {
         document.title = this.sysConfig.title
       })
     },
-    // 获取登录配置
-    getLoginConfig () {
-      this.$http.get(`/sys/param/getLoginAdmin`).then(({ data: res }) => {
+    // 获取登录参数
+    getLoginProps () {
+      this.$http.get(`/uc/auth/getLoginAdminProps`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
           // 赋值全局登录配置
-          this.loginAdminConfig = res.data
+          this.loginAdminProps = res.data
           // 找到第一个enable的登录渠道
-          if (this.loginAdminConfig.usernamePasswordLogin) {
+          if (this.loginAdminProps.usernamePasswordLogin) {
             this.dataForm.type = 'ADMIN_USERNAME_PASSWORD'
-          } else if (this.loginAdminConfig.mobileAndSmscodeLogin) {
+          } else if (this.loginAdminProps.mobileAndSmscodeLogin) {
             this.dataForm.type = 'ADMIN_MOBILE_SMSCODE'
           }
           this.typeChangeHandle()
@@ -276,7 +276,7 @@ export default {
      */
     oauthLoginHandle (type, code) {
       this.formLoading = true
-      this.$http.post(`/uc/userOauth/dingtalkLoginByCode`, { code: code }).then(({ data: res }) => {
+      this.$http.post(`/uc/auth/dingtalkLoginByCode`, { code: code }).then(({ data: res }) => {
         if (res.code !== 0) {
           this.$alert(res.toast, this.$t('prompt.title'), {
             confirmButtonText: `重新登录`,

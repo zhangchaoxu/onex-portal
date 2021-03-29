@@ -57,7 +57,7 @@ export default {
       mixinFormModuleOptions: {
         // 登录接口
         dataFormParamEncrypt: false,
-        dataFormSaveURL: '/uc/user/register'
+        dataFormSaveURL: '/uc/auth/register'
       },
       formLoading: false, // 表单是否加载中
       dataFormMode: 'save',
