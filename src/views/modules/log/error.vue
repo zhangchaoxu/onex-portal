@@ -31,7 +31,7 @@
         <el-table-column prop="params" label="参数" header-align="center" align="center" min-width="150" class-name="nowrap json link"/>
         <el-table-column prop="content" label="异常信息" header-align="center" align="center" min-width="150" class-name="nowrap text link"/>
         <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>
-        <el-table-column prop="userAgent" label="UA" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
+        <el-table-column prop="userAgent" label="UA" header-align="center" align="center" width="150" show-tooltip-when-overflow/>
         <el-table-column prop="createTime" label="创建时间" sortable="custom" header-align="center" align="center" width="180"/>
       </el-table>
       <el-pagination

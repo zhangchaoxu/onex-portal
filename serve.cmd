@@ -1,1 +1,1 @@
-npm run serve
+cnpm run serve
