@@ -60,10 +60,10 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                    <el-form-item prop="state" :label="$t('user.status')" size="mini">
+                    <el-form-item prop="state" :label="$t('user.state')" size="mini">
                         <el-radio-group v-model="dataForm.state" :disabled="dataFormMode === 'view'">
-                            <el-radio :label="0">{{ $t('user.status0') }}</el-radio>
-                            <el-radio :label="1">{{ $t('user.status1') }}</el-radio>
+                            <el-radio :label="0">{{ $t('user.state0') }}</el-radio>
+                            <el-radio :label="1">{{ $t('user.state1') }}</el-radio>
                         </el-radio-group>
                     </el-form-item>
                 </el-col>

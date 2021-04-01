@@ -1,10 +1,10 @@
 <template>
     <el-dialog :visible.sync="visible" title="修改状态" :close-on-click-modal="false" :close-on-press-escape="false">
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-            <el-form-item prop="state" :label="$t('user.status')" size="mini">
+            <el-form-item prop="state" :label="$t('user.state')" size="mini">
                 <el-radio-group v-model="dataForm.state">
-                    <el-radio :label="0">{{ $t('user.status0') }}</el-radio>
-                    <el-radio :label="1">{{ $t('user.status1') }}</el-radio>
+                    <el-radio :label="0">{{ $t('user.state0') }}</el-radio>
+                    <el-radio :label="1">{{ $t('user.state1') }}</el-radio>
                 </el-radio-group>
             </el-form-item>
         </el-form>

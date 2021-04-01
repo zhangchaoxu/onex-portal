@@ -50,11 +50,11 @@
                                 <el-tag :key="tag" v-for="tag in scope.row.roleNames.split(',')" style="margin-right: 3px;">{{tag}}</el-tag>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="state" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
+                        <el-table-column prop="state" :label="$t('user.state')" sortable="custom" header-align="center" align="center">
                             <template slot-scope="scope">
                                 <el-button v-if="scope.row.state === 0" size="mini" type="danger" round :disabled="!$hasPermission('uc:user:update')" @click="changeStateHandle(scope.row.id)">{{
-                                    $t('user.status0') }}</el-button>
-                                <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStateHandle(scope.row.id)">{{ $t('user.status1')
+                                    $t('user.state0') }}</el-button>
+                                <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStateHandle(scope.row.id)">{{ $t('user.state1')
                                   }}</el-button>
                             </template>
                         </el-table-column>

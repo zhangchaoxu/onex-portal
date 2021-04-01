@@ -45,12 +45,12 @@
                 </el-table-column>
                 <el-table-column prop="mobile" :label="$t('user.mobile')" header-align="center" align="center" min-width="120"/>
                 <el-table-column prop="realName" :label="$t('user.realName')" header-align="center" align="center"/>
-                <el-table-column prop="state" :label="$t('user.status')" sortable="custom" header-align="center" align="center">
+                <el-table-column prop="state" :label="$t('user.state')" sortable="custom" header-align="center" align="center">
                     <template slot-scope="scope">
                         <el-button v-if="scope.row.state === 0" size="mini" type="danger" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{
-                            $t('user.status0') }}
+                            $t('user.state0') }}
                         </el-button>
-                        <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{ $t('user.status1') }}</el-button>
+                        <el-button v-else size="mini" type="success" round :disabled="!$hasPermission('uc:user:update')" @click="changeStatusHandle(scope.row.id)">{{ $t('user.state1') }}</el-button>
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
