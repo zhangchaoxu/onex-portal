@@ -125,7 +125,7 @@ function fnAddDynamicMenuRoutes (urlList = []) {
     // URL支持{{ window.xxx }}占位符变量
     // eslint-disable-next-line no-eval
     let URL = (urlList[i].url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2))
-    console.log(URL)
+    // console.log(URL)
     if (isURL(URL)) {
       // 完整url地址
       // 外链并且外部窗口打开,不需要加入路由

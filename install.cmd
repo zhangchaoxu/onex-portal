@@ -1,1 +1,1 @@
-npm install
+cnpm install
