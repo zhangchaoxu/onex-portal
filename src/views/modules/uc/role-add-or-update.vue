@@ -22,7 +22,7 @@
       </el-form>
       <div class="drawer__footer">
         <el-button @click="$refs.drawer.closeDrawer()">{{ $t('close') }}</el-button>
-        <el-button type="primary" @click="deleteHandle()" v-if="$hasPermission('uc:role:update')">{{ $t('confirm') }}</el-button>
+        <el-button type="primary" @click="dataFormSubmitHandle()" v-if="$hasPermission('uc:role:update')">{{ $t('confirm') }}</el-button>
       </div>
     </div>
   </el-drawer>

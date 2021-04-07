@@ -63,8 +63,8 @@
                 </el-table-column>
                 <el-table-column prop="state" :label="$t('user.state')" sortable="custom" header-align="center" align="center">
                     <template slot-scope="scope">
-                        <el-tag v-if="scope.row.state === 0" type="danger">{{ $t('user.status0') }}</el-tag>
-                        <el-tag v-else-if="scope.row.state === 1" type="success">{{ $t('user.status1') }}</el-tag>
+                        <el-tag v-if="scope.row.state === 0" type="danger">{{ $t('user.state0') }}</el-tag>
+                        <el-tag v-else-if="scope.row.state === 1" type="success">{{ $t('user.state1') }}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
