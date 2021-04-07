@@ -87,7 +87,7 @@
             <!-- 弹窗, 新增 / 修改 -->
             <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
             <!-- 弹窗，修改状态 -->
-            <change-state v-if="changeStatusVisible" ref="changeStatus" @refreshDataList="getDataList"/>
+            <change-state v-if="changeStateVisible" ref="changeStatus" @refreshDataList="getDataList"/>
             <!-- 弹窗，导入用户 -->
             <import v-if="importVisible" ref="import" @refreshDataList="getDataList"/>
         </div>

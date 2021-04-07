@@ -13,7 +13,7 @@
         <el-table-column prop="name" :label="$t('base.name')" header-align="left" align="left" min-width="150">
           <template slot="header" slot-scope="scope">
             <el-tooltip class="item" effect="dark" :content="expandTree ? '点击收起全部' : '点击展开全部'" placement="top-start">
-              <i :class="[{'el-icon-s-unfold':!expandTree}, {'el-icon-s-fold':expandTree}]" @click="expandTreeHandle(dataList, !expandTree)"></i>
+              <i :class="[{'el-icon-s-unfold':!expandTree}, {'el-icon-s-fold':expandTree}]" @click="expandTreeHandle"></i>
             </el-tooltip>
             {{ $t('base.name') }}
           </template>
@@ -68,14 +68,25 @@ export default {
   },
   methods: {
     // 展开或者收起树
-    expandTreeHandle (rowList, isExpand) {
-      rowList.forEach(i => {
-        this.$refs.table.toggleRowExpansion(i, isExpand)
-        if (i.children) {
-          this.expandTreeHandle(i.children, isExpand)
+    expandTreeHandle () {
+      this.dataList.forEach(i => {
+        if (i.children && i.children.length > 0) {
+          this.$refs.table.toggleRowExpansion(i, !this.expandTree)
+          this.toggleTreeRow(i.children, !this.expandTree)
         }
       })
       this.expandTree = !this.expandTree
+    },
+    /**
+     * 递归toggle列表展开收缩
+     */
+    toggleTreeRow (rowList, isExpand) {
+      rowList.forEach(i => {
+        if (i.children && i.children.length > 0) {
+          this.$refs.table.toggleRowExpansion(i, isExpand)
+          this.toggleTreeRow(i.children, isExpand)
+        }
+      })
     }
   }
 }
