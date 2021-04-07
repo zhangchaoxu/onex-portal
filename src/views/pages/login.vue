@@ -8,7 +8,7 @@
         <el-card class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
-              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
+              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle" v-if="loginAdminProps.usernamePasswordLogin && loginAdminProps.mobileSmscodeLogin">
                 <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginAdminProps.usernamePasswordLogin">帐号登录</el-radio-button>
                 <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginAdminProps.mobileSmscodeLogin">验证码登录</el-radio-button>
               </el-radio-group>
