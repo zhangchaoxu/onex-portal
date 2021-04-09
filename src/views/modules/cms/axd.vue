@@ -1,6 +1,6 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
-    <div class="mod-sys__ad">
+    <div class="mod-cms__axd">
       <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
           <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
@@ -16,7 +16,7 @@
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('sys:ad:save')">
+        <el-form-item v-if="$hasPermission('cms:axd:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
       </el-form>
@@ -40,8 +40,8 @@
         <el-table-column prop="sort" label="排序" header-align="center" align="center" width="80" sortable="custom"/>
         <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('sys:ad:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('sys:ad:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
+            <el-button v-if="$hasPermission('cms:axd:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('cms:axd:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -62,7 +62,7 @@
 
 <script>
 import mixinListModule from '@/mixins/list-module'
-import AddOrUpdate from './ad-add-or-update'
+import AddOrUpdate from './axd-add-or-update'
 import TenantPick from '../uc/tenant-pick'
 
 export default {
@@ -71,11 +71,11 @@ export default {
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/sys/axd/page',
+        getDataListURL: '/cms/axd/page',
         getDataListIsPage: true,
-        exportURL: '/sys/axd/export',
-        deleteURL: '/sys/axd/delete',
-        deleteBatchURL: '/sys/axd/deleteBatch',
+        exportURL: '/cms/axd/export',
+        deleteURL: '/cms/axd/delete',
+        deleteBatchURL: '/cms/axd/deleteBatch',
         deleteIsBatch: false
       },
       searchDataForm: {
