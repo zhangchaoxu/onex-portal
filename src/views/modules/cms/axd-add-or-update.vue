@@ -75,9 +75,6 @@ export default {
   computed: {
     dataRule () {
       return {
-        name: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         position: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
