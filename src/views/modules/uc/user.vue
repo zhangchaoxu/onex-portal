@@ -69,10 +69,9 @@
                 </el-table-column>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
-                        <el-button v-if="$hasPermission('uc:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}
-                        </el-button>
-                        <el-button v-if="$hasPermission('uc:user:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}
-                        </el-button>
+                        <el-button v-if="$hasPermission('uc:user:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+                        <el-button v-if="$hasPermission('uc:user:changeMenuScope')" type="text" size="small" @click="menuScopeUpdateHandle(scope.row.id)">权限</el-button>
+                        <el-button v-if="$hasPermission('uc:user:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -90,6 +89,8 @@
             <change-state v-if="changeStateVisible" ref="changeStatus" @refreshDataList="getDataList"/>
             <!-- 弹窗，导入用户 -->
             <import v-if="importVisible" ref="import" @refreshDataList="getDataList"/>
+            <!-- 修改用户权限 -->
+            <menu-scope-update if="menuScopeUpdateVisible" ref="menuScopeUpdate"/>
         </div>
     </el-card>
 </template>
@@ -97,11 +98,12 @@
 <script>
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './user-add-or-update'
+import MenuScopeUpdate from './user-menu-scope-update'
 import ChangeState from './user-change-state'
 import Import from './user-import'
 export default {
   mixins: [mixinListModule],
-  components: { ChangeState, AddOrUpdate, Import },
+  components: { ChangeState, MenuScopeUpdate, AddOrUpdate, Import },
   data () {
     return {
       mixinListModuleOptions: {
@@ -114,6 +116,8 @@ export default {
         exportURL: '/uc/user/export',
         importURL: '/uc/user/import'
       },
+      // 修改用户授权
+      menuScopeUpdateVisible: false,
       roleSelected: null,
       roleList: [],
       searchDataForm: {
@@ -153,6 +157,14 @@ export default {
       this.$nextTick(() => {
         this.$refs.import.dataForm.id = null
         this.$refs.import.init()
+      })
+    },
+    menuScopeUpdateHandle (id) {
+      this.menuScopeUpdateVisible = true
+      this.$nextTick(() => {
+        this.$refs.menuScopeUpdate.clear()
+        this.$refs.menuScopeUpdate.dataForm.id = id
+        this.$refs.menuScopeUpdate.init()
       })
     }
   }
