@@ -34,11 +34,11 @@
         @selection-change="dataListSelectionChangeHandle"
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
-        <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-        <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="param" :label="$t('base.param')" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="cron" label="cron" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center"></el-table-column>
+        <el-table-column type="selection" header-align="center" align="center" width="50"/>
+        <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center" min-width="120"/>
+        <el-table-column prop="params" :label="$t('base.param')" header-align="center" align="center" width="200" show-tooltip-when-overflow/>
+        <el-table-column prop="cron" label="cron" header-align="center" align="center" width="120"/>
+        <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" show-tooltip-when-overflow></el-table-column>
         <el-table-column prop="state" :label="$t('base.state')" sortable="custom" header-align="center" align="center">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.state === 1" size="small">{{$t('enable')}}</el-tag>
