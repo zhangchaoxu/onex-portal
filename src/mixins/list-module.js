@@ -323,10 +323,12 @@ export default {
         if (column.className.indexOf('link') !== -1) {
           if (column.className.indexOf('html') !== -1) {
             this.htmlViewHandle(row[column.property])
-          } if (column.className.indexOf('text') !== -1) {
+          } else if (column.className.indexOf('text') !== -1) {
             this.textViewHandle(row[column.property])
-          } if (column.className.indexOf('json') !== -1) {
+          } else if (column.className.indexOf('json') !== -1) {
             this.jsonViewHandle(row[column.property])
+          } else if (column.className.indexOf('url') !== -1) {
+            window.open(row[column.property])
           }
         }
       }
