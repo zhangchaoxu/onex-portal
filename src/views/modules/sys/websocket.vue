@@ -1,12 +1,12 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sys__websocket">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form size="small" @submit.native.prevent>
         <el-form-item>
-          <el-input v-model="searchDataForm.id" placeholder="id" clearable/>
+          <el-input v-model="websocketAddress" placeholder="WebSocket地址" clearable/>
         </el-form-item>
         <el-form-item>
-          <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
+          <el-button @click="connectWebsocket()" :type="websocket ? 'danger' : 'success'">{{ websocket ? '断开' : '连接'}}</el-button>
         </el-form-item>
         <el-form-item v-if="$hasPermission('sys:calendar:sync')">
           <el-button type="success" @click="syncHandle()">同步</el-button>
@@ -15,79 +15,59 @@
           <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
         </el-form-item>
       </el-form>
-      <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
-        <el-table-column v-if="$hasPermission('sys:calendar:delete')" type="selection" header-align="center" align="center" width="50"/>
-        <el-table-column prop="year" label="年" header-align="center" align="center"/>
-        <el-table-column prop="month" label="月" header-align="center" align="center"/>
-        <el-table-column prop="day" label="日" header-align="center" align="center"/>
-        <el-table-column prop="type" label="类型" header-align="center" align="center" width="120">
-          <template slot-scope="scope">
-            <el-tag v-if="scope.row.type === 0" size="small" type="danger">调班</el-tag>
-            <el-tag v-else-if="scope.row.type === 1" size="small" type="success">节假日</el-tag>
-            <el-tag v-else-if="scope.row.type === 2" size="small" type="info">正常工作日</el-tag>
-            <el-tag v-else-if="scope.row.type === 3" size="small">正常周末</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column prop="week" label="星期" header-align="center" align="center"/>
-        <el-table-column prop="lunaryear" label="农历年" header-align="center" align="center"/>
-        <el-table-column prop="lunarmonth" label="农历月" header-align="center" align="center"/>
-        <el-table-column prop="lunarday" label="农历日" header-align="center" align="center"/>
-        <el-table-column prop="shengxiao" label="生肖" header-align="center" align="center"/>
-        <el-table-column prop="ganzhi" label="干支" header-align="center" align="center"/>
-        <el-table-column prop="star" label="星座" header-align="center" align="center"/>
-        <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
-          <template slot-scope="scope">
-            <el-button v-if="$hasPermission('sys:calendar:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
-            <el-button v-if="$hasPermission('sys:calendar:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        :current-page="page"
-        :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
-        :total="total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="pageSizeChangeHandle"
-        @current-change="pageCurrentChangeHandle"/>
-      <!-- 弹窗, 新增 / 修改 -->
-      <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"/>
-      <!-- 弹窗, 同步 -->
     </div>
   </el-card>
 </template>
 
 <script>
-import mixinListModule from '@/mixins/list-module'
-import AddOrUpdate from './calendar-add-or-update'
 export default {
-  mixins: [mixinListModule],
-  components: { AddOrUpdate },
+  components: { },
   data () {
     return {
-      mixinListModuleOptions: {
-        getDataListURL: '/sys/calendar/page',
-        getDataListIsPage: true,
-        exportURL: '/sys/calendar/export',
-        deleteURL: '/sys/calendar/delete',
-        deleteBatchURL: '/sys/calendar/deleteBatch',
-        deleteIsBatch: true
-      },
-      searchDataForm: {
-        id: ''
-      }
+      websocket: null,
+      websocketAddress: process.env.VUE_APP_WS_URL + '/ws/' + this.$store.state.user.id
+    }
+  },
+  destroyed () {
+    if (this.websocket) {
+      this.websocket.close()
     }
   },
   methods: {
-    // 同步接口
-    syncHandle () {
-      this.$http.post('/sys/calendar/sync').then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.getDataList()
-      }).catch(() => {
-      })
+    // 连接websocket
+    connectWebsocket () {
+      if (!this.websocketAddress) {
+        this.$message.error('请配置WebSocket地址')
+        return
+      }
+      if (!('WebSocket' in window)) {
+        this.$message.error('当前浏览器不支持WebSocket')
+        return
+      }
+      console.log(this.websocketAddress)
+      this.websocket = new WebSocket(this.websocketAddress)
+      // 连接错误
+      this.websocket.onerror = function () {
+        console.log('WebSocket连接发生错误   状态码：' + this.websocket.readyState)
+      }
+      // 连接成功
+      this.websocket.onopen = (e) => {
+        console.log(e)
+        // console.log('WebSocket连接成功    状态码：' + this.websocket.readyState)
+      }
+      // 收到消息的回调
+      this.websocket.onmessage = function (event) {
+        // 根据服务器推送的消息做自己的业务处理
+        console.log('服务端返回：' + event.data)
+      }
+      // 连接关闭的回调
+      this.websocket.onclose = function () {
+        console.log('WebSocket连接关闭    状态码：' + this.websocket.readyState)
+      }
+      // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+      window.onbeforeunload = function () {
+        this.websocket.close()
+      }
     }
   }
 }
