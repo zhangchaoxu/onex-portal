@@ -8,12 +8,6 @@
         <el-form-item>
           <el-button @click="connectWebsocket()" :type="websocket ? 'danger' : 'success'">{{ websocket ? '断开' : '连接'}}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('sys:calendar:sync')">
-          <el-button type="success" @click="syncHandle()">同步</el-button>
-        </el-form-item>
-        <el-form-item v-if="$hasPermission('sys:calendar:delete')">
-          <el-button type="danger" @click="deleteHandle()">{{ $t('deleteBatch') }}</el-button>
-        </el-form-item>
       </el-form>
     </div>
   </el-card>
