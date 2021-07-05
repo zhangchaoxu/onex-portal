@@ -18,7 +18,20 @@
           <el-input v-model="dataForm.domain" placeholder="网址"></el-input>
         </el-form-item>
         <el-form-item label="LOGO" prop="logo">
-          <el-input v-model="dataForm.logo" placeholder="LOGO"></el-input>
+          <el-input v-model="dataForm.logo" placeholder="LOGO">
+            <el-upload
+                slot="append"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :before-remove="beforeRemove"
+                multiple
+                :limit="3"
+                :on-exceed="handleExceed"
+                :file-list="fileList">
+              <el-button icon="el-icon-upload"/>
+            </el-upload>
+          </el-input>
         </el-form-item>
         <el-form-item label="版权信息" prop="copyright">
           <el-input v-model="dataForm.copyright" placeholder="版权信息"></el-input>
