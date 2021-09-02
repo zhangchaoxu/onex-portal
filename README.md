@@ -7,8 +7,5 @@ OneX致力于搭建一套软件项目中经常遇到的一些常见需求,比如
 ## OneX-Portal
 OneX-Portal为Vue2+ElementUI实现的后台管理前端工程
 
-## 演示地址
-* [OneX 管理后台](https://onex-portal.nb6868.com)
-
 ## 文档
 更多详细内容见[gitbook文档](https://onex.nb6868.com)
