@@ -3,12 +3,14 @@
     <template slot="title">
       <i :class="`aui-sidebar__menu-icon ${menu.icon}`"></i>
       <span>{{ menu.name }}</span>
+      <el-badge v-for="item in $store.state.sidebarMenuNotifyList" v-if="item && item.count > 0 && menu.id === item.id" :key="item.id" :value="item.count" :max="item.maxCount" style="margin-left: 10px"/>
     </template>
     <sub-menu v-for="item in menu.children" :key="item.id" :menu="item"/>
   </el-submenu>
   <el-menu-item v-else :index="menu.id" @click="gotoRouteHandle(menu)">
     <i :class="`aui-sidebar__menu-icon ${menu.icon}`"></i>
     <span>{{ menu.name }}</span>
+    <el-badge v-for="item in $store.state.sidebarMenuNotifyList" v-if="item && item.count > 0 && menu.id === item.id" :key="item.id" :value="item.count" :max="item.maxCount" style="margin-left: 10px"/>
   </el-menu-item>
 </template>
 

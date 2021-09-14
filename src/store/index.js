@@ -16,6 +16,9 @@ export default new Vuex.Store({
     sidebarFold: false,
     // 侧边栏, 菜单
     sidebarMenuList: [],
+    // 侧边栏, 菜单通知
+    sidebarMenuNotifyList: [],
+    // 侧边栏, 当前激活菜单
     sidebarMenuActiveName: '',
     // 内容, 是否需要刷新
     contentIsNeedRefresh: false,

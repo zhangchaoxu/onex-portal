@@ -48,8 +48,15 @@ export default {
     ]).finally(() => {
       this.loading = false
     })
+    // 在合适的地方定时刷新获取菜单通知
+    setInterval(this.getMenuNotifyList, 3000)
   },
   methods: {
+    // 获得带有数字的菜单
+    getMenuNotifyList () {
+      // todo 接口获取
+      this.$store.state.sidebarMenuNotifyList = [{ id: '000', maxCount: 99, count: Math.ceil(Math.random() * 10) }]
+    },
     // 窗口改变大小
     windowResizeHandle () {
       this.$store.state.sidebarFold = document.documentElement['clientWidth'] <= 992 || false
