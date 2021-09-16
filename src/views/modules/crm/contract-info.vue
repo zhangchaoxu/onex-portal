@@ -1,19 +1,57 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
-    <el-divider>合同信息</el-divider>
-    <el-form :model="dataForm" ref="dataForm" label-width="120px" v-loading="formLoading" size="small">
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="客户" prop="customerName">
-            <span>{{ dataForm.customerName }}</span>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="商机" prop="businessName">
-            <el-link :underline="false" type="primary" v-if="dataForm.businessId" @click="$router.push({ name: 'crm-business-info', query: { id: dataForm.businessId } })">{{ dataForm.businessName }}</el-link>
-          </el-form-item>
-        </el-col>
-      </el-row>
+    <el-descriptions class="margin-top" title="合同信息" :column="3" border v-loading="formLoading">
+      <template slot="extra">
+        <el-button v-if="$hasPermission('crm:contract:update')" type="warning" size="small" @click="$router.push({ name: 'crm-contract-add-or-update', query: { id: dataForm.id } })">{{ $t('update') }}</el-button>
+      </template>
+      <el-descriptions-item>
+        <template slot="label"><i class="el-icon-user"></i>客户</template>
+        {{ dataForm.customerName }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-mobile-phone"></i>
+          商机
+        </template>
+        <el-link :underline="false" type="primary" v-if="dataForm.businessId" @click="$router.push({ name: 'crm-business-info', query: { id: dataForm.businessId } })">{{ dataForm.businessName }}</el-link>
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-location-outline"></i>
+          合同名称
+        </template>
+        {{ dataForm.name }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-tickets"></i>
+          合同编号
+        </template>
+        {{ dataForm.code }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-office-building"></i>
+          合同金额
+        </template>
+        {{ dataForm.amount }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-office-building"></i>
+          销售
+        </template>
+        {{ dataForm.salesUserName }}
+      </el-descriptions-item>
+      <el-descriptions-item>
+        <template slot="label">
+          <i class="el-icon-office-building"></i>
+          销售
+        </template>
+        {{ dataForm.salesUserName }}
+      </el-descriptions-item>
+    </el-descriptions>
+<!--    <el-form :model="dataForm" ref="dataForm" label-width="120px" v-loading="formLoading" size="small">
       <el-row>
         <el-col :span="12">
           <el-form-item label="合同名称" prop="name">
@@ -86,10 +124,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <div style="text-align: center; margin-top: 20px;" v-if="$hasPermission('crm:contract:update')">
-        <el-button type="warning" size="small" @click="$router.push({ name: 'crm-contract-add-or-update', query: { id: dataForm.id } })">{{ $t('update') }}</el-button>
-      </div>
-    </el-form>
+    </el-form>-->
     <el-divider>产品信息</el-divider>
     <el-table :data="dataForm.productList" v-loading="formLoading" border ref="productListTable"
               size="small" show-summary :summary-method="getProductSummaries" style="width: 100%;">
@@ -145,11 +180,13 @@ export default {
     }
   },
   activated () {
+    console.log(this.$route)
     this.dataForm.id = this.$route.query.id
     if (!this.dataForm.id) {
       this.formLoading = false
       this.$message.error('参数不能为空')
     } else {
+      this.dataFormMode = 'view'
       this.initFormData()
     }
   },
