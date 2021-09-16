@@ -98,8 +98,6 @@ export default {
           tab.query = route.query
         }
       }
-      console.log(';')
-      console.log(tab)
       // 设置菜单当前项
       this.$store.state.sidebarMenuActiveName = tab.menuId
       this.$store.state.contentTabsActiveName = tab.name
