@@ -69,13 +69,26 @@ export default {
       }
       let tab = this.$store.state.contentTabs.filter(item => item.name === route.name)[0]
       if (!tab) {
-        // tab中不存在,添加
-        tab = {
-          ...window.SITE_CONFIG['contentTabDefault'],
-          ...route.meta,
-          'name': route.name,
-          'params': { ...route.params },
-          'query': { ...route.query }
+        // 未在tabs列表中
+        if (route.path !== route.fullPath) {
+          // 注意部分，在菜单中有定义，并且加了参数的页面，比如/shop/order?state=1的页面，会自动匹配到/shop/order
+          // 先在dynamicMenuRoutes中找
+          tab = window.SITE_CONFIG['dynamicMenuRoutes'].filter(item => '/' + item.name === route.fullPath)[0]
+          if (tab) {
+            // 能找到,则使用找到的菜单
+            tab.title = tab.meta.title
+            tab.menuId = tab.meta.menuId
+          }
+        }
+        // 找不到，启动默认项
+        if (!tab) {
+          tab = {
+            ...window.SITE_CONFIG['contentTabDefault'],
+            ...route.meta,
+            'name': route.name,
+            'params': { ...route.params },
+            'query': { ...route.query }
+          }
         }
         this.$store.state.contentTabs = this.$store.state.contentTabs.concat(tab)
       } else {
@@ -85,6 +98,8 @@ export default {
           tab.query = route.query
         }
       }
+      console.log(';')
+      console.log(tab)
       // 设置菜单当前项
       this.$store.state.sidebarMenuActiveName = tab.menuId
       this.$store.state.contentTabsActiveName = tab.name

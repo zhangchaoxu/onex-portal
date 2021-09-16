@@ -155,10 +155,9 @@ export default {
     }
   },
   created () {
-    console.log(this.$route)
-    if (this.$route.name === 'shop-order-todo') {
+    if (this.$route.query.state) {
       console.log('待确认订单')
-      this.searchDataForm.state = 1
+      this.searchDataForm.state = Number(this.$route.query.state)
     } else {
       console.log('所有订单')
     }
