@@ -154,6 +154,15 @@ export default {
       }
     }
   },
+  created () {
+    console.log(this.$route)
+    if (this.$route.name === 'shop-order-todo') {
+      console.log('待确认订单')
+      this.searchDataForm.state = 1
+    } else {
+      console.log('所有订单')
+    }
+  },
   methods: {
     // 新增/修改
     // 其它更多按钮操作

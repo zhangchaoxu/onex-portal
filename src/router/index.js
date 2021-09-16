@@ -46,7 +46,9 @@ export const moduleRoutes = {
   meta: { title: '主入口布局' },
   children: [
     // 添加模块页面,或者在菜单管理中添加
-    { path: '/home', component: () => import('@/views/modules/home'), name: 'home', meta: { title: '首页', isTab: true } }
+    { path: '/home', component: () => import('@/views/modules/home'), name: 'home', meta: { title: '首页', isTab: true } },
+    // 待确认订单
+    { path: '/shop-order-todo', component: () => import('@/views/modules/shop/order'), name: 'shop-order-todo', meta: { title: '待确认订单', isTab: true } }
   ]
 }
 
