@@ -44,8 +44,14 @@ export default {
         }
       } else {
         // 找不到对应的路由信息,参考rouer/index.js
-        // eslint-disable-next-line no-eval
-        let URL = (menu.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2)) // URL支持{{ window.xxx }}占位符变量
+        let URL
+        if ((menu.url || '').startsWith('process.env.VUE_APP_API_URL/')) {
+          URL = process.env.VUE_APP_API_URL + (menu.url || '').replace('process.env.VUE_APP_API_URL/', '')
+        } else {
+          // URL支持{{ window.xxx }}占位符变量
+          // eslint-disable-next-line no-eval
+          URL = (menu.url || '').replace(/{{([^}}]+)?}}/g, (s1, s2) => eval(s2))
+        }
         window.open(URL)
       }
     }
