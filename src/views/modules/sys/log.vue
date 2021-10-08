@@ -1,7 +1,17 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
-    <div class="mod-log__operation">
+    <div class="mod-sys__log">
       <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+        <el-form-item class="small-item">
+          <el-select v-model="searchDataForm.type" placeholder="类型" clearable>
+            <el-option label="登录" value="login"/>
+            <el-option label="登出" value="logout"/>
+            <el-option label="操作" value="operation"/>
+            <el-option label="错误" value="error"/>
+            <el-option label="异步任务" value="asyncTask"/>
+            <el-option label="推送" value="push"/>
+          </el-select>
+        </el-form-item>
         <el-form-item class="small-item">
           <el-input v-model="searchDataForm.uri" placeholder="请求Uri" clearable/>
         </el-form-item>
@@ -29,26 +39,42 @@
         <el-form-item>
           <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
-        <el-form-item v-if="$hasPermission('log:operation:export')">
+        <el-form-item v-if="$hasPermission('sys:log:export')">
           <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle"
                 @cell-click="cellClickHandle" style="width: 100%;">
+        <el-table-column prop="type" label="类型" header-align="center" align="center" width="120"/>
         <el-table-column prop="createName" label="用户" header-align="center" align="center" width="150"/>
         <el-table-column prop="operation" label="操作" header-align="center" align="center" width="150"/>
         <el-table-column prop="uri" label="请求Uri" header-align="center" align="center" width="200"/>
         <el-table-column prop="method" label="请求方法" header-align="center" align="center" width="100"/>
         <el-table-column prop="params" label="请求参数" header-align="center" align="center" class-name="nowrap json link"/>
-        <el-table-column prop="requestTime" label="耗时" sortable="custom" header-align="center" align="center" width="120">
-          <template slot-scope="scope">
-            {{ `${scope.row.requestTime}ms` }}
-          </template>
-        </el-table-column>
+        <el-table-column prop="result" label="处理结果" header-align="center" align="center" class-name="nowrap json link"/>
         <el-table-column prop="state" label="状态" sortable="custom" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.state === 0" size="small" type="danger">{{ $t('error') }}</el-tag>
-            <el-tag v-else size="small" type="success">{{ $t('success') }}</el-tag>
+            <template v-if="scope.row.type !== 'asyncTask'">
+              <el-tag v-if="scope.row.state === 0" size="small" type="danger">{{ $t('error') }}</el-tag>
+              <el-tag v-else size="small" type="success">{{ $t('success') }}</el-tag>
+            </template>
+            <template v-else>
+              <el-tag v-if="scope.row.state === 0" size="small" type="info">初始化</el-tag>
+              <el-tag v-else-if="scope.row.state === 1" size="small" type="warning">处理中</el-tag>
+              <el-tag v-else-if="scope.row.state === 100" size="small" type="success">已完成</el-tag>
+              <el-tag v-else-if="scope.row.state === -1" size="small" type="success">失败</el-tag>
+              <el-tag v-else size="small" type="success">{{ scope.row.state }}</el-tag>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column prop="num" label="处理进度" header-align="center" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.processNum }}/{{ scope.row.totalNum }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="requestTime" label="耗时" sortable="custom" header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+            {{ `${scope.row.times}ms` }}
           </template>
         </el-table-column>
         <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>
@@ -76,14 +102,18 @@ export default {
   data () {
     return {
       mixinListModuleOptions: {
-        getDataListURL: '/log/operation/page',
+        getDataListURL: '/sys/log/page',
         getDataListIsPage: true,
-        exportURL: '/log/operation/export'
+        exportURL: '/sys/log/export',
+        deleteURL: '/sys/log/delete',
+        deleteBatchURL: '/sys/log/deleteBatch',
+        deleteIsBatch: true
       },
       searchDataForm: {
         createName: '',
         state: '',
         uri: '',
+        type: '',
         startCreateTime: '',
         endCreateTime: ''
       }
