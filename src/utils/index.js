@@ -40,7 +40,7 @@ export function redirectLogin () {
     // 为避免出现Duplicate named routes definition
     // 刷新一下页面,达到清空路由的目地
     // 注意需要在replace login完成后执行,要不然会出现刷新原页面的情况
-    location.reload()
+    // location.reload()
   })
 }
 

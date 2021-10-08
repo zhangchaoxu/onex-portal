@@ -3,7 +3,7 @@
     <div class="mod-uc__tenant">
       <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.name" placeholder="租户名" clearable/>
+          <el-input v-model="searchDataForm.search" placeholder="关键词搜索" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -13,7 +13,8 @@
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" @sort-change="dataListSortChangeHandle" style="width: 100%;">
-        <el-table-column prop="name" label="租户名" header-align="center" align="center"/>
+        <el-table-column prop="code" label="编码" header-align="center" align="center" width="200"/>
+        <el-table-column prop="name" label="名称" header-align="center" align="center"/>
         <el-table-column prop="validStartTime" label="有效期" header-align="center" align="center" width="300">
           <template slot-scope="scope">
             {{ scope.row.validStartTime }}<i class="el-icon-arrow-right"/>{{ scope.row.validEndTime }}
@@ -64,7 +65,7 @@ export default {
         deleteIsBatch: false
       },
       searchDataForm: {
-        name: ''
+        search: ''
       }
     }
   }

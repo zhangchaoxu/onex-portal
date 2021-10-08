@@ -288,8 +288,9 @@ export default {
     onFormSubmitSuccess (res) {
       // 加一个message,缓解跳转过程中的等待
       this.$message({ message: '登录成功', type: 'success', duration: 1000 })
-      // 将token保存到cookie
+      // 将token和token的key名保存到cookie
       Cookies.set('token', res.data.token)
+      Cookies.set('tokenKey', res.data.tokenKey)
       // 跳转到home
       this.$router.replace({ name: 'home' })
     },

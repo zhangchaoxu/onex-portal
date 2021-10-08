@@ -19,7 +19,7 @@ const http = axios.create({
  */
 http.interceptors.request.use(config => {
   config.headers['Accept-Language'] = Cookies.get('language') || 'zh-CN'
-  config.headers['token'] = Cookies.get('token') || ''
+  config.headers[Cookies.get('tokenKey') || 'auth-token'] = Cookies.get('token') || ''
   // 默认参数
   const defaults = {}
   // 防止缓存，GET请求默认带_t参数
