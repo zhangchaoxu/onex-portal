@@ -31,12 +31,13 @@
         v-loading="dataListLoading"
         :data="dataList"
         border
+        @cell-click="cellClickHandle"
         @selection-change="dataListSelectionChangeHandle"
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"/>
         <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center" min-width="120"/>
-        <el-table-column prop="params" :label="$t('base.param')" header-align="center" align="center" width="200" show-tooltip-when-overflow/>
+        <el-table-column prop="params" :label="$t('base.param')" header-align="center" align="center" width="200" class-name="nowrap json link" show-tooltip-when-overflow/>
         <el-table-column prop="cron" label="cron" header-align="center" align="center" width="120"/>
         <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" show-tooltip-when-overflow></el-table-column>
         <el-table-column prop="state" :label="$t('base.state')" sortable="custom" header-align="center" align="center">
@@ -78,12 +79,13 @@
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './task-add-or-update'
 import Log from './task-log'
 
 export default {
-  mixins: [mixinListModule],
+  mixins: [mixinBaseModule, mixinListModule],
   components: { AddOrUpdate, Log },
   data () {
     return {

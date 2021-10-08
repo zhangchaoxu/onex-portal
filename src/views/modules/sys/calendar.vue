@@ -17,9 +17,7 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
         <el-table-column v-if="$hasPermission('sys:calendar:delete')" type="selection" header-align="center" align="center" width="50"/>
-        <el-table-column prop="year" label="年" header-align="center" align="center"/>
-        <el-table-column prop="month" label="月" header-align="center" align="center"/>
-        <el-table-column prop="day" label="日" header-align="center" align="center"/>
+        <el-table-column prop="dayDate" label="日期" header-align="center" align="center" width="160"/>
         <el-table-column prop="type" label="类型" header-align="center" align="center" width="120">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.type === 0" size="small" type="danger">调班</el-tag>
