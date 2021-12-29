@@ -8,13 +8,13 @@
         <el-card class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
-              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle" v-if="loginSettings.types.includes('ADMIN_USERNAME_PASSWORD') && loginSettings.types.includes('ADMIN_MOBILE_SMSCODE')">
+              <el-radio-group v-model="dataForm.authConfigType" size="small" @change="typeChangeHandle" v-if="loginSettings.types.includes('ADMIN_USERNAME_PASSWORD') && loginSettings.types.includes('ADMIN_MOBILE_SMSCODE')">
                 <el-radio-button label="ADMIN_USERNAME_PASSWORD" v-if="loginSettings.types.includes('ADMIN_USERNAME_PASSWORD')">帐号登录</el-radio-button>
                 <el-radio-button label="ADMIN_MOBILE_SMSCODE" v-if="loginSettings.types.includes('ADMIN_MOBILE_SMSCODE')">验证码登录</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
-            <template v-if="dataForm.type === 'ADMIN_USERNAME_PASSWORD'">
+            <template v-if="dataForm.authConfigType === 'ADMIN_USERNAME_PASSWORD'">
               <el-form-item prop="username">
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('username')"/>
               </el-form-item>
@@ -33,7 +33,7 @@
               </el-form-item>
             </template>
             <!-- 手机号验证码登录 -->
-            <template v-else-if="dataForm.type === 'ADMIN_MOBILE_SMSCODE'">
+            <template v-else-if="dataForm.authConfigType === 'ADMIN_MOBILE_SMSCODE'">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                   <template slot="prepend">+86</template>
@@ -130,7 +130,7 @@ export default {
         smsCode: '',
         uuid: '',
         captcha: '',
-        type: ''
+        authConfigType: ''
       }
     }
   },
@@ -170,7 +170,7 @@ export default {
   methods: {
     // 切换登录类型
     typeChangeHandle () {
-      this.getLoginConfig(this.dataForm.type)
+      this.getLoginConfig(this.dataForm.authConfigType)
     },
     // 获取系统配置
     getSysConfig () {
@@ -197,7 +197,7 @@ export default {
           this.loginSettings = res.data
           // 找到第一个enable的登录渠道
           if (this.loginSettings.types.length > 0) {
-            this.dataForm.type = this.loginSettings.types[0]
+            this.dataForm.authConfigType = this.loginSettings.types[0]
           }
           this.typeChangeHandle()
           if (this.loginSettings.types.includes('ADMIN_DINGTALK_SCAN')) {
