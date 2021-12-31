@@ -95,9 +95,9 @@ export default {
     return {
       // 表单模块参数
       mixinFormModuleOptions: {
-        // 登录接口
-        dataFormParamEncrypt: false,
-        dataFormSaveURL: '/uc/auth/login'
+        // 登录接口加密
+        dataFormParamEncrypt: true,
+        dataFormSaveURL: '/uc/auth/loginEncrypt'
       },
       dataFormMode: 'save',
       // 系统配置
