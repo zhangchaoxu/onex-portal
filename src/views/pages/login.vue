@@ -62,7 +62,7 @@
           <el-divider v-if="loginSettings.types.includes('ADMIN_WECHAT_SCAN') || loginSettings.types.includes('ADMIN_DINGTALK_SCAN')">第三方登录</el-divider>
           <div>
             <wechat-scan-login v-if="loginSettings.types.includes('ADMIN_WECHAT_SCAN')" :appid="wechatScanConfig.appid" :callback="wechatScanConfig.callback"/>
-            <dingtalk-scan-login v-if="loginSettings.types.includes('ADMIN_DINGTALK_SCAN')" :appid="dingtalkScanConfig.appid" :callback="dingtalkScanConfig.callback"/>
+            <dingtalk-scan-login v-if="loginSettings.types.includes('ADMIN_DINGTALK_SCAN') && dingtalkScanConfig" :appid="dingtalkScanConfig.appid" :callback="dingtalkScanConfig.callback"/>
           </div>
           <el-divider v-if="loginSettings.register || loginSettings.forgetPassword"></el-divider>
           <div v-if="loginSettings.register || loginSettings.forgetPassword">
