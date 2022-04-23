@@ -15,12 +15,12 @@ module.exports = {
       .loader('svg-sprite-loader')
   },
   productionSourceMap: false,
-  devServer: {
-    open: true,
-    port: 8000,
-    overlay: {
-      errors: true,
-      warnings: true
-    }
-  }
+  // devServer: {
+  //   open: true,
+  //   port: 8000,
+  //   overlay: {
+  //     errors: true,
+  //     warnings: true
+  //   }
+  // }
 }
