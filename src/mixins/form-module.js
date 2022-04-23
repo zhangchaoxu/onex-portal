@@ -86,8 +86,8 @@ export default {
     // 表单提交之前的操作
     beforeDateFormSubmit () {
       if (this.mixinFormModuleOptions.dataFormParamEncrypt) {
-        // 对参数做加密处理,注意要urlencode
-        this.dataFormSubmitParam = { body: encodeURIComponent(aesEncrypt(JSON.stringify(this.dataForm))) }
+        // 对参数做加密处理
+        this.dataFormSubmitParam = { body: aesEncrypt(JSON.stringify(this.dataForm)) }
       } else {
         this.dataFormSubmitParam = this.dataForm
       }
