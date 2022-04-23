@@ -44,6 +44,7 @@ t.resendSmsCode = '{sec}秒后重发'
 t.mobile = '手机号'
 t.username = '用户名'
 t.password = '密码'
+t.httpError = '系统无法访问,请稍后再试'
 
 /**
  * 基本表结构

@@ -47,7 +47,7 @@ http.interceptors.request.use(config => {
   return config
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('http request fail')
+  Vue.prototype.$message.error('接口无法请求,请稍后再试')
   return Promise.reject(error)
 })
 
@@ -65,7 +65,7 @@ http.interceptors.response.use(response => {
   return response
 }, error => {
   console.log(error)
-  Vue.prototype.$message.error('http response fail')
+  Vue.prototype.$message.error('接口无法访问,请稍后再试')
   return Promise.reject(error)
 })
 
