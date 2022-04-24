@@ -102,7 +102,7 @@ export default {
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        this.$http.post('/uc/user/logout').then(({ data: res }) => {
+        this.$http.post('/uc/auth/logout').then(({ data: res }) => {
           // 不管退出成功与否,都跳转
           redirectLogin()
         }).catch(() => {})
