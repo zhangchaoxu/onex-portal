@@ -3,24 +3,18 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-header">
-          <h2 class="login-brand" v-html="sysConfig.loginTitle"/>
+          <h2 class="login-brand" v-html="loginParams.title"/>
         </div>
         <el-card class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon
                    :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
-              <el-radio-group v-model="dataForm.authConfigType" size="small" @change="typeChangeHandle"
-                              v-if="loginSettings.types.includes('ADMIN_USERNAME_PASSWORD') && loginSettings.types.includes('ADMIN_MOBILE_SMSCODE')">
-                <el-radio-button label="ADMIN_USERNAME_PASSWORD"
-                                 v-if="loginSettings.types.includes('ADMIN_USERNAME_PASSWORD')">帐号登录
-                </el-radio-button>
-                <el-radio-button label="ADMIN_MOBILE_SMSCODE"
-                                 v-if="loginSettings.types.includes('ADMIN_MOBILE_SMSCODE')">验证码登录
-                </el-radio-button>
+              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle" v-if="loginParams.types.length > 1">
+                <el-radio-button v-for="itm in loginParams.types" :label="itm.type">{{ itm.name }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
-            <template v-if="dataForm.authConfigType === 'ADMIN_USERNAME_PASSWORD'">
+            <template v-if="dataForm.type.endsWith('USERNAME_PASSWORD')">
               <el-form-item prop="username">
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('username')"/>
               </el-form-item>
@@ -29,7 +23,7 @@
                           show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
-                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original"
+                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original"
                           :placeholder="$t('captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
@@ -37,14 +31,12 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{
-                    $t('login')
-                  }}
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login') }}
                 </el-button>
               </el-form-item>
             </template>
             <!-- 手机号验证码登录 -->
-            <template v-else-if="dataForm.authConfigType === 'ADMIN_MOBILE_SMSCODE'">
+            <template v-else-if="dataForm.type.endsWith('MOBILE_SMS')">
               <el-form-item prop="mobile">
                 <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone"
                           maxlength="11" minlength="11" class="input-with-select">
@@ -61,7 +53,7 @@
               </el-form-item>
               <!-- 图形验证码 -->
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
-                <el-input v-model="dataForm.captcha" prefix-icon="el-icon-c-scale-to-original"
+                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original"
                           :placeholder="$t('captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
@@ -69,41 +61,38 @@
                 </el-input>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{
-                    $t('login')
-                  }}
+                <el-button type="primary" @click="dataFormSubmitHandle()" class="w-percent-100">{{ $t('login') }}
                 </el-button>
               </el-form-item>
             </template>
           </el-form>
           <el-divider
-              v-if="loginSettings.types.includes('ADMIN_WECHAT_SCAN') || loginSettings.types.includes('ADMIN_DINGTALK_SCAN')">
+              v-if="loginParams.types.includes('ADMIN_WECHAT_SCAN') || loginParams.types.includes('ADMIN_DINGTALK_SCAN')">
             第三方登录
           </el-divider>
           <div>
-            <wechat-scan-login v-if="loginSettings.types.includes('ADMIN_WECHAT_SCAN')" :appid="wechatScanConfig.appid"
+            <wechat-scan-login v-if="loginParams.types.includes('ADMIN_WECHAT_SCAN')" :appid="wechatScanConfig.appid"
                                :callback="wechatScanConfig.callback"/>
-            <dingtalk-scan-login v-if="loginSettings.types.includes('ADMIN_DINGTALK_SCAN') && dingtalkScanConfig"
+            <dingtalk-scan-login v-if="loginParams.types.includes('ADMIN_DINGTALK_SCAN') && dingtalkScanConfig"
                                  :appid="dingtalkScanConfig.appid" :callback="dingtalkScanConfig.callback"/>
           </div>
-          <el-divider v-if="loginSettings.register || loginSettings.forgetPassword"></el-divider>
-          <div v-if="loginSettings.register || loginSettings.forgetPassword">
-            <router-link :to="{ name: 'register' }" v-if="loginSettings.register">
+          <el-divider v-if="loginParams.register || loginParams.forgetPassword"></el-divider>
+          <div v-if="loginParams.register || loginParams.forgetPassword">
+            <router-link :to="{ name: 'register' }" v-if="loginParams.register">
               <el-link :underline="false" type="info" class="no-underline fl">{{ $t('register') }}</el-link>
             </router-link>
-            <router-link :to="{ name: 'forgetPassword' }" v-if="loginSettings.forgetPassword">
+            <router-link :to="{ name: 'forgetPassword' }" v-if="loginParams.forgetPassword">
               <el-link :underline="false" type="info" class="no-underline fr">{{ $t('forgetPassword') }}</el-link>
             </router-link>
           </div>
         </el-card>
-        <div class="login-footer" v-html="sysConfig.copyright"/>
+        <div class="login-footer" v-html="loginParams.copyright"/>
       </main>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
 import Cookies from 'js-cookie'
 import DingtalkScanLogin from '@/components/dingtalk-scan-login'
 import WechatScanLogin from '@/components/wechat-scan-login'
@@ -117,14 +106,12 @@ export default {
     return {
       mixinFormModuleOptions: {
         // 登录接口加密
-        dataFormParamEncrypt: true,
-        dataFormSaveURL: '/uc/auth/loginEncrypt'
+        dataFormParamEncrypt: false,
+        dataFormSaveURL: '/uc/auth/userLogin'
       },
       dataFormMode: 'save',
-      // 系统配置
-      sysConfig: {},
-      // 全局登录配置
-      loginSettings: {
+      // 登录参数
+      loginParams: {
         forgetPassword: false,
         register: false,
         types: []
@@ -142,12 +129,12 @@ export default {
       dataForm: {
         username: '',
         password: '',
+        tenantCode: '',
         mobile: '',
-        mobileArea: '86',
         smsCode: '',
-        uuid: '',
-        captcha: '',
-        authConfigType: ''
+        captchaUuid: '',
+        captchaValue: '',
+        type: ''
       }
     }
   },
@@ -160,7 +147,7 @@ export default {
         password: [
           {required: true, message: this.$t('validate.required'), trigger: 'blur'}
         ],
-        captcha: [
+        captchaValue: [
           {required: this.loginTypeConfig.captcha, message: this.$t('validate.required'), trigger: 'blur'}
         ],
         mobile: [
@@ -185,84 +172,38 @@ export default {
   },
   methods: {
     // 切换登录类型
-    typeChangeHandle() {
-      this.getLoginConfig(this.dataForm.authConfigType)
-    },
-    // 获得登录参数
-    getLoginParams() {
-      //let url = window.location.origin
-      let url = 'https://portal-onex.nb6868.com'
-      this.$http.post('/uc/auth/loginParams', {url: url})
-          .then(({data: res}) => {
-            if (res.code !== 0) {
-              return this.$message.error(res.toast)
-            } else {
-              console.log(res)
-            }
-          }).finally(() => {
-        this.formLoading = false
-      })
-    },
-    // 获取系统配置
-    getSysConfig() {
-      // 先从本地读取
-      const localConfig = localStorage.getItem('sysConfig')
-      if (localConfig) {
-        this.sysConfig = JSON.parse(localConfig)
-        document.title = this.sysConfig.title
-      }
-      // 再从线上读取
-      axios.get('/json/sysConfig.json').then(({data: res}) => {
-        this.sysConfig = res
-        localStorage.setItem('sysConfig', JSON.stringify(res))
-        document.title = this.sysConfig.title
-      })
-    },
-    // 获取登录设置
-    getLoginSettings() {
-      this.$http.get('/uc/auth/getLoginSettings?type=admin').then(({data: res}) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        } else {
-          // 赋值全局登录配置
-          this.loginSettings = res.data
-          // 找到第一个enable的登录渠道
-          if (this.loginSettings.types.length > 0) {
-            this.dataForm.authConfigType = this.loginSettings.types[0]
-          }
-          this.typeChangeHandle()
-          if (this.loginSettings.types.includes('ADMIN_DINGTALK_SCAN')) {
-            this.getDingtalkScanLoginConfig('ADMIN_DINGTALK_SCAN')
-          }
-        }
-      }).finally(() => {
-        this.formLoading = false
-      })
-    },
-    // 获得钉钉扫码登录配置
-    getDingtalkScanLoginConfig(type) {
-      this.$http.get(`/dingtalk/getConfig?type=${type}`).then(({data: res}) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        } else {
-          this.dingtalkScanConfig = res.data
-        }
-      }).finally(() => {
-      })
-    },
-    // 获取登录配置
-    getLoginConfig(type) {
-      this.$http.get(`/uc/auth/getLoginConfig?type=${type}`).then(({data: res}) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        } else {
-          this.loginTypeConfig = res.data
-          // 获取验证码
+    typeChangeHandle(type) {
+      this.loginParams.types.forEach(itm => {
+        if (type === itm.type) {
+          this.loginTypeConfig = itm
           if (this.loginTypeConfig.captcha) {
             this.getCaptcha()
           }
           // 清空校验
           this.$refs.dataForm.clearValidate()
+        }
+      })
+    },
+    // 获得登录参数
+    getLoginParams() {
+      //let url = window.location.origin
+      let url = 'https://portal-onex.nb6868.com'
+      this.$http.post('/uc/auth/loginParams', {url: url}).then(({data: res}) => {
+        console.log(res)
+        if (res.code !== 0) {
+          return this.$message.error(res.toast)
+        } else {
+          this.loginParams = res.data
+          this.dataForm.tenantCode = this.loginParams.tenantCode
+          document.title = this.loginParams.title
+          if (this.loginParams.types.length > 0) {
+            this.dataForm.type = this.loginParams.types[0].type
+          }
+          this.typeChangeHandle(this.dataForm.type)
+
+          /*if (this.loginSettings.types.includes('ADMIN_DINGTALK_SCAN')) {
+            this.getDingtalkScanLoginConfig('ADMIN_DINGTALK_SCAN')
+          }*/
         }
       }).finally(() => {
         this.formLoading = false
@@ -270,12 +211,15 @@ export default {
     },
     // 获取验证码
     getCaptcha() {
-      this.$http.get('/sys/captcha/base64?width=110&height=40').then(({data: res}) => {
+      this.$http.post('/uc/auth/captcha', {
+        width: 110,
+        height: 40
+      }).then(({data: res}) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
           this.captchaImage = res.data.image
-          this.dataForm.uuid = res.data.uuid
+          this.dataForm.captchaUuid = res.data.uuid
         }
       })
     },

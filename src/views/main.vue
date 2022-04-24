@@ -55,7 +55,7 @@ export default {
     // 获得带有数字的菜单
     getMenuNotifyList () {
       // todo 接口获取
-      this.$store.state.sidebarMenuNotifyList = [{ id: '000', maxCount: 99, count: Math.ceil(Math.random() * 10) }]
+      // this.$store.state.sidebarMenuNotifyList = [{ id: '000', maxCount: 99, count: Math.ceil(Math.random() * 10) }]
     },
     // 窗口改变大小
     windowResizeHandle () {
@@ -104,7 +104,7 @@ export default {
     },
     // 获取当前用户信息
     getUserInfo () {
-      return this.$http.get('/uc/user/userInfo').then(({ data: res }) => {
+      return this.$http.post('/uc/auth/userInfo').then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }

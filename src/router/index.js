@@ -67,7 +67,10 @@ router.beforeEach((to, from, next) => {
     return next()
   }
   // 获取菜单列表, 添加并全局变量保存
-  http.get('/uc/menu/scope').then(({ data: res }) => {
+  http.post('/uc/auth/userMenuScope', {
+    permissions: true,
+    roles: true
+  }).then(({ data: res }) => {
     if (res.code !== 0) {
       // 提示错误,并跳转登录
       Vue.prototype.$message.error(res.toast)
