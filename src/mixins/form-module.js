@@ -59,7 +59,7 @@ export default {
     // 获取信息
     getInfo () {
       this.formLoading = true
-      this.$http.get(this.mixinFormModuleOptions.dataFormInfoURL + this.dataForm.id).then(({ data: res }) => {
+      this.$http.post(this.mixinFormModuleOptions.dataFormInfoURL, {id: this.dataForm.id}).then(({ data: res }) => {
         if (res.code !== 0) {
           this.onGetInfoError(res)
         } else {
@@ -104,7 +104,7 @@ export default {
             return false
           }
           // 验证通过,提交表单
-          this.$http[this.dataFormMode === 'save' ? 'post' : 'put'](this.dataFormMode === 'save' ? this.mixinFormModuleOptions.dataFormSaveURL : this.mixinFormModuleOptions.dataFormUpdateURL, this.dataFormSubmitParam, this.mixinFormModuleOptions.dataFormSubmitConfig).then(({ data: res }) => {
+          this.$http.post(this.dataFormMode === 'save' ? this.mixinFormModuleOptions.dataFormSaveURL : this.mixinFormModuleOptions.dataFormUpdateURL, this.dataFormSubmitParam, this.mixinFormModuleOptions.dataFormSubmitConfig).then(({ data: res }) => {
             if (res.code !== 0) {
               this.onFormSubmitError(res)
             } else {

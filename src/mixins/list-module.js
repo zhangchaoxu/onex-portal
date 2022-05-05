@@ -16,17 +16,19 @@ export default {
         deleteURL: '', // 删除接口，API地址
         deleteBatchURL: '', // 删除接口，API地址
         deleteIsBatch: false, // 删除接口，是否需要批量
-        deleteIsBatchKey: 'id', // 删除接口，批量状态下由那个key进行标记操作？比如：pid，uid...
+        deleteIdKey: 'id', // 删除接口，删除key
         exportURL: '', // 导出接口，API地址
         idKey: 'id' // 默认表主键
       },
       // 默认属性
-      searchDataForm: {}, // 查询条件
+      searchForm: {
+        sortItems: [], // 排序
+        pageNo: 1, // 当前页码
+        pageSize: 10, // 每页数
+      },
+      // 默认的排序
+      sortItemDefault: [{ column: 'create_time', asc: false }],
       dataList: [], // 数据列表
-      order: 'desc', // 排序，asc/desc
-      orderField: 'create_time', // 排序，字段
-      page: 1, // 当前页码
-      limit: 10, // 每页数
       total: 0, // 总条数
       dataListLoading: false, // 数据列表，loading状态
       dataListSelections: [], // 数据列表，多选项
@@ -52,7 +54,8 @@ export default {
   },
   activated () {
     if (this.mixinListModuleOptions.activatedIsNeed && !this.lazyLoad) {
-      this.getDataList()
+      this.searchForm.sortItems = this.sortItemDefault
+      this.queryDataList()
     }
   },
   methods: {
@@ -62,18 +65,7 @@ export default {
         return
       }
       this.dataListLoading = true
-      this.$http.get(
-        this.mixinListModuleOptions.getDataListURL,
-        {
-          params: {
-            order: this.order,
-            orderField: this.orderField,
-            page: this.mixinListModuleOptions.getDataListIsPage ? this.page : null,
-            limit: this.mixinListModuleOptions.getDataListIsPage ? this.limit : null,
-            ...this.searchDataForm
-          }
-        }
-      ).then(({ data: res }) => {
+      this.$http.post(this.mixinListModuleOptions.getDataListURL, this.wrapParams()).then(({ data: res }) => {
         if (res.code !== 0) {
           this.onGetListError(res)
         } else {
@@ -83,9 +75,13 @@ export default {
         this.dataListLoading = false
       })
     },
+    // 封装请求参数
+    wrapParams() {
+      return this.searchForm
+    },
     // 查询数据列表
     queryDataList () {
-      this.page = 1
+      this.searchForm.pageNo = 1
       this.getDataList()
     },
     // 获取list之前的操作
@@ -95,7 +91,7 @@ export default {
     // list信息获取成功
     onGetListSuccess (res) {
       this.dataList = this.mixinListModuleOptions.getDataListIsPage ? res.data.list : res.data
-      this.total = this.mixinListModuleOptions.getDataListIsPage ? res.data.total : res.data.length
+      this.total = this.mixinListModuleOptions.getDataListIsPage ? parseInt(res.data.total) : res.data.length
     },
     // list信息获取失败
     onGetListError (res) {
@@ -109,24 +105,24 @@ export default {
     },
     // 排序
     dataListSortChangeHandle (data) {
-      if (!data.order || !data.prop) {
-        this.order = ''
-        this.orderField = ''
-        return false
+      if (data.order && data.prop) {
+        // 有排序规则
+        this.searchForm.sortItems = [{column: data.prop.replace(/([A-Z])/g, '_$1').toLowerCase(), asc: 'ascending' === data.order}]
+       } else {
+        // 默认的排序规则
+        this.searchForm.sortItems = this.sortItemDefault
       }
-      this.order = data.order.replace(/ending$/, '')
-      this.orderField = data.prop.replace(/([A-Z])/g, '_$1').toLowerCase()
       this.getDataList()
     },
     // 分页, 每页条数
     pageSizeChangeHandle (val) {
-      this.page = 1
-      this.limit = val
+      this.searchForm.pageNo = 1
+      this.searchForm.pageSize = val
       this.getDataList()
     },
     // 分页, 当前页
     pageCurrentChangeHandle (val) {
-      this.page = val
+      this.searchForm.pageNo = val
       this.getDataList()
     },
     // 新增 / 修改
@@ -157,8 +153,8 @@ export default {
       })
     },
     // 删除
-    deleteHandle (id) {
-      if (this.mixinListModuleOptions.deleteIsBatch && !id && this.dataListSelections.length <= 0) {
+    deleteBatchHandle () {
+      if (this.dataListSelections.length <= 0) {
         // 批量删除先检查已选中个数
         return this.$message({
           message: this.$t('prompt.deleteBatch'),
@@ -167,66 +163,56 @@ export default {
         })
       }
       // 对话框提示是否删除
-      this.$confirm(this.$t('prompt.info', { 'handle': this.$t('delete') }), this.$t('prompt.title'), {
+      this.$confirm(this.$t('prompt.deleteTips', { 'size': this.dataListSelections.length }), this.$t('prompt.title'), {
         confirmButtonText: this.$t('confirm'),
         cancelButtonText: this.$t('cancel'),
         type: 'warning'
       }).then(() => {
-        if (this.mixinListModuleOptions.deleteIsBatch) {
-          // 批量删除
-          this.$http.delete(`${this.mixinListModuleOptions.deleteBatchURL}`, { 'data': id ? [id] : this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIsBatchKey]) })
-            .then(({ data: res }) => {
-              if (res.code !== 0) {
-                return this.$message.error(res.toast)
+        // 批量删除
+        this.$http.post(this.mixinListModuleOptions.deleteBatchURL, { 'ids': this.dataListSelections.map(item => item[this.mixinListModuleOptions.deleteIdKey]) })
+          .then(({ data: res }) => {
+            if (res.code !== 0) {
+              return this.$message.error(res.toast)
+            }
+            this.$message({
+              message: this.$t('prompt.success'),
+              type: 'success',
+              duration: 500,
+              onClose: () => {
+                this.getDataList()
               }
-              this.$message({
-                message: this.$t('prompt.success'),
-                type: 'success',
-                duration: 500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
             })
-        } else {
-          // 单个删除
-          this.$http.delete(`${this.mixinListModuleOptions.deleteURL}?` + this.mixinListModuleOptions.deleteIsBatchKey + '=' + id)
-            .then(({ data: res }) => {
-              if (res.code !== 0) {
-                return this.$message.error(res.toast)
-              }
-              this.$message({
-                message: this.$t('prompt.success'),
-                type: 'success',
-                duration: 500,
-                onClose: () => {
-                  this.getDataList()
-                }
-              })
-            })
-        }
+          })
       }).catch(() => {
       })
     },
     /**
      * 单个直接删除
-     * @param id
      */
-    deleteOneHandle (id) {
-      this.$http.delete(`${this.mixinListModuleOptions.deleteURL}?${this.mixinListModuleOptions.deleteIsBatchKey}=${id}`)
-        .then(({ data: res }) => {
-          if (res.code !== 0) {
-            return this.$message.error(res.toast)
-          }
-          this.$message({
-            message: this.$t('prompt.success'),
-            type: 'success',
-            duration: 500,
-            onClose: () => {
-              this.getDataList()
-            }
-          })
-        })
+    deleteHandle (id) {
+      // 对话框提示是否删除
+      this.$confirm(this.$t('prompt.deleteTips', { 'size': 1 }), this.$t('prompt.title'), {
+        confirmButtonText: this.$t('confirm'),
+        cancelButtonText: this.$t('cancel'),
+        type: 'warning'
+      }).then(() => {
+          // 删除
+          this.$http.post(this.mixinListModuleOptions.deleteURL, {id: id})
+              .then(({ data: res }) => {
+                if (res.code !== 0) {
+                  return this.$message.error(res.toast)
+                }
+                this.$message({
+                  message: this.$t('prompt.success'),
+                  type: 'success',
+                  duration: 500,
+                  onClose: () => {
+                    this.getDataList()
+                  }
+                })
+              })
+      }).catch(() => {
+      })
     },
     // 导入
     importHandle () {

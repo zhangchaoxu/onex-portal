@@ -13,24 +13,7 @@
             <el-input v-model="dataForm.name" placeholder="名称"/>
           </el-form-item>
         </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="16">
-          <el-form-item label="有效期" prop="validStartTime">
-            <el-date-picker
-                v-model="dateRange"
-                type="datetimerange"
-                @change="dateRangeChangeHandle"
-                :picker-options="dateRangePickerOptions"
-                value-format="yyyy-MM-dd HH:mm:ss"
-                :range-separator="$t('datePicker.range')"
-                :start-placeholder="$t('datePicker.start')"
-                :end-placeholder="$t('datePicker.end')">
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <el-form-item label="状态" prop="state">
             <el-radio-group v-model="dataForm.state" size="small">
               <el-radio-button :label="1">有效</el-radio-button>
@@ -38,7 +21,15 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="排序" prop="sort">
+            <el-input-number controls-position="right" :min="0" v-model="dataForm.sort" class="w-percent-100"/>
+          </el-form-item>
+        </el-col>
       </el-row>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="dataForm.remark" placeholder="备注" type="textarea" maxlength="100"/>
+      </el-form-item>
     </el-form>
     <template slot="footer">
       <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
@@ -59,16 +50,15 @@ export default {
       mixinFormModuleOptions: {
         dataFormSaveURL: `/uc/tenant/save`,
         dataFormUpdateURL: `/uc/tenant/update`,
-        dataFormInfoURL: `/uc/tenant/info?id=`
+        dataFormInfoURL: `/uc/tenant/info`
       },
       dateRange: null,
       dataForm: {
         id: '',
         name: '',
         code: '',
-        validStartTime: '',
-        validEndTime: '',
-        state: 1
+        state: 1,
+        sort: 0
       }
     }
   },
@@ -81,13 +71,10 @@ export default {
         name: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
-        validStartTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
-        validEndTime: [
-          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
-        ],
         state: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        sort: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
@@ -101,25 +88,6 @@ export default {
         this.resetForm()
         this.initFormData()
       })
-    },
-    // 时间区间选择器变化
-    dateRangeChangeHandle (value) {
-      if (value && value.length === 2) {
-        this.dataForm.validStartTime = value[0]
-        this.dataForm.validEndTime = value[1]
-      } else {
-        this.dataForm.validStartTime = ''
-        this.dataForm.validEndTime = ''
-      }
-    },
-    // form信息获取成功
-    onGetInfoSuccess (res) {
-      this.dataForm = {
-        ...this.dataForm,
-        ...res.data
-      }
-      // 赋值日期选择器
-      this.dateRange = [this.dataForm.validStartTime, this.dataForm.validEndTime]
     }
   }
 }

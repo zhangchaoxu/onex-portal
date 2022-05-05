@@ -75,6 +75,7 @@ t.prompt = {}
 t.prompt.apierror = '接口调用失败'
 t.prompt.title = '提示'
 t.prompt.info = '确定进行[{handle}]操作?'
+t.prompt.deleteTips = '确定删除选中的[{size}]条数据?'
 t.prompt.success = '操作成功'
 t.prompt.failed = '操作失败'
 t.prompt.deleteBatch = '请选择删除项'
