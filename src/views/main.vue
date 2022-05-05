@@ -114,25 +114,19 @@ export default {
     // 获取系统配置
     getSysConfig () {
       // 先从本地读取
-      const localConfig = localStorage.getItem('sysConfig')
-      if (localConfig) {
-        document.title = JSON.parse(localConfig).title
+      const systemConfig = localStorage.getItem('systemConfig')
+      if (systemConfig) {
+        document.title = JSON.parse(systemConfig).title
       }
       // 再从线上读取
-      axios.get(`/json/sysConfig.json`).then(({ data: res }) => {
-        localStorage.setItem('sysConfig', JSON.stringify(res))
-        document.title = res.title
-      })
+      this.$http.post('/uc/params/infoByCode', {code:'SYSTEM'}).then(({ data: res }) => {
+        if (res.code !== 0) {
+          return this.$message.error(res.toast)
+        }
+        localStorage.setItem('systemConfig', JSON.stringify(res.data))
+        document.title = res.data.title
+      }).catch(() => {})
     }
-    // 获取按钮权限
-    /* getPermissions () {
-          return this.$http.get('/uc/menu/permissions').then(({ data: res }) => {
-            if (res.code !== 0) {
-              return this.$message.error(res.toast)
-            }
-            window.SITE_CONFIG['permissions'] = res.data
-          }).catch(() => {})
-        } */
   }
 }
 </script>

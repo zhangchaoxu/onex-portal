@@ -3,28 +3,27 @@
     <div class="aui-content__wrapper">
       <main class="aui-content">
         <div class="login-header">
-          <h2 class="login-brand" v-html="loginParams.title"/>
+          <h2 class="login-brand" v-html="loginParams.titleHeader"/>
         </div>
         <el-card class="login-body">
           <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" status-icon
                    :validate-on-rule-change="false" @keyup.enter.native="dataFormSubmitHandle()">
             <el-form-item>
-              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle" v-if="loginParams.types.length > 1">
-                <el-radio-button v-for="itm in loginParams.types" :label="itm.type">{{ itm.name }}</el-radio-button>
+              <el-radio-group v-model="dataForm.type" size="small" @change="typeChangeHandle">
+                <el-radio-button v-if="this.loginParams.usernamePasswordLogin && this.loginParams.usernamePasswordLogin.enable" :label="this.loginParams.usernamePasswordLogin.type">{{ this.loginParams.usernamePasswordLogin.name }}</el-radio-button>
+                <el-radio-button v-if="this.loginParams.mobileSmsLogin && this.loginParams.mobileSmsLogin.enable" :label="this.loginParams.mobileSmsLogin.type">{{ this.loginParams.mobileSmsLogin.name }}</el-radio-button>
               </el-radio-group>
             </el-form-item>
             <!-- 帐号密码登录 -->
-            <template v-if="dataForm.type.endsWith('USERNAME_PASSWORD')">
+            <template v-if="this.loginParams.usernamePasswordLogin && this.loginParams.usernamePasswordLogin.enable && this.loginParams.usernamePasswordLogin.type === this.dataForm.type">
               <el-form-item prop="username">
                 <el-input v-model="dataForm.username" prefix-icon="el-icon-user" :placeholder="$t('username')"/>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('password')"
-                          show-password/>
+                <el-input v-model="dataForm.password" prefix-icon="el-icon-lock" :placeholder="$t('password')" show-password/>
               </el-form-item>
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
-                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original"
-                          :placeholder="$t('captcha')" maxlength="8">
+                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')" maxlength="8">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
                   </el-tooltip>
@@ -36,25 +35,22 @@
               </el-form-item>
             </template>
             <!-- 手机号验证码登录 -->
-            <template v-else-if="dataForm.type.endsWith('MOBILE_SMS')">
+            <template v-if="this.loginParams.mobileSmsLogin && this.loginParams.mobileSmsLogin.enable && this.loginParams.mobileSmsLogin.type === this.dataForm.type">
               <el-form-item prop="mobile">
-                <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone"
-                          maxlength="11" minlength="11" class="input-with-select">
+                <el-input v-model="dataForm.mobile" :placeholder="$t('mobile')" prefix-icon="el-icon-mobile-phone" maxlength="11" minlength="11" class="input-with-select">
                   <template slot="prepend">+86</template>
                 </el-input>
               </el-form-item>
               <el-form-item prop="smsCode">
-                <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message"
-                          maxlength="6" minlength="4">
-                  <el-button slot="append" @click="smsCodeSendHandle()" type="primary" :disabled="smsSendTimeout < 60">
-                    {{ smsSendTimeout !== 60 ? $t('resendSmsCode', {'sec': smsSendTimeout}) : $t('sendSmsCode') }}
+                <el-input v-model="dataForm.smsCode" :placeholder="$t('smsCode')" prefix-icon="el-icon-message" maxlength="6" minlength="4">
+                  <el-button slot="append" @click="smsCodeSendHandle()" type="primary" :disabled="smsSendTimeout < this.loginTypeConfig.mailTplTimeout">
+                    {{ smsSendTimeout !== this.loginTypeConfig.mailTplTimeout ? $t('resendSmsCode', {'sec': smsSendTimeout}) : $t('sendSmsCode') }}
                   </el-button>
                 </el-input>
               </el-form-item>
               <!-- 图形验证码 -->
               <el-form-item prop="captcha" v-if="loginTypeConfig.captcha">
-                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original"
-                          :placeholder="$t('captcha')">
+                <el-input v-model="dataForm.captchaValue" prefix-icon="el-icon-c-scale-to-original" :placeholder="$t('captcha')">
                   <el-tooltip slot="append" effect="dark" content="点击刷新图形验证码" placement="right">
                     <img :src="captchaImage" width="100px" @click="getCaptcha" class="link">
                   </el-tooltip>
@@ -66,15 +62,10 @@
               </el-form-item>
             </template>
           </el-form>
-          <el-divider
-              v-if="loginParams.types.includes('ADMIN_WECHAT_SCAN') || loginParams.types.includes('ADMIN_DINGTALK_SCAN')">
-            第三方登录
-          </el-divider>
+          <el-divider v-if="(this.loginParams.dingtalkScanLogin && this.loginParams.dingtalkScanLogin.enable) || (this.loginParams.wechatScanLogin && this.loginParams.wechatScanLogin.enable)">第三方登录</el-divider>
           <div>
-            <wechat-scan-login v-if="loginParams.types.includes('ADMIN_WECHAT_SCAN')" :appid="wechatScanConfig.appid"
-                               :callback="wechatScanConfig.callback"/>
-            <dingtalk-scan-login v-if="loginParams.types.includes('ADMIN_DINGTALK_SCAN') && dingtalkScanConfig"
-                                 :appid="dingtalkScanConfig.appid" :callback="dingtalkScanConfig.callback"/>
+            <dingtalk-scan-login v-if="this.loginParams.dingtalkScanLogin && this.loginParams.dingtalkScanLogin.enable" :appid="this.loginParams.dingtalkScanLogin.appid" :callback="this.loginParams.dingtalkScanLogin.callback"/>
+            <wechat-scan-login v-if="this.loginParams.wechatScanLogin && this.loginParams.wechatScanLogin.enable" :appid="this.loginParams.wechatScanLogin.appid" :callback="this.loginParams.wechatScanLogin.appid"/>
           </div>
           <el-divider v-if="loginParams.register || loginParams.forgetPassword"></el-divider>
           <div v-if="loginParams.register || loginParams.forgetPassword">
@@ -118,12 +109,13 @@ export default {
       },
       // 当前登录渠道配置
       loginTypeConfig: {
-        captcha: false
+        captcha: false,
+        // 短信发送倒计时
+        mailTplTimeout: 60
       },
       wechatScanConfig: {},
       dingtalkScanConfig: {},
-      // 短信发送倒计时
-      smsSendTimeout: 60,
+      smsSendTimeout: 0,
       // 验证码图片
       captchaImage: '',
       dataForm: {
@@ -173,37 +165,35 @@ export default {
   methods: {
     // 切换登录类型
     typeChangeHandle(type) {
-      this.loginParams.types.forEach(itm => {
-        if (type === itm.type) {
-          this.loginTypeConfig = itm
-          if (this.loginTypeConfig.captcha) {
-            this.getCaptcha()
-          }
-          // 清空校验
-          this.$refs.dataForm.clearValidate()
-        }
-      })
+      if (this.loginParams.usernamePasswordLogin && this.loginParams.usernamePasswordLogin.enable && this.loginParams.usernamePasswordLogin.type === type) {
+        this.loginTypeConfig = this.loginParams.usernamePasswordLogin
+      } else if (this.loginParams.mobileSmsLogin && this.loginParams.mobileSmsLogin.enable && this.loginParams.mobileSmsLogin.type === type) {
+        this.loginTypeConfig = this.loginParams.mobileSmsLogin
+        this.smsSendTimeout = this.loginTypeConfig.mailTplTimeout
+      }
+      // 清空校验
+      this.$refs.dataForm.clearValidate()
+      if (this.loginTypeConfig.captcha) {
+        this.getCaptcha()
+      }
     },
     // 获得登录参数
     getLoginParams() {
       //let url = window.location.origin
       let url = 'https://portal-onex.nb6868.com'
-      this.$http.post('/uc/auth/loginParams', {url: url}).then(({data: res}) => {
-        console.log(res)
+      this.$http.post('/uc/params/infoByCode', {contentUrl: url, code:'ADMIN_LOGIN'}).then(({data: res}) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         } else {
           this.loginParams = res.data
           this.dataForm.tenantCode = this.loginParams.tenantCode
           document.title = this.loginParams.title
-          if (this.loginParams.types.length > 0) {
-            this.dataForm.type = this.loginParams.types[0].type
+          if (this.loginParams.usernamePasswordLogin && this.loginParams.usernamePasswordLogin.enable) {
+            this.dataForm.type = this.loginParams.usernamePasswordLogin.type
+          } else if (this.loginParams.mobileSmsLogin && this.loginParams.mobileSmsLogin.enable) {
+            this.dataForm.type = this.loginParams.mobileSmsLogin.type
           }
           this.typeChangeHandle(this.dataForm.type)
-
-          /*if (this.loginSettings.types.includes('ADMIN_DINGTALK_SCAN')) {
-            this.getDingtalkScanLoginConfig('ADMIN_DINGTALK_SCAN')
-          }*/
         }
       }).finally(() => {
         this.formLoading = false
@@ -225,7 +215,7 @@ export default {
     },
     // 发送短信验证码
     smsCodeSendHandle() {
-      if (this.smsSendTimeout < 60) {
+      if (this.smsSendTimeout < this.loginTypeConfig.mailTplTimeout) {
         return
       }
       this.$refs.dataForm.validateField('mobile', (errorMessage) => {
@@ -235,17 +225,17 @@ export default {
         this.formLoading = true
         this.$http.post('/msg/mailLog/sendCode', {
           mailTo: this.dataForm.mobile,
-          tplCode: 'CODE_LOGIN'
+          tplCode: this.loginTypeConfig.mailTplCode
         }).then(({data: res}) => {
           if (res.code !== 0) {
             return this.$message.error(res.toast)
           }
           this.$message.success('短信发送成功')
           // 开始倒计时
-          this.smsSendTimeout = 60
+          this.smsSendTimeout = this.loginTypeConfig.mailTplTimeout
           const timer = window.setInterval(() => {
             if (this.smsSendTimeout-- <= 0) {
-              this.smsSendTimeout = 60
+              this.smsSendTimeout = this.loginTypeConfig.mailTplTimeout
               window.clearInterval(timer)
             }
           }, 1000)
