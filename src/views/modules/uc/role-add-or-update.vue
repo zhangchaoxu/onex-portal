@@ -38,7 +38,7 @@ export default {
       mixinFormModuleOptions: {
         dataFormSaveURL: `/uc/role/save`,
         dataFormUpdateURL: `/uc/role/update`,
-        dataFormInfoURL: `/uc/role/info?id=`
+        dataFormInfoURL: `/uc/role/info`
       },
       menuList: [],
       dataForm: {
@@ -74,20 +74,11 @@ export default {
     },
     // 获取菜单列表
     getMenuList () {
-      return this.$http.get('/uc/menu/tree').then(({ data: res }) => {
+      return this.$http.post('/uc/menu/tree', {}).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
         this.menuList = res.data
-      }).catch(() => {})
-    },
-    // 获取部门列表
-    getDeptList () {
-      return this.$http.get('/uc/dept/list').then(({ data: res }) => {
-        if (res.code !== 0) {
-          return this.$message.error(res.toast)
-        }
-        this.deptList = res.data
       }).catch(() => {})
     },
     // form信息获取成功
