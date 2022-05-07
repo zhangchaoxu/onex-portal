@@ -23,7 +23,6 @@
         @sort-change="dataListSortChangeHandle"
         style="width: 100%;">
         <el-table-column prop="tenantCode" label="租户" header-align="center" align="center" width="100"/>
-        <el-table-column prop="code" label="编码" header-align="center" align="center" width="100"/>
         <el-table-column prop="name" :label="$t('base.name')" header-align="center" align="center"/>
         <el-table-column prop="remark" :label="$t('base.remark')" header-align="center" align="center" show-tooltip-when-overflow/>
         <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100" sortable="custom"/>
