@@ -1,9 +1,15 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-uc__menu">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
+        <el-form-item class="small-item">
+          <el-input v-model="searchForm.tenantCode" :placeholder="$t('base.tenant')" clearable/>
+        </el-form-item>
         <el-form-item>
-          <el-button v-if="$hasPermission('uc:menu:save')" type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
+          <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button v-if="$hasPermission('uc:menu:edit')" type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
         </el-form-item>
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" row-key="id" border
@@ -34,7 +40,7 @@
         <el-table-column prop="permissions" :label="$t('menu.permissions')" header-align="center" align="center" show-overflow-tooltip min-width="150"/>
         <el-table-column  :label="$t('handle')" fixed="right" header-align="center" align="center" width="150" v-if="$hasPermission('uc:menu:update') || $hasPermission('uc:menu:delete')">
           <template slot-scope="scope">
-            <el-button v-if="$hasPermission('uc:menu:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+            <el-button v-if="$hasPermission('uc:menu:edit')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
             <el-button v-if="$hasPermission('uc:menu:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
           </template>
         </el-table-column>
@@ -59,8 +65,8 @@ export default {
         deleteURL: '/uc/menu/delete',
         deleteIsBatch: false
       },
-      searchDataForm: {
-
+      searchForm: {
+        tenantCode: null
       },
       // 展开树结构
       expandTree: false

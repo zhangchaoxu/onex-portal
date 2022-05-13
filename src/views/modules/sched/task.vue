@@ -1,9 +1,9 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sched__task">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item>
-          <el-input v-model="searchDataForm.name" :placeholder="$t('base.name')" clearable/>
+          <el-input v-model="searchForm.name" :placeholder="$t('base.name')" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="getDataList()">{{ $t('query') }}</el-button>
@@ -96,7 +96,7 @@ export default {
         deleteBatchURL: '/sched/task/deleteBatch',
         deleteIsBatch: true
       },
-      searchDataForm: {
+      searchForm: {
         name: ''
       },
       logVisible: false

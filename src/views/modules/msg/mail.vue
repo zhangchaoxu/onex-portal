@@ -14,17 +14,17 @@
             </el-table-column>
             <el-table-column :label="$t('handle')" fixed="right"  header-align="center" align="center" width="80">
               <template slot="header" slot-scope="scope">
-                <el-button type="primary" @click="tplAddOrUpdateHandle()" size="small">{{ $t('add') }}</el-button>
+                <i class="el-icon-circle-plus-outline" @click="tplAddOrUpdateHandle()" v-if="$hasPermission('msg:mailTpl:edit')"></i>
               </template>
               <template slot-scope="scope">
                 <el-dropdown trigger="hover" @command="handleTplCommand">
                   <span class="el-dropdown-link">操作<i class="el-icon-arrow-down el-icon--right"/></span>
                    <el-dropdown-menu slot="dropdown">
                      <el-dropdown-item icon="el-icon-s-promotion" :command="{ command: 'send', id: scope.row.id, code: scope.row.code, channel: scope.row.channel }"
-                                       v-if="$hasPermission('msg:mailLog:save')">发送
+                                       v-if="$hasPermission('msg:mailLog:send')">发送
                      </el-dropdown-item>
-                     <el-dropdown-item icon="el-icon-view" :command="{ command: 'info', id: scope.row.id }" v-if="$hasPermission('msg:mailTpl:info')">详情</el-dropdown-item>
-                      <el-dropdown-item icon="el-icon-edit" :command="{ command: 'update', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:update')">修改</el-dropdown-item>
+                     <el-dropdown-item icon="el-icon-view" :command="{ command: 'info', id: scope.row.id }" v-if="$hasPermission('msg:mailTpl:query')">详情</el-dropdown-item>
+                      <el-dropdown-item icon="el-icon-edit" :command="{ command: 'update', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:edit')">修改</el-dropdown-item>
                       <el-dropdown-item icon="el-icon-delete" :command="{ command: 'delete', id: scope.row.id }"  v-if="$hasPermission('msg:mailTpl:delete')">删除</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
@@ -160,7 +160,7 @@ export default {
      */
     getTplDataList () {
       this.tplDataListLoading = true
-      this.$http.get(`/msg/mailTpl/list`, { params: {} }).then(({ data: res }) => {
+      this.$http.post(`/msg/mailTpl/list`, {}).then(({ data: res }) => {
         if (res.code !== 0) {
           this.tplDataList = []
           return this.$message.error(res.toast)

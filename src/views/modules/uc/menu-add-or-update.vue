@@ -79,7 +79,7 @@ export default {
       mixinFormModuleOptions: {
         dataFormSaveURL: `/uc/menu/save`,
         dataFormUpdateURL: `/uc/menu/update`,
-        dataFormInfoURL: `/uc/menu/info?id=`
+        dataFormInfoURL: `/uc/menu/info`
       },
       // 已选中菜单
       menuSelected: ['0'],
@@ -145,7 +145,9 @@ export default {
     },
     // 获取菜单列表
     getMenuList () {
-      return this.$http.get('/uc/menu/tree?type=0').then(({ data: res }) => {
+      return this.$http.post('/uc/menu/tree', {
+        type: 0
+      }).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
