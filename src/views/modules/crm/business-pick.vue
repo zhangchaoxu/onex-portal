@@ -33,7 +33,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                        <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+                        <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
                     </el-form-item>
                 </el-form>
                 <el-table v-loading="dataListLoading" :data="dataList" ref="dataTable"

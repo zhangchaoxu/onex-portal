@@ -5,7 +5,7 @@
         <el-input v-model="searchDataForm.taskId" :placeholder="$t('schedule.jobId')" clearable/>
       </el-form-item>
       <el-form-item>
-        <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+        <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
       </el-form-item>
     </el-form>
     <el-table
@@ -46,7 +46,7 @@ export default {
     return {
       visible: false,
       mixinListModuleOptions: {
-        getDataListURL: '/sched/taskLog/page',
+        getDataListURL: '/sys/schedLog/page',
         getDataListIsPage: true
       },
       searchDataForm: {
@@ -61,7 +61,7 @@ export default {
     },
     // 失败信息
     showErrorInfo (id) {
-      this.$http.get(`/sched/taskLog/${id}`).then(({ data: res }) => {
+      this.$http.get(`/sys/schedLog/${id}`).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }

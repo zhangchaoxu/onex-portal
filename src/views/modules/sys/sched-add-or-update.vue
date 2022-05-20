@@ -9,9 +9,9 @@
           <el-link type="primary" href="https://www.bejson.com/othertools/cron/" target="_blank" :underline="false" slot="append">在线cron生成</el-link>
         </el-input>
       </el-form-item>
-      <el-form-item prop="params" :label="$t('base.param')">
-        <el-input v-model="dataForm.params" :placeholder="$t('base.param')"></el-input>
-      </el-form-item>
+<!--      <el-form-item prop="params" :label="$t('base.params')">
+        <el-input v-model="dataForm.params" :placeholder="$t('base.params')"></el-input>
+      </el-form-item>-->
       <el-form-item prop="remark" :label="$t('base.remark')">
         <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"></el-input>
       </el-form-item>
@@ -38,14 +38,14 @@ export default {
     return {
       // 表单参数
       mixinFormModuleOptions: {
-        dataFormSaveURL: `/sched/task/save`,
-        dataFormUpdateURL: `/sched/task/update`,
-        dataFormInfoURL: `/sched/task/info?id=`
+        dataFormSaveURL: `/sys/sched/save`,
+        dataFormUpdateURL: `/sys/sched/update`,
+        dataFormInfoURL: `/sys/sched/info`
       },
       dataForm: {
         id: '',
         name: '',
-        params: '',
+        params: null,
         cron: '',
         remark: '',
         state: 0
@@ -59,6 +59,9 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         cron: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        state: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }

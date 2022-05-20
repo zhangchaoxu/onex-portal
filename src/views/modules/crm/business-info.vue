@@ -89,7 +89,7 @@
                     <el-input v-model="searchDataForm.content" placeholder="内容" clearable/>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+                    <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
                 </el-form-item>
                 <el-form-item v-if="$hasPermission('crm:businessLog:save')">
                     <el-button type="primary" @click="addOrUpdateHandle()">跟进</el-button>

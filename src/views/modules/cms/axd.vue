@@ -14,7 +14,7 @@
           <el-input v-model="searchDataForm.name" placeholder="标题" clearable/>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+          <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
         <el-form-item v-if="$hasPermission('cms:axd:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>

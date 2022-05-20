@@ -11,7 +11,7 @@
           <el-input v-model="searchDataForm.name" placeholder="名称" clearable></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+          <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
         <el-form-item v-if="$hasPermission('shop:goodsCategory:save')">
           <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>

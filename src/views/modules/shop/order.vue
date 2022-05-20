@@ -37,7 +37,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item>
-          <el-button @click="getDataList()">{{ $t('query') }}</el-button>
+          <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
         </el-form-item>
         <el-form-item v-if="$hasPermission('shop:order:export')">
           <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
