@@ -1,34 +1,32 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sys__log">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.type" placeholder="类型" clearable>
+          <el-select v-model="searchForm.type" placeholder="类型" clearable>
             <el-option label="登录" value="login"/>
             <el-option label="登出" value="logout"/>
             <el-option label="操作" value="operation"/>
-            <el-option label="错误" value="error"/>
+            <el-option label="异常" value="error"/>
             <el-option label="异步任务" value="asyncTask"/>
-            <el-option label="推送" value="push"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.uri" placeholder="请求Uri" clearable/>
+          <el-input v-model="searchForm.uri" placeholder="请求Uri" clearable/>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
+          <el-select v-model="searchForm.state" placeholder="状态" clearable>
             <el-option :label="$t('error')" :value="0"/>
             <el-option :label="$t('success')" :value="1"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.createName" placeholder="用户" clearable/>
+          <el-input v-model="searchForm.createName" placeholder="用户" clearable/>
         </el-form-item>
         <el-form-item>
           <el-date-picker
-                  v-model="dateRange"
+                  v-model="searchForm.createTimeRange"
                   type="datetimerange"
-                  @change="dateRangeChangeHandle"
                   :picker-options="dateRangePickerOptions"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :range-separator="$t('datePicker.range')"
@@ -45,13 +43,26 @@
       </el-form>
       <el-table v-loading="dataListLoading" :data="dataList" border @sort-change="dataListSortChangeHandle"
                 @cell-click="cellClickHandle" style="width: 100%;">
-        <el-table-column prop="type" label="类型" header-align="center" align="center" width="120"/>
+        <el-table-column prop="type" label="类型" header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+             <span v-if="scope.row.type === 'login'">登录</span>
+             <span v-else-if="scope.row.type === 'logout'">登出</span>
+             <span v-else-if="scope.row.type === 'operation'">操作</span>
+             <span v-else-if="scope.row.type === 'error'">异常</span>
+             <span v-else-if="scope.row.type === 'asyncTask'">异步任务</span>
+             <span v-else>{{ scope.row.type }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="createName" label="用户" header-align="center" align="center" width="150"/>
         <el-table-column prop="operation" label="操作" header-align="center" align="center" width="150"/>
         <el-table-column prop="uri" label="请求Uri" header-align="center" align="center" width="200"/>
-        <el-table-column prop="method" label="请求方法" header-align="center" align="center" width="100"/>
-        <el-table-column prop="params" label="请求参数" header-align="center" align="center" class-name="nowrap json link"/>
-        <el-table-column prop="result" label="处理结果" header-align="center" align="center" class-name="nowrap json link"/>
+        <el-table-column prop="requestTime" label="耗时" sortable="custom" header-align="center" align="center" width="120">
+          <template slot-scope="scope">
+            {{ `${scope.row.requestTime}ms` }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="requestParams" label="请求参数" header-align="center" align="center" class-name="nowrap json link" :formatter="jsonFmt"/>
+        <el-table-column prop="content" label="内容" header-align="center" align="center" class-name="nowrap json link"/>
         <el-table-column prop="state" label="状态" sortable="custom" header-align="center" align="center" width="100">
           <template slot-scope="scope">
             <template v-if="scope.row.type !== 'asyncTask'">
@@ -67,24 +78,12 @@
             </template>
           </template>
         </el-table-column>
-        <el-table-column prop="num" label="处理进度" header-align="center" align="center">
-          <template slot-scope="scope">
-            <span>{{ scope.row.processNum }}/{{ scope.row.totalNum }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="requestTime" label="耗时" sortable="custom" header-align="center" align="center" width="120">
-          <template slot-scope="scope">
-            {{ `${scope.row.times}ms` }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="ip" label="IP" header-align="center" align="center" width="200"/>
-        <el-table-column prop="userAgent" label="UA" header-align="center" align="center" width="150" :show-overflow-tooltip="true"/>
         <el-table-column prop="createTime" label="操作时间" sortable="custom" header-align="center" align="center" width="180"/>
       </el-table>
       <el-pagination
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
@@ -109,13 +108,12 @@ export default {
         deleteBatchURL: '/sys/log/deleteBatch',
         deleteIsBatch: true
       },
-      searchDataForm: {
+      searchForm: {
         createName: '',
         state: '',
         uri: '',
         type: '',
-        startCreateTime: '',
-        endCreateTime: ''
+        createTimeRange: null
       }
     }
   }

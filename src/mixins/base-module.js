@@ -57,6 +57,14 @@ export default {
       } else {
         return cellValue.toFixed(fractionDigits)
       }
+    },
+    // json格式化
+    jsonFmt (cellValue) {
+      if (cellValue) {
+        return '查看'
+      } else {
+        return null
+      }
     }
   },
   methods: {
@@ -93,6 +101,10 @@ export default {
         } catch (e) {
           console.error(e.toString())
         }
+      } else if (typeof content === 'object') {
+        json = content
+        delete json.elm
+        delete json.isRootInsert
       }
       if (json === null || !json || typeof json !== 'object') {
         this.textViewHandle(content, title, customClass)

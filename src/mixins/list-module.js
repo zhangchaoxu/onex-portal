@@ -291,6 +291,10 @@ export default {
     htmlFmt (row, column, cellValue) {
       return cellValue ? cellValue.replace(/<[^>]*>/g, '') : ''
     },
+    // json格式化
+    jsonFmt (row, column, cellValue) {
+      return cellValue ? '查看' : ''
+    },
     // [-] 表格内容格式化
     // 格式化下拉菜单
     composeEditCommandValue (command, row) {

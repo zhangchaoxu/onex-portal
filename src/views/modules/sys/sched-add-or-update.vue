@@ -9,11 +9,17 @@
           <el-link type="primary" href="https://www.bejson.com/othertools/cron/" target="_blank" :underline="false" slot="append">在线cron生成</el-link>
         </el-input>
       </el-form-item>
-<!--      <el-form-item prop="params" :label="$t('base.params')">
+      <el-form-item prop="params" :label="$t('base.params')">
         <el-input v-model="dataForm.params" :placeholder="$t('base.params')"></el-input>
-      </el-form-item>-->
+      </el-form-item>
       <el-form-item prop="remark" :label="$t('base.remark')">
-        <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')"></el-input>
+        <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')" type="textarea"></el-input>
+      </el-form-item>
+      <el-form-item prop="logType" label="日志类型">
+        <el-radio-group v-model="dataForm.logType" size="mini">
+          <el-radio-button label="db">数据库</el-radio-button>
+          <el-radio-button label="file">日志文件</el-radio-button>
+        </el-radio-group>
       </el-form-item>
       <el-form-item prop="state" :label="$t('base.state')">
         <el-radio-group v-model="dataForm.state" size="mini">
@@ -48,6 +54,7 @@ export default {
         params: null,
         cron: '',
         remark: '',
+        logType: 'db',
         state: 0
       }
     }
@@ -62,6 +69,9 @@ export default {
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ],
         state: [
+          { required: true, message: this.$t('validate.required'), trigger: 'blur' }
+        ],
+        logType: [
           { required: true, message: this.$t('validate.required'), trigger: 'blur' }
         ]
       }
