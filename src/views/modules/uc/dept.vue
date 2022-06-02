@@ -1,24 +1,18 @@
 <template>
     <el-card shadow="never" class="aui-card--fill">
         <div class="mod-uc__dept">
-            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+            <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                 <el-form-item>
-                    <el-input v-model="searchDataForm.name" placeholder="名称" clearable maxlength="50" show-word-limit/>
+                    <el-input v-model="searchForm.name" placeholder="名称" clearable maxlength="50" show-word-limit/>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
                 </el-form-item>
-                <el-form-item v-if="$hasPermission('uc:dept:save')">
+                <el-form-item v-if="$hasPermission('uc:dept:edit')">
                     <el-button type="primary" @click="addOrUpdateHandle()">{{ $t('add') }}</el-button>
                 </el-form-item>
-                <el-form-item v-if="$hasPermission('uc:dept:export')">
-                    <el-button type="info" @click="exportHandle()">{{ $t('export') }}</el-button>
-                </el-form-item>
             </el-form>
-            <el-table v-loading="dataListLoading" :data="dataList"
-                      :default-expand-all="expandTree"
-                      ref="table"
-                      border @sort-change="dataListSortChangeHandle" style="width: 100%;" row-key="id">
+            <el-table v-loading="dataListLoading" :data="dataList" :default-expand-all="expandTree" ref="table" border @sort-change="dataListSortChangeHandle" style="width: 100%;" row-key="code">
                 <el-table-column prop="name" :label="$t('base.name')" header-align="left" align="left" min-width="150">
                   <template slot="header" slot-scope="scope">
                     <el-tooltip class="item" effect="dark" :content="expandTree ? '点击收起全部' : '点击展开全部'" placement="top-start">
@@ -30,7 +24,7 @@
                 <el-table-column prop="remark" label="备注" header-align="center" align="center" min-width="150"/>
                 <el-table-column :label="$t('handle')" fixed="right" header-align="center" align="center" width="150">
                     <template slot-scope="scope">
-                        <el-button v-if="$hasPermission('uc:dept:update')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
+                        <el-button v-if="$hasPermission('uc:dept:edit')" type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">{{ $t('update') }}</el-button>
                         <!-- 只有末级可以删除 -->
                         <el-button v-if="$hasPermission('uc:dept:delete')" type="text" size="small" @click="deleteHandle(scope.row.id)">{{ $t('delete') }}</el-button>
                     </template>
@@ -38,9 +32,9 @@
             </el-table>
             <el-pagination
                     v-if="mixinListModuleOptions.getDataListIsPage"
-                    :current-page="page"
+                    :current-page="searchForm.pageNo"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="limit"
+                    :page-size="searchForm.pageSize"
                     :total="total"
                     layout="total, sizes, prev, pager, next, jumper"
                     @size-change="pageSizeChangeHandle"
@@ -52,11 +46,12 @@
 </template>
 
 <script>
+import mixinBaseModule from '@/mixins/base-module'
 import mixinListModule from '@/mixins/list-module'
 import AddOrUpdate from './dept-add-or-update'
 
 export default {
-  mixins: [mixinListModule],
+  mixins: [mixinBaseModule, mixinListModule],
   components: { AddOrUpdate },
   data () {
     return {
@@ -64,11 +59,10 @@ export default {
         getDataListURL: '/uc/dept/tree',
         getDataListIsPage: false,
         deleteURL: '/uc/dept/delete',
-        deleteBatchURL: '/uc/dept/deleteBatch',
         deleteIsBatch: false,
         exportURL: '/uc/dept/export'
       },
-      searchDataForm: {
+      searchForm: {
         code: '',
         name: ''
       },

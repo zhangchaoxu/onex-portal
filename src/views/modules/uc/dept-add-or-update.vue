@@ -1,40 +1,42 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false" :close-on-press-escape="false">
-    <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-      <el-form-item prop="name" :label="$t('base.name')">
-        <el-input v-model="dataForm.name" :placeholder="$t('base.name')"/>
-      </el-form-item>
-      <el-form-item prop="parentName" :label="$t('dept.parentName')" class="dept-list">
-        <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
-          <el-tree
-            :data="deptList"
-            :props="{ label: 'name', children: 'children' }"
-            node-key="id"
-            ref="deptListTree"
-            :highlight-current="true"
-            :expand-on-click-node="false"
-            accordion
-            @current-change="deptListTreeCurrentChangeHandle">
-          </el-tree>
-        </el-popover>
-        <el-input v-model="dataForm.parentName" v-popover:deptListPopover :readonly="true" :placeholder="$t('dept.parentName')">
-          <i
-            v-if="$store.state.user.superAdmin === 1 && dataForm.pid !== '0'"
-            slot="suffix"
-            @click.stop="deptListTreeSetDefaultHandle()"
-            class="el-icon-circle-close el-input__icon">
-          </i>
-        </el-input>
-      </el-form-item>
-      <el-form-item prop="sort" :label="$t('dept.sort')">
-        <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
-      </el-form-item>
-    </el-form>
-    <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-    </template>
-  </el-dialog>
+  <el-drawer :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" size="50%" :wrapperClosable="false" :close-on-press-escape="false" custom-class="drawer" ref="drawer">
+    <div class="drawer__content">
+      <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+        <el-form-item prop="name" :label="$t('base.name')">
+          <el-input v-model="dataForm.name" :placeholder="$t('base.name')"/>
+        </el-form-item>
+        <el-form-item prop="parentName" :label="$t('dept.parentName')" class="dept-list">
+          <el-popover v-model="deptListVisible" ref="deptListPopover" placement="bottom-start" trigger="click">
+            <el-tree
+              :data="deptList"
+              :props="{ label: 'name', children: 'children' }"
+              node-key="id"
+              ref="deptListTree"
+              :highlight-current="true"
+              :expand-on-click-node="false"
+              accordion
+              @current-change="deptListTreeCurrentChangeHandle">
+            </el-tree>
+          </el-popover>
+          <el-input v-model="dataForm.parentName" v-popover:deptListPopover :readonly="true" :placeholder="$t('dept.parentName')">
+            <i
+              v-if="$store.state.user.superAdmin === 1 && dataForm.pid !== '0'"
+              slot="suffix"
+              @click.stop="deptListTreeSetDefaultHandle()"
+              class="el-icon-circle-close el-input__icon">
+            </i>
+          </el-input>
+        </el-form-item>
+        <el-form-item prop="sort" :label="$t('dept.sort')">
+          <el-input-number v-model="dataForm.sort" controls-position="right" :min="0" :label="$t('dept.sort')"/>
+        </el-form-item>
+      </el-form>
+      <div class="drawer__footer">
+        <el-button @click="$refs.drawer.closeDrawer()">{{ $t('close') }}</el-button>
+        <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
