@@ -7,20 +7,9 @@
         </el-form-item>
         <el-form-item class="small-item">
           <el-select v-model="searchForm.state" placeholder="状态" clearable>
-            <el-option label="无效" :value="0"/>
             <el-option label="有效" :value="1"/>
+            <el-option label="停用" :value="0"/>
           </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-date-picker
-              v-model="searchForm.createTimeRange"
-              type="datetimerange"
-              :picker-options="dateRangePickerOptions"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              :range-separator="$t('datePicker.range')"
-              :start-placeholder="$t('datePicker.start')"
-              :end-placeholder="$t('datePicker.end')">
-          </el-date-picker>
         </el-form-item>
         <el-form-item>
           <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -36,7 +25,7 @@
         <el-table-column prop="sort" label="排序" header-align="center" align="center" width="100" sortable="custom"/>
         <el-table-column prop="state" label="状态" header-align="center" align="center" width="100">
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.state === 0" type="danger">无效</el-tag>
+            <el-tag v-if="scope.row.state === 0" type="danger">停用</el-tag>
             <el-tag v-else-if="scope.row.state === 1" type="success">有效</el-tag>
           </template>
         </el-table-column>
@@ -78,12 +67,11 @@ export default {
         getDataListIsPage: true,
         exportURL: '/uc/tenant/export',
         deleteURL: '/uc/tenant/delete',
-        deleteBatchURL: '/uc/tenant/deleteBatch',
         deleteIsBatch: false
       },
       searchForm: {
         search: null,
-        createTimeRange: null
+        state: null
       }
     }
   }

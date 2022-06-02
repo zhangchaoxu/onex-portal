@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" :close-on-click-modal="false"
-             :close-on-press-escape="false">
+  <el-drawer :visible.sync="visible" :title="!dataForm.id ? $t('add') : $t('update')" size="50%" :wrapperClosable="false" :close-on-press-escape="false" custom-class="drawer" ref="drawer">
+    <div class="drawer__content">
     <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
       <el-row>
         <el-col :span="12">
@@ -17,7 +17,7 @@
           <el-form-item label="状态" prop="state">
             <el-radio-group v-model="dataForm.state" size="small">
               <el-radio-button :label="1">有效</el-radio-button>
-              <el-radio-button :label="0">无效</el-radio-button>
+              <el-radio-button :label="0">停用</el-radio-button>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -31,11 +31,12 @@
         <el-input v-model="dataForm.remark" placeholder="备注" type="textarea" maxlength="100"/>
       </el-form-item>
     </el-form>
-    <template slot="footer">
-      <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-      <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-    </template>
-  </el-dialog>
+    <div class="drawer__footer">
+      <el-button @click="$refs.drawer.closeDrawer()">{{ $t('close') }}</el-button>
+      <el-button type="primary" @click="dataFormSubmitHandle()" v-if="$hasPermission('uc:tenant:edit')">{{ $t('confirm') }}</el-button>
+    </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
