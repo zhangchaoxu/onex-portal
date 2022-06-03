@@ -65,7 +65,7 @@ export default {
         deleteBatchURL: '/uc/role/deleteBatch',
         deleteIsBatch: false
       },
-      searchDataForm: {
+      searchForm: {
         tenantCode: null,
         search: null
       }

@@ -1,29 +1,29 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-crm__customer">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
-          <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-            <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+          <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+            <tenant-pick class="small-button" slot="append" :userId="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item>
-          <el-input v-model="searchDataForm.search" placeholder="名称/电话/标签" clearable/>
+          <el-input v-model="searchForm.search" placeholder="名称/电话/标签" clearable/>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.level" placeholder="级别" clearable>
+          <el-select v-model="searchForm.level" placeholder="级别" clearable>
             <el-option label="重点" :value="1"/>
             <el-option label="普通" :value="2"/>
             <el-option label="非优先" :value="3"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.source" placeholder="来源" filterable allow-create clearable>
+          <el-select v-model="searchForm.source" placeholder="来源" filterable allow-create clearable>
             <el-option v-for="item in sourceOptions" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.dealStatus" placeholder="成交状态" clearable>
+          <el-select v-model="searchForm.dealStatus" placeholder="成交状态" clearable>
             <el-option label="已成交" :value="1"/>
             <el-option label="未成交" :value="0"/>
           </el-select>
@@ -84,9 +84,9 @@
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"

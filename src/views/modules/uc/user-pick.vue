@@ -5,15 +5,15 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
                 <div class="mod-uc__user">
-                    <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+                    <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                         <el-form-item class="small-item">
-                            <el-input v-model="searchDataForm.username" :placeholder="$t('user.username')" clearable/>
+                            <el-input v-model="searchForm.username" :placeholder="$t('user.username')" clearable/>
                         </el-form-item>
                         <el-form-item class="small-item">
-                            <el-input v-model="searchDataForm.realName" :placeholder="$t('user.realName')" clearable/>
+                            <el-input v-model="searchForm.realName" :placeholder="$t('user.realName')" clearable/>
                         </el-form-item>
                         <el-form-item class="small-item">
-                            <el-input v-model="searchDataForm.mobile" :placeholder="$t('user.mobile')" clearable/>
+                            <el-input v-model="searchForm.mobile" :placeholder="$t('user.mobile')" clearable/>
                         </el-form-item>
                         <el-form-item>
                             <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -60,9 +60,9 @@
                         </el-table-column>
                     </el-table>
                     <el-pagination
-                            :current-page="page"
+                            :current-page="searchForm.pageNo"
                             :page-sizes="[10, 20, 50, 100]"
-                            :page-size="limit"
+                            :page-size="searchForm.pageSize"
                             :total="total"
                             hide-on-single-page
                             small
@@ -112,7 +112,7 @@ export default {
       visible: false,
       // 全屏
       fullscreen: false,
-      searchDataForm: {
+      searchForm: {
         username: '',
         mobile: '',
         realName: ''

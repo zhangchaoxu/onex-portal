@@ -77,16 +77,16 @@
         </el-table>
         <el-divider>商机记录</el-divider>
         <div class="mod-crm__business-log">
-            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+            <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                 <el-form-item class="small-item">
-                    <el-select v-model="searchDataForm.type" placeholder="记录类型" clearable>
+                    <el-select v-model="searchForm.type" placeholder="记录类型" clearable>
                         <el-option label="跟进" value="followup"/>
                         <el-option label="修改" value="edit"/>
                         <el-option label="创建" value="new"/>
                     </el-select>
                 </el-form-item>
                 <el-form-item class="small-item">
-                    <el-input v-model="searchDataForm.content" placeholder="内容" clearable/>
+                    <el-input v-model="searchForm.content" placeholder="内容" clearable/>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -132,9 +132,9 @@
             </el-table>
             <el-pagination
                     v-if="mixinListModuleOptions.getDataListIsPage"
-                    :current-page="page"
+                    :current-page="searchForm.pageNo"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="limit"
+                    :page-size="searchForm.pageSize"
                     :total="total"
                     hide-on-single-page
                     layout="total, prev, pager, next"

@@ -63,9 +63,9 @@
                     <el-table-column prop="remark" label="备注" header-align="center" align="center" show-tooltip-when-overflow/>
                 </el-table>
                 <el-pagination
-                        :current-page="page"
+                        :current-page="searchForm.pageNo"
                         :page-sizes="[10, 20, 50, 100]"
-                        :page-size="limit"
+                        :page-size="searchForm.pageSize"
                         hide-on-single-page
                         :total="total"
                         layout="total, prev, pager, next"

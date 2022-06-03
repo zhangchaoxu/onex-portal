@@ -1,9 +1,9 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-sys__calendar">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item>
-          <el-input v-model="searchDataForm.id" placeholder="id" clearable/>
+          <el-input v-model="searchForm.id" placeholder="id" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -41,9 +41,9 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
@@ -71,7 +71,7 @@ export default {
         deleteBatchURL: '/sys/calendar/deleteBatch',
         deleteIsBatch: true
       },
-      searchDataForm: {
+      searchForm: {
         id: ''
       }
     }

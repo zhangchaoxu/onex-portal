@@ -1,126 +1,128 @@
 <template>
-    <el-dialog :visible.sync="visible" :title="dataFormMode === 'view' ? $t('view')  : (!dataForm.id ? $t('add') : $t('update'))" :close-on-click-modal="false" :close-on-press-escape="false">
-        <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="username" :label="$t('user.username')">
-                        <el-input v-model="dataForm.username" :placeholder="$t('user.username')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="nickName" :label="$t('user.nickName')">
-                        <el-input v-model="dataForm.nickName" :placeholder="$t('user.nickName')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="realName" :label="$t('user.realName')">
-                        <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="idNo" :label="$t('user.idNo')">
-                        <el-input v-model="dataForm.idNo" :placeholder="$t('user.idNo')" maxlength="18" minlength="15" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row v-if="dataFormMode !== 'view'">
-                <el-col :span="12">
-                    <el-form-item prop="password" :label="$t('user.password')" :class="{ 'is-required': !dataForm.id }">
-                        <el-input v-model="dataForm.password" :placeholder="$t('user.password')" show-password/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="confirmPassword" :label="$t('user.confirmPassword')" :class="{ 'is-required': !dataForm.id }">
-                        <el-input v-model="dataForm.confirmPassword" :placeholder="$t('user.confirmPassword')" show-password/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="mobile" :label="$t('user.mobile')">
-                        <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')" maxlength="11" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="email" :label="$t('user.email')">
-                        <el-input v-model="dataForm.email" :placeholder="$t('user.email')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="gender" :label="$t('user.gender')" size="mini">
-                        <el-radio-group v-model="dataForm.gender" :disabled="dataFormMode === 'view'">
-                            <el-radio :label="0">{{ $t('user.gender0') }}</el-radio>
-                            <el-radio :label="1">{{ $t('user.gender1') }}</el-radio>
-                            <el-radio :label="2">{{ $t('user.gender2') }}</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="state" :label="$t('user.state')" size="mini">
-                        <el-radio-group v-model="dataForm.state" :disabled="dataFormMode === 'view'">
-                            <el-radio :label="0">{{ $t('user.state0') }}</el-radio>
-                            <el-radio :label="1">{{ $t('user.state1') }}</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="deptId" :label="$t('user.deptName')">
-                        <el-cascader
-                                :disabled="dataFormMode === 'view'"
-                                ref="deptName"
-                                style="width: 100%"
-                                :options="deptList"
-                                v-model="deptListSelected"
-                                filterable
-                                clearable
-                                :props="{ checkStrictly: true, label: 'name', value: 'id' }"
-                                :placeholder="$t('user.deptName')"
-                                @change="(value) => this.dataForm.deptId = (value && value.length > 0) ? value[value.length - 1] : ''"/>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="code" label="工号">
-                        <el-input v-model="dataForm.code" placeholder="输入工号" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="12">
-                    <el-form-item prop="type" label="用户类型">
-                        <el-select v-model="dataForm.type" placeholder="选择类型" clearable class="w-percent-100" :disabled="dataFormMode === 'view'">
-                            <el-option v-for="item in typeList" :key="item.dictValue" :label="item.dictName" :value="item.dictValue"/>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-form-item prop="roleIdList" :label="$t('user.roleIdList')">
-                        <el-select v-model="dataForm.roleIdList" multiple clearable :placeholder="$t('user.roleIdList')" class="w-percent-100" :disabled="dataFormMode === 'view'">
-                            <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"/>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-form-item prop="address" :label="$t('user.address')">
-                <el-input v-model="dataForm.address" :placeholder="$t('user.address')" maxlength="200" show-word-limit :disabled="dataFormMode === 'view'"/>
-            </el-form-item>
-            <el-form-item prop="remark" :label="$t('base.remark')">
-                <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')" maxlength="500" type="textarea" :disabled="dataFormMode === 'view'"/>
-            </el-form-item>
-            <el-form-item prop="avatar" :label="$t('user.head')">
-                <file-upload ref="fileUpload" v-model="dataForm.avatar" :limit="1" mode="image"/>
-            </el-form-item>
-        </el-form>
-        <template slot="footer">
-            <el-button @click="visible = false">{{ $t('cancel') }}</el-button>
-            <el-button v-if="dataFormMode !== 'view'" type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
-        </template>
-    </el-dialog>
+  <el-drawer :visible.sync="visible" :title="dataFormMode === 'view' ? $t('view')  : (!dataForm.id ? $t('add') : $t('update'))" size="50%" :wrapperClosable="false" :close-on-press-escape="false" custom-class="drawer" ref="drawer">
+    <div class="drawer__content">
+      <el-form v-loading="formLoading" :model="dataForm" :rules="dataRule" ref="dataForm" label-width="120px">
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="username" :label="$t('user.username')">
+                      <el-input v-model="dataForm.username" :placeholder="$t('user.username')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="nickName" :label="$t('user.nickName')">
+                      <el-input v-model="dataForm.nickName" :placeholder="$t('user.nickName')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="realName" :label="$t('user.realName')">
+                      <el-input v-model="dataForm.realName" :placeholder="$t('user.realName')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="idNo" :label="$t('user.idNo')">
+                      <el-input v-model="dataForm.idNo" :placeholder="$t('user.idNo')" maxlength="18" minlength="15" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row v-if="dataFormMode !== 'view'">
+              <el-col :span="12">
+                  <el-form-item prop="password" :label="$t('user.password')" :class="{ 'is-required': !dataForm.id }">
+                      <el-input v-model="dataForm.password" :placeholder="$t('user.password')" show-password/>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="confirmPassword" :label="$t('user.confirmPassword')" :class="{ 'is-required': !dataForm.id }">
+                      <el-input v-model="dataForm.confirmPassword" :placeholder="$t('user.confirmPassword')" show-password/>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="mobile" :label="$t('user.mobile')">
+                      <el-input v-model="dataForm.mobile" :placeholder="$t('user.mobile')" maxlength="11" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="email" :label="$t('user.email')">
+                      <el-input v-model="dataForm.email" :placeholder="$t('user.email')" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="gender" :label="$t('user.gender')" size="mini">
+                      <el-radio-group v-model="dataForm.gender" :disabled="dataFormMode === 'view'">
+                          <el-radio :label="0">{{ $t('user.gender0') }}</el-radio>
+                          <el-radio :label="1">{{ $t('user.gender1') }}</el-radio>
+                          <el-radio :label="2">{{ $t('user.gender2') }}</el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="state" :label="$t('user.state')" size="mini">
+                      <el-radio-group v-model="dataForm.state" :disabled="dataFormMode === 'view'">
+                          <el-radio :label="0">{{ $t('user.state0') }}</el-radio>
+                          <el-radio :label="1">{{ $t('user.state1') }}</el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="deptId" :label="$t('user.deptName')">
+                      <el-cascader
+                              :disabled="dataFormMode === 'view'"
+                              ref="deptName"
+                              style="width: 100%"
+                              :options="deptList"
+                              v-model="deptListSelected"
+                              filterable
+                              clearable
+                              :props="{ checkStrictly: true, label: 'name', value: 'id' }"
+                              :placeholder="$t('user.deptName')"
+                              @change="(value) => this.dataForm.deptId = (value && value.length > 0) ? value[value.length - 1] : ''"/>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="code" label="工号">
+                      <el-input v-model="dataForm.code" placeholder="输入工号" maxlength="50" show-word-limit :disabled="dataFormMode === 'view'"/>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-row>
+              <el-col :span="12">
+                  <el-form-item prop="type" label="用户类型">
+                      <el-select v-model="dataForm.type" placeholder="选择类型" clearable class="w-percent-100" :disabled="dataFormMode === 'view'">
+                          <el-option v-for="item in typeList" :key="item.dictValue" :label="item.dictName" :value="item.dictValue"/>
+                      </el-select>
+                  </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                  <el-form-item prop="roleIdList" :label="$t('user.roleIdList')">
+                      <el-select v-model="dataForm.roleIdList" multiple clearable :placeholder="$t('user.roleIdList')" class="w-percent-100" :disabled="dataFormMode === 'view'">
+                          <el-option v-for="role in roleList" :key="role.id" :label="role.name" :value="role.id"/>
+                      </el-select>
+                  </el-form-item>
+              </el-col>
+          </el-row>
+          <el-form-item prop="address" :label="$t('user.address')">
+              <el-input v-model="dataForm.address" :placeholder="$t('user.address')" maxlength="200" show-word-limit :disabled="dataFormMode === 'view'"/>
+          </el-form-item>
+          <el-form-item prop="remark" :label="$t('base.remark')">
+              <el-input v-model="dataForm.remark" :placeholder="$t('base.remark')" maxlength="500" type="textarea" :disabled="dataFormMode === 'view'"/>
+          </el-form-item>
+          <el-form-item prop="avatar" :label="$t('user.head')">
+              <file-upload ref="fileUpload" v-model="dataForm.avatar" :limit="1" mode="image"/>
+          </el-form-item>
+      </el-form>
+      <div class="drawer__footer">
+        <el-button @click="$refs.drawer.closeDrawer()">{{ $t('close') }}</el-button>
+        <el-button type="primary" @click="dataFormSubmitHandle()">{{ $t('confirm') }}</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script>
@@ -139,7 +141,7 @@ export default {
       mixinFormModuleOptions: {
         dataFormSaveURL: `/uc/user/save`,
         dataFormUpdateURL: `/uc/user/update`,
-        dataFormInfoURL: `/uc/user/info?id=`
+        dataFormInfoURL: `/uc/user/info`
       },
       // 部门列表
       deptList: [],
@@ -250,7 +252,7 @@ export default {
     },
     // 获取部门列表
     getDeptList () {
-      return this.$http.get('/uc/dept/list').then(({ data: res }) => {
+      return this.$http.post('/uc/dept/list', {}).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }
@@ -260,7 +262,7 @@ export default {
     },
     // 获取角色列表
     getRoleList () {
-      return this.$http.get('/uc/role/list').then(({ data: res }) => {
+      return this.$http.post('/uc/role/list', {}).then(({ data: res }) => {
         if (res.code !== 0) {
           return this.$message.error(res.toast)
         }

@@ -1,9 +1,9 @@
 <template>
     <el-card shadow="never" class="aui-card--fill">
         <div class="mod-cms__article-category">
-            <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+            <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                 <el-form-item class="small-item">
-                    <el-input v-model="searchDataForm.name" placeholder="名称" clearable/>
+                    <el-input v-model="searchForm.name" placeholder="名称" clearable/>
                 </el-form-item>
                 <el-form-item>
                     <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -30,9 +30,9 @@
                 </el-table-column>
             </el-table>
             <el-pagination
-                    :current-page="page"
+                    :current-page="searchForm.pageNo"
                     :page-sizes="[10, 20, 50, 100]"
-                    :page-size="limit"
+                    :page-size="searchForm.pageSize"
                     :total="total"
                     layout="total, sizes, prev, pager, next, jumper"
                     @size-change="pageSizeChangeHandle"
@@ -61,7 +61,7 @@ export default {
         deleteBatchURL: '/cms/articleCategory/deleteBatch',
         deleteIsBatch: true
       },
-      searchDataForm: {
+      searchForm: {
         name: '',
         code: ''
       }

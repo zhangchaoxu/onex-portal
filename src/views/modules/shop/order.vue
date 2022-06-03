@@ -1,25 +1,25 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-shop__order">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
-          <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-            <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+          <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+            <tenant-pick class="small-button" slot="append" :userId="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="middle-item">
-          <el-input v-model="searchDataForm.userName" placeholder="用户" readonly>
-            <user-pick class="small-button" slot="append" :userId="searchDataForm.userId" @onUserPicked="onUserPicked"/>
+          <el-input v-model="searchForm.userName" placeholder="用户" readonly>
+            <user-pick class="small-button" slot="append" :userId="searchForm.userId" @onUserPicked="onUserPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.no" placeholder="订单号" clearable/>
+          <el-input v-model="searchForm.no" placeholder="订单号" clearable/>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.receiverSearch" placeholder="收件人" clearable/>
+          <el-input v-model="searchForm.receiverSearch" placeholder="收件人" clearable/>
         </el-form-item>
         <el-form-item class="tiny-item">
-          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
+          <el-select v-model="searchForm.state" placeholder="状态" clearable>
             <el-option label="待支付" :value="0"/>
             <el-option label="待处理" :value="1"/>
           </el-select>
@@ -107,9 +107,9 @@
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
@@ -141,7 +141,7 @@ export default {
         deleteBatchURL: '/shop/order/deleteBatch',
         deleteIsBatch: false
       },
-      searchDataForm: {
+      searchForm: {
         no: '',
         userName: '',
         userId: '',
@@ -157,7 +157,7 @@ export default {
   created () {
     if (this.$route.query.state) {
       console.log('待确认订单')
-      this.searchDataForm.state = Number(this.$route.query.state)
+      this.searchForm.state = Number(this.$route.query.state)
     } else {
       console.log('所有订单')
     }

@@ -74,9 +74,9 @@
                     <el-table-column prop="salePrice" label="售价" header-align="center" align="center"></el-table-column>
                 </el-table>
                 <el-pagination
-                        :current-page="page"
+                        :current-page="searchForm.pageNo"
                         :page-sizes="[10, 20, 50, 100]"
-                        :page-size="limit"
+                        :page-size="searchForm.pageSize"
                         hide-on-single-page
                         :total="total"
                         layout="total, prev, pager, next"

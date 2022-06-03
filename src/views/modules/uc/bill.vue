@@ -1,19 +1,19 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-uc__bill">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
-          <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-            <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+          <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+            <tenant-pick class="small-button" slot="append" :userId="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="middle-item">
-          <el-input v-model="searchDataForm.userName" placeholder="用户" clearable readonly>
-            <user-pick class="small-button" slot="append" :id="searchDataForm.userId" @onUserPicked="onUserPicked"/>
+          <el-input v-model="searchForm.userName" placeholder="用户" clearable readonly>
+            <user-pick class="small-button" slot="append" :id="searchForm.userId" @onUserPicked="onUserPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.type" placeholder="类型" clearable>
+          <el-select v-model="searchForm.type" placeholder="类型" clearable>
             <el-option label="账户" value="balance"/>
             <el-option label="收入" value="income"/>
             <el-option label="积分" value="points"/>
@@ -65,9 +65,9 @@
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
@@ -98,7 +98,7 @@ export default {
         deleteBatchURL: '/uc/bill/deleteBatch',
         deleteIsBatch: true
       },
-      searchDataForm: {
+      searchForm: {
         userId: '',
         type: '',
         optType: '',

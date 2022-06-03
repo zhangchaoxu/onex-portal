@@ -5,10 +5,10 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
             <div class="mod-crm__product">
-                <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+                <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                     <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
-                        <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-                            <tenant-pick class="small-button" slot="append" :userId="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+                        <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+                            <tenant-pick class="small-button" slot="append" :userId="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
                         </el-input>
                     </el-form-item>
                     <el-form-item class="small-item">
@@ -45,9 +45,9 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
-                        :current-page="page"
+                        :current-page="searchForm.pageNo"
                         :page-sizes="[10, 20, 50, 100]"
-                        :page-size="limit"
+                        :page-size="searchForm.pageSize"
                         hide-on-single-page
                         :total="total"
                         layout="total, prev, pager, next"

@@ -5,9 +5,9 @@
                    @close="closeHandle"
                    width="80%" :fullscreen="fullscreen">
                 <div class="mod-uc__tenant">
-                    <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+                    <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
                         <el-form-item class="small-item">
-                            <el-input v-model="searchDataForm.name" :placeholder="$t('base.name')" clearable/>
+                            <el-input v-model="searchForm.name" :placeholder="$t('base.name')" clearable/>
                         </el-form-item>
                         <el-form-item>
                             <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -30,9 +30,9 @@
                         </el-table-column>
                     </el-table>
                     <el-pagination
-                            :current-page="page"
+                            :current-page="searchForm.pageNo"
                             :page-sizes="[10, 20, 50, 100]"
-                            :page-size="limit"
+                            :page-size="searchForm.pageSize"
                             hide-on-single-page
                             :total="total"
                             layout="total, prev, pager, next"
@@ -81,7 +81,7 @@ export default {
       visible: false,
       // 全屏
       fullscreen: false,
-      searchDataForm: {
+      searchForm: {
         name: ''
       }
     }

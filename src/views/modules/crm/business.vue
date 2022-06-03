@@ -1,22 +1,22 @@
 <template>
   <el-card shadow="never" :class="[{'aui-card--embed': mode === 'embed'}, 'aui-card--fill']">
     <div class="mod-crm__business">
-      <el-form :inline="true" :model="searchDataForm" @submit.native.prevent :size="mode === 'embed' ? 'small' : ''">
+      <el-form :inline="true" :model="searchForm" @submit.native.prevent :size="mode === 'embed' ? 'small' : ''">
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin') && mode !== 'embed'">
-          <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-            <tenant-pick class="small-button" slot="append" :id="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+          <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+            <tenant-pick class="small-button" slot="append" :id="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="large-item" v-if="mode !== 'embed'">
-          <el-input v-model="searchDataForm.customerName" placeholder="客户" readonly>
-            <customer-pick class="small-button" slot="append" :id="searchDataForm.customerId" @onCustomerPicked="onCustomerPicked" />
+          <el-input v-model="searchForm.customerName" placeholder="客户" readonly>
+            <customer-pick class="small-button" slot="append" :id="searchForm.customerId" @onCustomerPicked="onCustomerPicked" />
           </el-input>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.name" placeholder="名称" clearable/>
+          <el-input v-model="searchForm.name" placeholder="名称" clearable/>
         </el-form-item>
         <el-form-item class="tiny-item">
-          <el-select v-model="searchDataForm.state" placeholder="状态" clearable>
+          <el-select v-model="searchForm.state" placeholder="状态" clearable>
             <el-option v-for="item in stateOptions" :key="item.value" :label="item.label" :value="item.value">
               <span style="float: left">{{ item.label }}</span>
               <span style="float: right; color: #8492a6; font-size: 13px">{{ item.tip }}</span>
@@ -24,7 +24,7 @@
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.source" placeholder="来源" filterable allow-create clearable>
+          <el-select v-model="searchForm.source" placeholder="来源" filterable allow-create clearable>
             <el-option v-for="item in sourceOptions" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
         </el-form-item>
@@ -75,9 +75,9 @@
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         :hide-on-single-page="mode === 'embed'"
         :small="mode === 'embed'"
@@ -165,7 +165,7 @@ export default {
       }],
       infoVisible: false, // 查看信息，弹窗visible状态
       logAddOrUpdateVisible: false, // 新增跟进
-      searchDataForm: {
+      searchForm: {
         name: '',
         state: '',
         tenantId: '',
@@ -180,8 +180,8 @@ export default {
       let query = {}
       if (id) {
         query = { id: id }
-      } else if (this.searchDataForm.customerId) {
-        query = { customerId: this.searchDataForm.customerId }
+      } else if (this.searchForm.customerId) {
+        query = { customerId: this.searchForm.customerId }
       }
       this.$router.push({ name: 'crm-business-add-or-update', query: query })
     },

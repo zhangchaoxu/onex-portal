@@ -1,24 +1,24 @@
 <template>
   <el-card shadow="never" class="aui-card--fill">
     <div class="mod-crm__product">
-      <el-form :inline="true" :model="searchDataForm" size="small" @submit.native.prevent>
+      <el-form :inline="true" :model="searchForm" size="small" @submit.native.prevent>
         <el-form-item class="middle-item" v-if="$hasRole('sysadmin')">
-          <el-input v-model="searchDataForm.tenantName" placeholder="租户" readonly>
-            <tenant-pick class="small-button" slot="append" :id="searchDataForm.tenantId" @onTenantPicked="onTenantPicked"/>
+          <el-input v-model="searchForm.tenantName" placeholder="租户" readonly>
+            <tenant-pick class="small-button" slot="append" :id="searchForm.tenantId" @onTenantPicked="onTenantPicked"/>
           </el-input>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-select v-model="searchDataForm.categoryId" placeholder="分类" style="width: 100%" clearable>
+          <el-select v-model="searchForm.categoryId" placeholder="分类" style="width: 100%" clearable>
             <el-option v-for="item in productCategoryList" :key="item.id" :label="item.name" :value="item.id"/>
           </el-select>
         </el-form-item>
         <el-form-item class="tiny-item">
-          <el-select v-model="searchDataForm.marketable" placeholder="在架" class="w-percent-100">
+          <el-select v-model="searchForm.marketable" placeholder="在架" class="w-percent-100">
             <el-option v-for="item in marketableOptions" :key="item.value" :label="item.label" :value="item.value"/>
           </el-select>
         </el-form-item>
         <el-form-item class="small-item">
-          <el-input v-model="searchDataForm.search" placeholder="名称/编号" clearable/>
+          <el-input v-model="searchForm.search" placeholder="名称/编号" clearable/>
         </el-form-item>
         <el-form-item>
           <el-button @click="queryDataList()">{{ $t('query') }}</el-button>
@@ -57,9 +57,9 @@
       </el-table>
       <el-pagination
         v-if="mixinListModuleOptions.getDataListIsPage"
-        :current-page="page"
+        :current-page="searchForm.pageNo"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="limit"
+        :page-size="searchForm.pageSize"
         :total="total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="pageSizeChangeHandle"
@@ -102,7 +102,7 @@ export default {
         value: 1,
         label: '上架'
       }],
-      searchDataForm: {
+      searchForm: {
         categoryId: '',
         marketable: '',
         search: ''
